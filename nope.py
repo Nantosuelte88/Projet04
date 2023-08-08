@@ -23,7 +23,6 @@ class Player:
         self.first_name = first_name
         self.date_birth = date_birth
         self.id_chess = id_chess
-        self.points: Score
 
 
 #   def __str__(self):
@@ -35,9 +34,9 @@ class Tournament:
     un numéro du tour actuel, une liste des rounds, une liste des joueurs ainsi qu'une description
     pour les remarques générales du directeur du tournoi"""
 
-    def __init__(self, name, locality, start_date, end_date, actual_round, list_rounds, list_players, description=None,
+    def __init__(self, name_tournament, locality, start_date, end_date, actual_round, list_rounds, list_players, description=None,
                  rounds=4):
-        self.name = name
+        self.name_tournament = name_tournament
         self.locality = locality
         self.start_date = start_date
         self.end_date = end_date
@@ -52,8 +51,8 @@ class Round:
     """ un round contient une liste des matchs, un nom, une date et une heure de début, une date et une heure de fin,
     indiqué quand le round est terminé"""
 
-    def __init__(self, name, round_start_date, round_start_hours, round_end_date, round_end_hours, round_finished=None):
-        self.name = name
+    def __init__(self, name_round, round_start_date, round_start_hours, round_end_date, round_end_hours, round_finished=None):
+        self.name_round = name_round
         self.round_start_date = round_start_date
         self.round_start_hours = round_start_hours
         self.round_end_date = round_end_date
@@ -110,3 +109,35 @@ tournoi01 = Tournament("Tournoi des Sorciers", "Poudlard", "07 juillet", "09 jui
 
 round01 = Round("Round01", "07 juillet", "11h", "09 juillet", "17h", True)
 # print(round01.name, round01.round_start_date, round01.round_start_hours, round01.round_end_date, round01.round_end_hours, round01.round_finished)
+
+
+
+
+
+
+
+
+class Controllers:
+
+    def __init__(self):
+        pass
+
+    def get_players(self):
+        while len(self.players) < 4:
+            player = Player(name="bloup")
+            self.players.append(player)
+            return player
+
+
+
+    def run(self):
+        self.get_players()
+
+
+test2 = Controllers()
+#print(test2.get_players())
+
+
+def run(self):
+    self.get_players()
+    pass
