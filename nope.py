@@ -141,3 +141,140 @@ test2 = Controllers()
 def run(self):
     self.get_players()
     pass
+
+
+
+from typing import List
+import random
+
+
+WEAPONS = (
+    "couche",
+    "couteau",
+    "kalash",
+    "déambulateur",
+    "chausson"
+)
+
+class Weap: #Card
+
+    def __init__(self, weapons):
+        self.weapons = weapons
+
+class Hand(List):
+
+    def append(self, object):
+        if not isinstance(object, Weap):
+            return ValueError("Votre arme n'est pas homoloqué !")
+        return super().append(object)
+
+class Deck:
+    def __init__(self):
+        """Has some cards."""
+
+        self.append(Weap)
+        self.shuffle()
+
+    def shuffle(self):
+        """Shuffle the deck."""
+        random.shuffle(self)
+
+class Machin:
+    def __init__(self, name, points=0):
+        self.name = name
+        self.points = points
+        self.hand: List[Weap] = Hand()
+
+class Match:
+
+    def __init__(self, name):
+        self.name = name
+
+    def update_score(self):
+        pass
+
+match1 = Match("Premier Match")
+variable = Machin("Michel")
+variable2 = Machin("Jean-Pierre")
+variable3 = Machin("Georgette")
+
+print(" Match = ", match1.name, "\n",
+      "joueur 01: ",variable.name, "score : ", variable.points, "\n",
+      "joueur 02: ",variable2.name, "score : ", variable2.points, "\n",
+      "joueur 03: ",variable3.name, "score : ", variable3.points, "\n",)
+
+#print(variable, variable2, variable3)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+from typing import List
+class Player:
+
+    def __init__(self):
+        self.players = []
+
+
+    def add_player(self, name):
+        self.players.append(name)
+
+
+
+player = Player()
+player.add_player("Roger")
+player.add_player("Michel")
+print(player.players)
+
+
+
+
+
+
+
+
+
+
+
+
+
+from typing import List
+class Player:
+
+    def __init__(self):
+        pass
+
+
+
+
+class ListPlayers:
+
+    def __init__(self):
+        self.players = []
+
+    def add_player(self, name):
+        self.players.append(name)
+
+
+player = Player()
+liste = ListPlayers()
+liste.add_player("Roger")
+liste.add_player("Michel")
+print(liste.players)
