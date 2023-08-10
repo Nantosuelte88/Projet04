@@ -69,3 +69,24 @@ score = Score()
 
 print("Match :", match.winner_match(Player), " ----- Score :", score.update_points(Player))
 
+
+
+
+
+
+class ClasseA:
+    def __init__(self, name, number):
+        self.name = name
+        self.number = number
+
+class ClasseB:
+    def __init__(self, classe_a_instance):
+        self.classe_a_instance = classe_a_instance
+        self.solution = classe_a_instance.number * 2
+
+    def __str__(self):
+        return f"Test de phrase {self.classe_a_instance.name} : {self.solution}."
+
+classa = ClasseA("Test1", 42)
+classb = ClasseB(classa)
+print(classb)
