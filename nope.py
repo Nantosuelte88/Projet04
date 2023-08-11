@@ -232,3 +232,20 @@ class ClasseB:
 classa = ClasseA("Test1", 42)
 classb = ClasseB(classa)
 print(classb)
+
+
+
+
+
+
+
+POINTS = (0, 1)
+
+
+class Point:
+
+    def __init__(self, points):
+        self.points = points
+        for point in POINTS:
+            return point
+        random.shuffle(self)
