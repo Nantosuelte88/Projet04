@@ -1,3 +1,7 @@
+from typing import List
+
+
+
 
 class Player:
 
@@ -17,20 +21,25 @@ class Player:
                f"Numéro d'identification : {self.id_chess}."
 
 
+
 class Match:
 
     """ un match contient un tuple ayant deux listes contenant chacune - un joueur et - un score"""
 
-    def __init__(self, player1, player2):
+    def __init__(self, player1, score1, player2, score2):
         self.player1 = player1
+        self.score1 = score1
         self.player2 = player2
+        self.score2 = score2
+
+        self.match = ([player1, score1], [player2, score2])
 
     def select_player(self):
         """ trouver logique pour trier par score """
         """ Trouver logique pour eviter les rencontres multiples"""
-        pass
+        self.players_match = []
 
-#    def who_win(self, winner="*Gagnant*"):
+    #    def who_win(self, winner="*Gagnant*"):
 #        self.winner = winner #indiquer qui a gagné
 #        return winner
 
@@ -38,7 +47,11 @@ class Match:
         pass
 
     def __str__(self):
-        return f"Test Match : {self.player1.name} VS {self.player2.name}. "
+        return f"Match {self.player1.name} VS {self.player2.name}\n" \
+               f"Scores :\n" \
+               f"{self.player1.name} = {self.score1}\n" \
+               f"{self.player2.name} = {self.score2}\n" \
+               f"{self.select_player()}"
 
 
 class Round:
@@ -68,12 +81,12 @@ class Tournament:
         self.locality = locality
         self.start_date = start_date
 #        self.actual_round = actual_round # à connecter avec la classe Round
-        self.list_rounds = [] # à connecter avec une liste des objets de la classe Round
-        self.list_players = [] # à connecter avec la liste des joueurs
         self.description = description
         self.rounds = rounds
         self.end = "Non définit"
 
+        self.list_rounds = []
+        self.list_players = []
 
 
     def add_player(self, player):
@@ -87,10 +100,13 @@ class Tournament:
                f"Date de début : {self.start_date}\n" \
                f"Nombre de rounds : {self.rounds}\n" \
                f"Les differents Rounds : {self.list_rounds}\n" \
-               f"Liste des joueurs : {self.list_players}\n" \
                f"Date de fin : {self.end}\n" \
                f"Commentaire du directeur : {self.description}\n" \
-               f"liste des joueurs : {self.list_players}"
+               f"liste des joueurs : {self.list_players}"\
+
+#              f"liste des joueurs : {self.list_players[0][1]}" ne donne que le prénom [0] = premier player de la liste [1] = le prénom
+
+
 
 
 
@@ -107,15 +123,13 @@ player8 = Player("Chang", "Cho", "04/24/1979", "CC12345")
 
 #print("Object 01 : ", player1, "\n Object 02 : ", player2)
 
-match = Match(player1, player2)
-#print("TEST", match)
+match = Match(player1, 0, player2, 2)
+print("TEST", match)
 #print("Le gagnant est", match.who_win(player2.name))
 
-#round01 = Round("Round01", "07 juillet", "11h", "09 juillet", "17h")
-#print(round01)
+
 
 tournoi01 = Tournament("Tournoi des Sorciers", "Poudlard", "07 Août", "50 points pour Griffondor !")
-
 joueur1 = tournoi01.add_player(player1)
 joueur2 = tournoi01.add_player(player2)
 joueur3 = tournoi01.add_player(player3)
@@ -124,5 +138,9 @@ joueur5 = tournoi01.add_player(player5)
 joueur6 = tournoi01.add_player(player6)
 joueur7 = tournoi01.add_player(player7)
 joueur8 = tournoi01.add_player(player8)
-print(tournoi01)
+#print(tournoi01)
+
+round01 = Round("Round01")
+#print(round01)
+print(match.select_player())
 
