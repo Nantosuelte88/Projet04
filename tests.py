@@ -1,3 +1,70 @@
+from typing import List
+
+
+PlAYERS = [
+    ("Potter", "Harry", "07/31/1980", "HP12345"),
+    ("Granger", "Hermione", "09/19/1979", "GH12345"),
+    ("Weasley", "Ron", "03/01/1980", "WR12345"),
+    ("Weasley", "Ginny", "08/11/1981", "WG12345"),
+    ("Malefoy", "Drago", "06/05/1980", "MD12345"),
+    ("Lovegood", "Luna", "02/13/1980", "LL12345"),
+    ("Londubat", "Neville", "07/30/1980", "LN12345"),
+    ("Chang", "Cho", "04/24/1979", "CC12345")
+]
+
+class Player:
+    """ Le joueur a un nom, un prénom, une date de naissance et son identifiant d'échecs """
+
+    def __init__(self, name, first_name, date_birth, id_chess):
+        self.name = name
+        self.first_name = first_name
+        self.date_birth = date_birth
+        self.id_chess = id_chess
+
+
+
+class Controller:
+    """ Le Contrôleur """
+
+    def __init__(self):
+        # mettre la vue içi
+        self.players: List[Player] = []
+        self.list_player = []
+
+    def get_players(self):
+        player_info = PlAYERS
+        for i in player_info:
+            player = Player(i[0], i[1], i[2], i[3])
+            self.players.append(player)
+            self.list_player.append([player.name, player.first_name, player.date_birth, player.id_chess])
+
+    def __str__(self):
+        return f"test info du joueur dans controlleur {self.list_player}"
+
+
+test = Controller()
+test.get_players()
+print(test)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"""
+
 class Joueur:
     def __init__(self, nom, score):
         self.nom = nom
@@ -102,5 +169,9 @@ matchs = generer_matchs(JOUEURS)
 for index, match in enumerate(matchs, start=1):
     joueur1, joueur2 = match
     print(f"Match {index}: {joueur1[0]} vs {joueur2[0]}")
+"""
+
+
+
 
 

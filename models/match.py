@@ -7,7 +7,7 @@ class Match:
         self.player2 = player2
         self.score2 = score2
 
-        self.match = ([player1, score1], [player2, score2])
+        self.result_match = ([player1, score1], [player2, score2])
 
 
     def __str__(self):
@@ -15,3 +15,6 @@ class Match:
                f"Scores :\n" \
                f"{self.player1.name} = {self.score1}\n" \
                f"{self.player2.name} = {self.score2}\n"
+
+
+

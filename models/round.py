@@ -1,3 +1,5 @@
+from match import Match
+
 class Round:
     """ un round contient une liste des matchs, un nom, une date et une heure de début, une date et une heure de fin """
 

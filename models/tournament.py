@@ -1,3 +1,5 @@
+from round import Round
+from player import Player
 
 class Tournament:
     """ Le tournoi contient  nom, un lieu, une date de début et de fin, un nombre de tours défini,
@@ -18,10 +20,6 @@ class Tournament:
         self.list_players = []
 
 
-    def add_player(self, player):
-        self.player = player
-        self.list_players.append([player.name, player.first_name, player.date_birth, player.id_chess])
-
 
     def __str__(self):
         return f" Nom du tournoi : {self.name_tournament}\n" \
@@ -34,3 +32,7 @@ class Tournament:
                f"liste des joueurs : {self.list_players}"\
 
 #              f"liste des joueurs : {self.list_players[0][1]}" ne donne que le prénom [0] = premier player de la liste [1] = le prénom
+
+
+    def update_score(self):
+        pass
