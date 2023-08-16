@@ -1,5 +1,4 @@
-from round import Round
-from player import Player
+
 
 class Tournament:
     """ Le tournoi contient  nom, un lieu, une date de début et de fin, un nombre de tours défini,
