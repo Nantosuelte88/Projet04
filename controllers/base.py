@@ -3,9 +3,13 @@ from typing import List
 from models.player import Player
 from models.tournament import Tournament
 from models.match import Match
+from models.round import Round
 
 from data import PlAYERS
 
+
+ROUND_NUMBER = 4
+MATCH_SCORE = [(1, 0), (0.5, 0.5), (0, 1)]
 
 class Controller:
     """ Le Contrôleur """
@@ -35,41 +39,44 @@ class Controller:
         info_tournament = Tournament("Tournoi des Sorciers", "15 juillet", "Poudlard")
         info_tournament.list_players = self.list_players
 #        print(info_tournament)
+        score = 0
+        for player in self.list_players:
+            id_player = player[3]
+            self.id_with_score.append([id_player, score])
+        print(self.id_with_score)
         # verifier si il est mieux de ne prendre que l'id et le score ou garder les autres infos du joueur en stock içi ???
-        return info_tournament,
+        return info_tournament, self.id_with_score
 
 
     def update_score(self):
-        number_round = 1
-        match_result = Match("Joueur01", 1, "Joueur02", 0)
-        if number_round == 1:
-            score = 0
-        else:
-            score = match_result
-        for player in self.list_players:
-            id_player = player[3]
-
-            self.id_with_score.append([id_player, score])
-        print(self.id_with_score)
-        return self.id_with_score
-
-
-
-    def sorted_players(self, players_with_score):
-        sorted_players_scores = sorted(players_with_score, key= lambda x: x[1], reverse=True)
-        print("Select players for match : ", sorted_players_scores)
-        return sorted_players_scores
-
-
-
-    def select_player_for_match(self):
         pass
 
+    def sorted_players(self):
+        sorted_players_scores = sorted(self.id_with_score, key= lambda x: x[1], reverse=True)
+ #       print("Select players for match : ", sorted_players_scores)
+        return sorted_players_scores
 
 
     def run(self):
         self.get_players()
         print("Run")
+
+        for number in range(ROUND_NUMBER):
+           print("number :", number)
+           round = Round("Round" + str(number +1))
+           print("round : ", round)
+           matchs = 4
+           o = 0
+
+           """ Trouver comment créer automatiquement les matchs en leurs donnant 2 joueurs et leurs score en entrée de la classe Match"""
+           for match in range(matchs):
+               print("TTTEST", o, self.sorted_players())
+               round.list_matchs.append(match)
+               #print("Liste matchs :", round.list_matchs)
+
+               o += 1
+
+
 
 
 
