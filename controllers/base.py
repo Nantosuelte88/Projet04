@@ -7,10 +7,11 @@ from models.round import Round
 
 from data import PlAYERS
 
+import random
 
 ROUND_NUMBER = 4
 MATCH_SCORE = [(1, 0), (0.5, 0.5), (0, 1)]
-
+MATCHS = 4
 class Controller:
     """ Le Contrôleur """
 
@@ -43,7 +44,7 @@ class Controller:
         for player in self.list_players:
             id_player = player[3]
             self.id_with_score.append([id_player, score])
-        print(self.id_with_score)
+#        print(self.id_with_score)
         # verifier si il est mieux de ne prendre que l'id et le score ou garder les autres infos du joueur en stock içi ???
         return info_tournament, self.id_with_score
 
@@ -57,24 +58,52 @@ class Controller:
         return sorted_players_scores
 
 
+    def new_round(self):
+        init_round = Round("Round")
+        print("ROUND : Liste des Matchs = ", init_round.list_matchs)
+        players = self.sorted_players()
+        #    print("Print system_matchs:", players)
+        for i in range(0, len(players), 2):
+            player1 = players[i][0]
+            score1 = players[i][1]
+            player2 = players[i + 1][0]
+            score2 = players[i + 1][1]
+            #           print("player1 :", player1, "score1: ", score1, "player2", player2, "score2 :", score2)
+            matchs = Match(player1, score1, player2, score2)
+            #      print(matchs)
+            init_round.list_matchs.append(matchs)
+        print(init_round)
+        result_match = []
+        for p in init_round.list_matchs:
+            random.shuffle(MATCH_SCORE)
+            score1 = MATCH_SCORE[0][0]
+            score2 = MATCH_SCORE[0][1]
+            print("tututu", score1, score2)
+        return init_round
+
+
+    def result_matchs(self, matchs):
+        for match in matchs:
+            print(match)
+
+
+
+
     def run(self):
         self.get_players()
         print("Run")
 
-        for number in range(ROUND_NUMBER):
-           print("number :", number)
-           round = Round("Round" + str(number +1))
-           print("round : ", round)
-           matchs = 4
-           o = 0
+        self.new_tournament()
 
-           """ Trouver comment créer automatiquement les matchs en leurs donnant 2 joueurs et leurs score en entrée de la classe Match"""
-           for match in range(matchs):
-               print("TTTEST", o, self.sorted_players())
-               round.list_matchs.append(match)
-               #print("Liste matchs :", round.list_matchs)
+        self.new_round()
 
-               o += 1
+        self.update_score()
+        self.sorted_players()
+
+
+
+
+    #    print(new_round)
 
 
 

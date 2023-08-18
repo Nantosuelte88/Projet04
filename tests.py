@@ -1,3 +1,22 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"""
+
+
+
 from typing import List
 
 
@@ -13,9 +32,9 @@ PlAYERS = [
 ]
 
 class Player:
-    """ Le joueur a un nom, un prénom, une date de naissance et son identifiant d'échecs """
-
-    def __init__(self, name, first_name, date_birth, id_chess):
+     #Le joueur a un nom, un prénom, une date de naissance et son identifiant d'échecs
+     
+     def __init__(self, name, first_name, date_birth, id_chess):
         self.name = name
         self.first_name = first_name
         self.date_birth = date_birth
@@ -24,7 +43,7 @@ class Player:
 
 
 class Controller:
-    """ Le Contrôleur """
+
 
     def __init__(self):
         # mettre la vue içi
@@ -63,7 +82,7 @@ print(test)
 
 
 
-"""
+
 
 class Joueur:
     def __init__(self, nom, score):
