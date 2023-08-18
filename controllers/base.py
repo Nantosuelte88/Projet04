@@ -68,10 +68,11 @@ class Controller:
             score1 = players[i][1]
             player2 = players[i + 1][0]
             score2 = players[i + 1][1]
-            #           print("player1 :", player1, "score1: ", score1, "player2", player2, "score2 :", score2)
+            print("player1 :", player1, "score1: ", score1, "player2", player2, "score2 :", score2)
             matchs = Match(player1, score1, player2, score2)
             #      print(matchs)
             init_round.list_matchs.append(matchs)
+
         print(init_round)
         result_match = []
         for p in init_round.list_matchs:
