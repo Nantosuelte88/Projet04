@@ -1,6 +1,100 @@
+def result_round(self, round):
+    for match in round:
+        print("\nMatch = ", match.result_match)
+        if match.score1 == 1:
+            print("Le gagnant est p1", match.player1[0], match.player1[1])
+            for player in self.player_with_score:
+                if player[0] == match.player1:
+                    test = player[1]
+                    for player_info in player:
+                        print("Dans la boucle player_info", player_info)
+                # test_choix_du_joueur = self.player_with_score[] # comment lui indiquer de chercher dans les infos de ce joeur
+        #               print("TCHUUUK correspondance PLAYER 1", match.player1,"TEST 1 :", test_choix_du_joueur, "TEEEEST :", test)
+        elif match.score2 == 1:
+            print("Le gagnant est p2", match.player2[0], match.player2[1])
+            for player in self.player_with_score:
+                if player[0] == match.player2:
+                    # il ne rentre jamais içi
+                    test2 = player[1]
+                    print("!!!! corresponcance PLAYER 2", match.player2, "TEST 2 :", test2)
+
+        else:
+            if match.player1 or match.player2 == self.player_with_score:
+                print("LEs DEUX correspondent !!!", match.score1)
+            print("Match nul pour ", match.player1[0], match.player1[1], "et ", match.player2[0], match.player2[1])
+
+
+def result_round(self, round):
+    for match in round:
+        print("\nMatch = ", match.result_match)
+        if match.score1 == 1:
+            print("Le gagnant est p1", match.player1[0], match.player1[1])
+            for player in self.player_with_score:
+                if player[0] == match.player1:
+                    test = player[1]
+                    print("TCHUUUK correspondance PLAYER 1", match.player1, "TEST 1 :", test)
+        elif match.score2 == 1:
+            print("Le gagnant est p2", match.player2[0], match.player2[1])
+            for player in self.player_with_score:
+                if player[0] == match.player2:
+                    test2 = player[1]
+                    print("!!!! corresponcance PLAYER 2", match.player2, "TEST 2 :", test2)
+                else:
+                    print("Pas de correspondance dans Player 2", player[0])
+        else:
+            if any(player[0] == match.player1 or player[0] == match.player2 for player in self.player_with_score):
+                print("LEs DEUX correspondent !!!", match.score1)
+            print("Match nul pour ", match.player1[0], match.player1[1], "et ", match.player2[0], match.player2[1])
 
 
 
+
+
+
+for match in round:
+    print("\nMatch = ", match.result_match)
+    if match.score1 == 1:
+        print("Le gagnant est p1", match.player1[0], match.player1[1])
+    elif match.score2 == 1:
+        print("Le gagnant est p2", match.player2[0], match.player2[1])
+    else:
+        print("Match nul pour ", match.player1[0], match.player1[1], "et ", match.player2[0], match.player2[1])
+        print("\n[0] = ", self.player_with_score[a][0], "Player :", match.player1, "FFIIN\n")
+        if match.player1 == self.player_with_score[a][0]:
+            print("TCHUUUK PLAYER 1")
+        elif match.player2 == self.player_with_score[a][0]:
+            print("!!!! PLAYER 2")
+        else:
+            print("MATCH NUL !!!")
+
+
+
+
+
+
+
+for i in range(0, len(players), 2):
+    player1 = players[i][0]
+    score1 = players[i][1] + (+ score1_match)
+    player2 = players[i + 1][0]
+    score2 = players[i + 1][1] + (+ score2_match)
+    matchs = Match(player1, score1, player2, score2)
+    #      print(matchs)
+    init_round.list_matchs.append(matchs)
+
+
+
+self.result_matchs(init_round)
+
+
+def result_matchs(self, init_round):
+    for p in init_round.list_matchs:
+        random.shuffle(MATCH_SCORE)
+        score1 = MATCH_SCORE[0][0]
+        score2 = MATCH_SCORE[0][1]
+        print(init_round.list_matchs[000])
+    #  print("tututu", p, score1, score2)
+    print("Resultat du match")
 
 
 

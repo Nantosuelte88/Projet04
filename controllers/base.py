@@ -51,37 +51,75 @@ class Controller:
     def update_score(self):
         pass
 
-    def sorted_players(self):
-        sorted_players_scores = sorted(self.player_with_score, key= lambda x: x[1], reverse=True)
-#        print("Select players for match : ", sorted_players_scores)
-        return sorted_players_scores
-
 
     def new_round(self):
-        init_round = Round("Round")
-        print("ROUND : Liste des Matchs = ", init_round.list_matchs)
-        players = self.sorted_players()
-        #    print("Print system_matchs:", players)
-        for i in range(0, len(players), 2):
-            player1 = players[i][0]
-            score1 = players[i][1]
-            player2 = players[i + 1][0]
-            score2 = players[i + 1][1]
-            print(init_round.name_round, "Print instanciation MATCH : (Dans boucle for)\n"
-                                         "player1 :", player1, "score1: ", score1, "player2", player2, "score2 :", score2)
-            matchs = Match(player1, score1, player2, score2)
-            #      print(matchs)
-            init_round.list_matchs.append(matchs)
+        for round in range(ROUND_NUMBER):
+            init_round = Round("Round " + str(round +1))
+            print(init_round.name_round)
+            if init_round.name_round == "Round 1":
+                players = self.player_with_score
+                random.shuffle(players)
+            #    print("PREMIER ROUND", players)
+            else:
+                # Trouver comment faire en sorte que les joueurs ne rejouent pas direct entre eux
+                players = sorted(self.player_with_score, key= lambda x: x[1], reverse=True)
+            #    print("PAS LE PREMIER ROUND", init_round.name_round, players)
 
-        print("Print après boucle for", init_round)
-        result_match = []
-        for p in init_round.list_matchs:
-            random.shuffle(MATCH_SCORE)
-            score1 = MATCH_SCORE[0][0]
-            score2 = MATCH_SCORE[0][1]
-            print("tututu", score1, score2)
-        return init_round
+            for i in range(0, len(players), 2):
+                random.shuffle(MATCH_SCORE)
+                score1_match = MATCH_SCORE[0][0]
+                score2_match = MATCH_SCORE[0][1]
+                player1 = players[i][0]
+                score1 = players[i][1] + (score1_match)
+                player2 = players[i + 1][0]
+                score2 = players[i + 1][1] + (score2_match)
+                matchs = Match(player1, score1, player2, score2)
+                #      print(matchs)
+                init_round.list_matchs.append(matchs)
+   #             print(matchs)
+      #      print("PRINT liste des maths dans init_round", init_round.list_matchs)
+            print("Résultat du", init_round.name_round)
+            self.result_round(init_round.list_matchs)
+ #           self.update_score_round(init_round)
+        return init_round #ne retourne que le PREMIER ROUND !!! ATTENTION !!
 
+
+    def result_round(self, round):
+   #     player_score_tournament = [list(player) for player in self.player_with_score] # pour créer un liste à part
+        for match in round:
+            print("\nMatch = ", match.result_match)
+            if match.score1 == 1:
+                print("Le gagnant est p1", match.player1[0], match.player1[1])
+                for i, player in enumerate(self.player_with_score):
+                    if player[0] == match.player1:
+                        self.player_with_score[i] = (player[0], player[1] + 1)
+           #             player_score_tournament[i] = (player[0], player[1] + 1)
+                        print("Test nouvelle boucle", "\nPlayer with score = ", self.player_with_score[i], "\n")
+                       # test_choix_du_joueur = self.player_with_score[] # comment lui indiquer de chercher dans les infos de ce joeur
+         #               print("TCHUUUK correspondance PLAYER 1", match.player1,"TEST 1 :", test_choix_du_joueur, "TEEEEST :", test)
+            elif match.score2 == 1:
+                print("Le gagnant est p2", match.player2[0], match.player2[1])
+                for i, player in enumerate(self.player_with_score):
+                    if player[0] == match.player2:
+                        self.player_with_score[i] = (player[0], player[1] + 1)
+                        print("!!!! corresponcance PLAYER 2", match.player2,"TEST 2 :", self.player_with_score[i], "\n")
+
+            else:
+                if match.player1 or match.player2 == self.player_with_score:
+                    print("LEs DEUX correspondent !!!", match.score1)
+                print("Match nul pour ", match.player1[0], match.player1[1], "et ", match.player2[0], match.player2[1], "MAtch nul score = ", self.player_with_score)
+
+
+            #       print("§§§§§§§§", result_round_scores,self.player_with_score)
+
+      #      print(self.player_with_score)
+      #          print("Le Gagnant est :", )
+       #     elif match.score2 == 1:
+         #       print("Bravo", match.player2)
+
+
+    def update_score_round(self, round):
+        pass
 
 
 
@@ -93,8 +131,9 @@ class Controller:
 
         self.new_round()
 
- #       self.update_score()
-        self.sorted_players()
+
+
+
 
 
 

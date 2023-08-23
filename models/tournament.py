@@ -31,7 +31,3 @@ class Tournament:
                f"liste des joueurs : {self.list_players}"\
 
 #              f"liste des joueurs : {self.list_players[0][1]}" ne donne que le prénom [0] = premier player de la liste [1] = le prénom
-
-
-    def update_score(self):
-        pass
