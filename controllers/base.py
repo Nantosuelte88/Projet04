@@ -38,6 +38,7 @@ class Controller:
 
 
     def new_tournament(self):
+        list_pair = []
         info_tournament = Tournament("Tournoi des Sorciers", "15 juillet", "Poudlard")
    #     info_tournament.list_players = self.players
 #        print(info_tournament)
@@ -45,7 +46,6 @@ class Controller:
         for player in self.players:
             info_tournament.list_players.append([player, score])
  #       print(self.player_with_score)
-
         return info_tournament
 
 
@@ -53,6 +53,7 @@ class Controller:
         for round in range(ROUND_NUMBER):
             init_round = Round("Round " + str(round +1))
             tournament.list_rounds.append(init_round)
+            list_pair = init_round.list_matchs
             if init_round.name_round == "Round 1":
                 random.shuffle(tournament.list_players)
                 players = tournament.list_players
@@ -63,17 +64,24 @@ class Controller:
             #    print("PAS LE PREMIER ROUND", init_round.name_round, players)
 
             print("-- ", init_round.name_round, "--")
-            print(players)
+  #          print(players)
+            a = 0
+
             for player in range(0, len(players), 2):
                 random.shuffle(MATCH_SCORE)
                 player1 = players[player][0]
                 score1 = MATCH_SCORE[0][0]
                 player2 = players[player +1][0]
                 score2 = MATCH_SCORE[0][1]
+
                 match = Match(player1, score1, player2, score2)
                 init_round.list_matchs.append(match)
+
+                print("player2", player2, "a = ", a)
+
  #               print("PLAYER 1 = ", player1, "score 1 = ", score1,"\nPLAYER 2 = ", player2, "score 2 = ", score2)
-      #          print(match.result_match)
+
+#                print("!!!!!!!",match.result_match, "\n", match.result_match[0][0] ,"\n")
     #        print("Liste des matchs = ", init_round.list_matchs)
             self.result_round(init_round.list_matchs, tournament)
         return
@@ -88,16 +96,17 @@ class Controller:
                 elif player[0] == match.player2:
                     player[1] += match.score2
  #               print(player[0], player[1], match.player1, match.player2)
-        print("Resultat du round : \n",sorted(tournament.list_players, key= lambda x: x[1], reverse=True))
+ #       print("Resultat du round : \n",sorted(tournament.list_players, key= lambda x: x[1], reverse=True))
         self.show_winner(tournament)
 
     def show_winner(self, tournament):
-        print("Voir le vainqueur")git a
+        print("Voir le vainqueur")
         print(tournament.list_players[0])
         sorted_final = sorted(tournament.list_players, key= lambda x: x[1], reverse=True)
         print("Classement final : ")
         for player in sorted_final:
-            print("Joueur :",player[0],"score de :", player[1])
+            pass
+  #          print("Joueur :",player[0],"score de :", player[1])
 
       #  print("Resultat du tournoi !!!!!! : \n", sorted(self.players, key=lambda x: x[5], reverse=True))
 

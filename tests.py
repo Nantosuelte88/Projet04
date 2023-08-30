@@ -1,3 +1,49 @@
+if player2 == match.result_match[0][0] or player2 == match.result_match[1][0]:
+    print("\n -- CORRESPONDANCE! -- \n", "player2 = ", player2, "\nmatchresult[0][0] = ",
+          match.result_match[0][0], "\nmatchresult[0][1]= ", match.result_match[1][0], "\n")
+    player2_next = players[player + 2][0]
+    print("TEST CHELOU", "\nplayer2", player2, "\nplayer2 +1", player2_next, "\n\n")
+    a += 1
+
+
+
+
+
+
+def find_match(player, potential_opponents, played_matches):
+    for opponent in potential_opponents:
+        if opponent[0] != player[0] and (player[0], opponent[0]) not in played_matches and (opponent[0], player[0]) not in played_matches:
+            return opponent
+    return None
+
+played_matches = set()
+
+for i, player in enumerate(sorted_players):
+    potential_opponents = [p for p in sorted_players[i + 1:] if p[1] == player[1]]
+    match = find_match(player, potential_opponents, played_matches)
+    if match:
+        played_matches.add((player[0], match[0]))
+        played_matches.add((match[0], player[0]))
+        match = Match(player[0], 0, match[0], 0)
+        init_round.list_matchs.append(match)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 from itertools import combinations
 import random
 
