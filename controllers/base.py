@@ -77,13 +77,14 @@ class Controller:
                 match = Match(player1, score1, player2, score2)
                 init_round.list_matchs.append(match)
 
-                print("player2", player2, "a = ", a)
+ #               print("player2", player2, "a = ", a)
 
  #               print("PLAYER 1 = ", player1, "score 1 = ", score1,"\nPLAYER 2 = ", player2, "score 2 = ", score2)
 
 #                print("!!!!!!!",match.result_match, "\n", match.result_match[0][0] ,"\n")
     #        print("Liste des matchs = ", init_round.list_matchs)
             self.result_round(init_round.list_matchs, tournament)
+        self.show_winner(tournament)
         return
 
 
@@ -97,16 +98,13 @@ class Controller:
                     player[1] += match.score2
  #               print(player[0], player[1], match.player1, match.player2)
  #       print("Resultat du round : \n",sorted(tournament.list_players, key= lambda x: x[1], reverse=True))
-        self.show_winner(tournament)
+
 
     def show_winner(self, tournament):
-        print("Voir le vainqueur")
-        print(tournament.list_players[0])
         sorted_final = sorted(tournament.list_players, key= lambda x: x[1], reverse=True)
-        print("Classement final : ")
+        print("\n\n -- Classement final -- \n")
         for player in sorted_final:
-            pass
-  #          print("Joueur :",player[0],"score de :", player[1])
+            print("Joueur :",player[0],"score de :", player[1], "\n")
 
       #  print("Resultat du tournoi !!!!!! : \n", sorted(self.players, key=lambda x: x[5], reverse=True))
 

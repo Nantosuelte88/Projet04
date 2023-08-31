@@ -1,9 +1,36 @@
+
+
+
 if player2 == match.result_match[0][0] or player2 == match.result_match[1][0]:
     print("\n -- CORRESPONDANCE! -- \n", "player2 = ", player2, "\nmatchresult[0][0] = ",
           match.result_match[0][0], "\nmatchresult[0][1]= ", match.result_match[1][0], "\n")
     player2_next = players[player + 2][0]
     print("TEST CHELOU", "\nplayer2", player2, "\nplayer2 +1", player2_next, "\n\n")
     a += 1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
