@@ -1,11 +1,14 @@
 
 
 from controllers.base import Controller
+from views.tournamenentview import View
 
 
 def main():
 
-    game = Controller()
+    active_view = View()
+
+    game = Controller(active_view)
     game.run()
 
 

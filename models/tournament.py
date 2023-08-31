@@ -21,13 +21,7 @@ class Tournament:
 
 
     def __str__(self):
-        return f" Nom du tournoi : {self.name_tournament}\n" \
+        return f"Nom du tournoi : {self.name_tournament}\n" \
                f"Localisation : {self.locality}\n" \
                f"Date de début : {self.start_date}\n" \
-               f"Nombre de rounds : {self.rounds}\n" \
-               f"Les differents Rounds : {self.list_rounds}\n" \
-               f"Date de fin : {self.end}\n" \
-               f"Commentaire du directeur : {self.description}\n" \
                f"liste des joueurs : {self.list_players}"\
-
-#              f"liste des joueurs : {self.list_players[0][1]}" ne donne que le prénom [0] = premier player de la liste [1] = le prénom
