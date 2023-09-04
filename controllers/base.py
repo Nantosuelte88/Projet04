@@ -9,6 +9,7 @@ from views.tournamenentview import View
 from dataplayers import PlAYERS
 
 import random
+import datetime
 from datetime import datetime
 
 ROUND_NUMBER = 4
@@ -22,6 +23,8 @@ class Controller:
 
         self.players: List[Player] = []
 
+        self.tournaments: List[Tournament] = []
+
 
     def get_players(self):
         """
@@ -30,24 +33,35 @@ class Controller:
             player = Player(i[0], i[1], i[2], i[3])
             self.players.append(player)
         """
+
         # Avec la vue
-
-
+   #     list_prompt_players = []
         player_info = self.view.prompt_for_player()
         print(player_info)
+        for player in player_info:
+            player = Player(player[0], player[1], player[2], player[3])
+            self.players.append(player)
+        print(self.players)
+        return self.players
+
 
 
     def new_tournament(self):
-        player_info_view = self.view.prompt_for_tournament()
-        name = player_info_view[0]
-        locality = player_info_view[1]
-        date = datetime.date.today()
-        info_tournament = Tournament(name, locality, date)
-        print(info_tournament)
-        score = 0
-        for player in self.players:
-            info_tournament.list_players.append([player, score])
-        return info_tournament
+
+        tournament_info_view = self.view.prompt_for_tournament()
+        for tournament in tournament_info_view:
+      #      date = datetime.date.today()
+            date = "04 Septembre"
+            tournament = Tournament(tournament[0], tournament[1], date)
+            self.tournaments.append(tournament)
+        print("Print self tournaments = ", self.tournaments, "fin print self tournaments")
+        self.select_tournament(self.tournaments)
+        return self.tournaments
+
+
+
+    def select_tournament(self, tournaments):
+        pass
 
 
     def new_round(self, tournament):
@@ -95,9 +109,12 @@ class Controller:
     def run(self):
         self.get_players()
         print("Run")
+
         tournament = self.new_tournament()
 
-        self.new_round(tournament)
+        print(" print dans run", tournament)
+
+  #      self.new_round(tournament)
 
 
 

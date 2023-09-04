@@ -1,4 +1,83 @@
 
+def prompt_for_player(self):
+
+    while True:
+        ask = input("Ajouter un joueur ? O/N : ")
+        if ask == "O":
+            print("Yep")
+
+            while True:
+                while True:
+                    name = input("Nom du joueur: ")
+                    if name.isalpha():
+                        break
+                    else:
+                        print("Veuillez entrer un nom valide sans chiffres ni caractères spéciaux.")
+
+                while True:
+                    last_name = input("Prénom du joueur: ")
+                    if last_name.isalpha():
+                        break
+                    else:
+                        print("Veuillez entrer un prénom valide sans chiffres ni caractères spéciaux.")
+
+                while True:
+                    date_birth = input("Date de naissance du joueur JJ/MM/AAAA: ")
+                    try:
+                        datetime.strptime(date_birth, '%d/%m/%Y')
+                        break
+                    except ValueError:
+                        print("Veuillez entrer une date au format JJ/MM/AAAA.")
+
+                while True:
+                    id_chess = input("Identifiant national d'échec, au format AB12345 :")
+                    if len(id_chess) == 7:
+                        print("Bien 7")  # test
+                        if id_chess[0:2].isalpha():
+                            print("Bien alpha :", id_chess[0:2])  # test
+                            if id_chess[2:7].isnumeric():
+                                print("Bien numeric :", id_chess[2:7])  # test
+                                break
+                            else:
+                                print("Veuillez entrer un format d'identifiant d'échec valide AB12345")
+                        else:
+                            print("Veuillez entrer un format d'identifiant d'échec valide AB12345")
+                    else:
+                        print("Veuillez entrer un format d'identifiant d'échec valide AB12345")
+                return name, last_name, date_birth, id_chess
+
+        elif ask == "N":
+            print("Nope")
+            break
+        else:
+            print("Merci de saisir une donnée valide, O ou N")
+        return ask
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 if player2 == match.result_match[0][0] or player2 == match.result_match[1][0]:
