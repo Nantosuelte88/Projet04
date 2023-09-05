@@ -61,7 +61,24 @@ class Controller:
 
 
     def select_tournament(self, tournaments):
-        pass
+        name_tournament = self.view.choose_tournament(self.tournaments)
+    #    print("Dans fonction select tournament:",name_tournament)
+     #   print("BOUCLE RELOU -self.tournament[0]-", self.tournaments[0])
+      #  print("toujours dans boucle relou MARRCHE PAS = -self.tournament[0][0]-")
+       # print("CHERCHE NOM  :", self.tournaments[0].name_tournament)
+        for tournament in self.tournaments:
+            if name_tournament == tournament.name_tournament:
+                print("NOM CORRESPONDANT !!!!! ", name_tournament, "=", tournament.name_tournament)
+                self.initiate_tournament(tournament.name_tournament)
+            else:
+                print("NOPE pas de correspondance")
+
+
+
+
+    def initiate_tournament(self, tournament):
+        print("Methode select tournament OK", tournament)
+        self.new_round()
 
 
     def new_round(self, tournament):

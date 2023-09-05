@@ -87,10 +87,18 @@ class View:
                 break
             else:
                 print("Merci de saisir une donnée valide, O ou N")
-        self.choose_tournament(add_tournaments)
         return add_tournaments
 
 
     def choose_tournament(self, tournaments):
+        print("Liste des tournois : ")
         for tournament in tournaments:
-            print("Print select tournament", tournament)
+            print("Print select tournament\n", tournament)
+        ask_name_tournament = input("à quel tournoi souhaitez-vous jouer ?")
+        while True:
+            if all(char.isalpha() or char.isspace() for char in ask_name_tournament):
+                print("Verif tournoi", ask_name_tournament)
+                break
+            else:
+                print("Merci d'entrer un nom de tournoi valide")
+        return ask_name_tournament
