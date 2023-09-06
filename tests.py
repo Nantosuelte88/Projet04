@@ -1,3 +1,204 @@
+def choose_players(self, players):
+    players_list = []
+    print("Liste des joueurs : ")
+
+    while True:
+        add_player = input("Choisir un joueur ? O/N : ")
+
+        if add_player == "O":
+            if players_list:
+                print("Joueur.s ajouté.s :", players_list)
+            print("YEEES")
+            ask_name_player = input("Avec quels joueurs souhaitez-vous jouer ?")
+
+            while True:  # 2eme while
+
+                if all(char.isalpha() or char.isspace() for char in ask_name_player):
+                    print("Verif joueur", ask_name_player)
+
+                    for player in players:
+                        if ask_name_player == player.name for player in players:
+                            print("NOOOOM DU JOUEUUUUUR correspondant", ask_name_player, player.name)
+                            players_list.append(ask_name_player)
+                            break
+
+                        else:
+                            print("Joueur inconnu")
+                else:
+                    print("Merci d'entrer un nom de joueur valide")
+
+        elif add_player == "N":
+            print("Vous avez ajouté : \n", players_list)
+            break
+        else:
+            print("Merci de saisir une donnée valide, O ou N")
+
+        print("VIEW LISTE PLAYERS = ", players_list)
+        return players_list
+
+
+
+
+
+
+
+
+
+from typing import List
+
+from models.player import Player
+from models.tournament import Tournament
+from models.match import Match
+from models.round import Round
+from views.tournamenentview import View
+
+from dataplayers import PlAYERS
+
+import random
+import datetime
+from datetime import datetime
+
+ROUND_NUMBER = 4
+MATCH_SCORE = [(1, 0), (0.5, 0.5), (0, 1)]
+class Controller:
+    """ Le Contrôleur """
+
+    def __init__(self, view):
+
+        self.view = view
+
+        self.players: List[Player] = []
+        self.tournaments: List[Tournament] = []
+
+
+    def menu(self):
+        while True:
+            response = self.view.menu()
+            print("Print du MENU", response)
+            if response == "1":
+                print("choix 1 - ajouter un joueur")
+                self.get_players()
+            elif response == "2":
+                print("choix 2 - ajouter un tournoi")
+                self.new_tournament()
+            elif response == "3":
+                print("choix 3 - choisir un tournoi")
+                if self.tournaments:
+                    self.select_tournament(self.tournaments)
+                else:
+                    print("pas de tournoi")
+            elif response == "4":
+                print("choix 4 - choisir des joueurs")
+                self.select_players()
+            elif response == "5":
+                print("choix 5 - quitter le menu")
+                break
+
+    def get_players(self):
+        """
+        player_info = PlAYERS
+        for i in player_info:
+            player = Player(i[0], i[1], i[2], i[3])
+            self.players.append(player)
+        """
+
+        # Avec la vue
+   #     list_prompt_players = []
+        player_info = self.view.prompt_for_player()
+        print(player_info)
+        for player in player_info:
+            player = Player(player[0], player[1], player[2], player[3])
+            self.players.append(player)
+        print(self.players)
+        return self.players
+
+
+
+    def new_tournament(self):
+
+        tournament_info_view = self.view.prompt_for_tournament()
+        for tournament in tournament_info_view:
+      #      date = datetime.date.today()
+            date = "04 Septembre"
+            tournament = Tournament(tournament[0], tournament[1], date)
+            self.tournaments.append(tournament)
+        print("Print self tournaments = ", self.tournaments, "fin print self tournaments")
+        return self.tournaments
+
+
+
+    def select_tournament(self, tournaments):
+        name_tournament = self.view.choose_tournament(self.tournaments)
+        for tournament in tournaments:
+            if name_tournament == tournament.name_tournament:
+                print("NOM CORRESPONDANT !!!!! ", name_tournament, "=", tournament.name_tournament)
+                self.initiate_tournament(tournament)
+            else:
+                print("NOPE pas de correspondance")
+
+
+    def select_players(self):
+        list_players = self.view.choose_players(self.players)
+        print("PRINT SELF_PLAYYYYYERS : \n", list_players)
+
+
+
+    def initiate_tournament(self, tournament):
+        print("Methode select tournament OK \n", tournament)
+        self.new_round(tournament)
+
+
+    def new_round(self, tournament):
+        for round in range(ROUND_NUMBER):
+            init_round = Round("Round " + str(round +1))
+            tournament.list_rounds.append(init_round)
+
+            if init_round.name_round == "Round 1":
+                random.shuffle(tournament.list_players)
+                players = tournament.list_players
+
+            else:
+                players = sorted(tournament.list_players, key= lambda x: x[1], reverse=True)
+            print("-- ", init_round.name_round, "--")
+            for player in range(0, len(players), 2):
+                random.shuffle(MATCH_SCORE)
+                player1 = players[player][0]
+                score1 = MATCH_SCORE[0][0]
+                player2 = players[player +1][0]
+                score2 = MATCH_SCORE[0][1]
+                match = Match(player1, score1, player2, score2)
+                init_round.list_matchs.append(match)
+            self.result_round(init_round.list_matchs, tournament)
+        self.show_winner(tournament)
+        return
+
+
+    def result_round(self, round, tournament):
+        for match in round:
+ #           print("Resultat de match", match)
+            for player in tournament.list_players:
+                if player[0] == match.player1:
+                    player[1] += match.score1
+                elif player[0] == match.player2:
+                    player[1] += match.score2
+
+    def show_winner(self, tournament):
+        sorted_final = sorted(tournament.list_players, key= lambda x: x[1], reverse=True)
+  #      print("\n\n -- Classement final -- \n")
+        for player in sorted_final:
+            pass
+ #           print("Joueur :",player[0],"score de :", player[1], "\n")
+
+
+    def run(self):
+        self.menu()
+        print("Run")
+
+
+
+
+
+
 
 def prompt_for_player(self):
 

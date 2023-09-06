@@ -22,8 +22,39 @@ class Controller:
         self.view = view
 
         self.players: List[Player] = []
-
         self.tournaments: List[Tournament] = []
+
+
+    def menu(self):
+        while True:
+            response = self.view.menu()
+            print("Print du MENU", response)
+            if response == "1":
+                print("choix 1 - ajouter un joueur")
+                self.get_players()
+            elif response == "2":
+                print("choix 2 - ajouter un tournoi")
+                self.new_tournament()
+            elif response == "3":
+                print("choix 3 - choisir un tournoi")
+                if self.tournaments:
+                    self.select_tournament(self.tournaments)
+
+                    #revoir correspondance entre tournoi
+
+                    print("Choisir les joueurs")
+
+                    if self.players:
+                        print(self.players)
+                        self.view.choose_players(self.players)
+                    else:
+                        print("aucun joueurs enregistrés")
+
+                else:
+                    print("Pas de tournoi enregistré")
+            elif response == "4":
+                print("choix 4 - quitter le menu")
+                break
 
 
     def get_players(self):
@@ -49,36 +80,43 @@ class Controller:
     def new_tournament(self):
 
         tournament_info_view = self.view.prompt_for_tournament()
+
         for tournament in tournament_info_view:
       #      date = datetime.date.today()
             date = "04 Septembre"
             tournament = Tournament(tournament[0], tournament[1], date)
             self.tournaments.append(tournament)
         print("Print self tournaments = ", self.tournaments, "fin print self tournaments")
-        self.select_tournament(self.tournaments)
         return self.tournaments
 
 
 
     def select_tournament(self, tournaments):
         name_tournament = self.view.choose_tournament(self.tournaments)
-    #    print("Dans fonction select tournament:",name_tournament)
-     #   print("BOUCLE RELOU -self.tournament[0]-", self.tournaments[0])
-      #  print("toujours dans boucle relou MARRCHE PAS = -self.tournament[0][0]-")
-       # print("CHERCHE NOM  :", self.tournaments[0].name_tournament)
-        for tournament in self.tournaments:
+        for tournament in tournaments:
             if name_tournament == tournament.name_tournament:
                 print("NOM CORRESPONDANT !!!!! ", name_tournament, "=", tournament.name_tournament)
-                self.initiate_tournament(tournament.name_tournament)
+                return tournament
             else:
                 print("NOPE pas de correspondance")
 
 
 
+    def select_players(self):
+        list_players = self.view.choose_players(self.players)
+        print("PRINT SELF_PLAYYYYYERS : \n", list_players)
+        for player,index in list_players:
+            print("PRINT dans methode select_player, player =", player)
+            print(self.players, self.players[0], self.players[0].name)
+        # AJOUTER LES JOUEURS DANS tournament.list_players et faire un return
 
-    def initiate_tournament(self, tournament):
-        print("Methode select tournament OK", tournament)
-        self.new_round()
+
+
+    def initiate_tournament(self, tournament, players):
+        print("Methode select tournament OK \n", tournament)
+
+        self.new_round(tournament)
+        print("LE tournoi =", tournament.name_tournament, "les joueurs selectionnés =\n", tournament.list_players)
 
 
     def new_round(self, tournament):
@@ -124,28 +162,6 @@ class Controller:
 
 
     def run(self):
-        self.get_players()
+        self.menu()
         print("Run")
-
-        tournament = self.new_tournament()
-
-        print(" print dans run", tournament)
-
-  #      self.new_round(tournament)
-
-
-
-
-
-
-
-
-
-    #    print(new_round)
-
-
-
-
-
-
 

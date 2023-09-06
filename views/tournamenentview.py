@@ -3,6 +3,23 @@ from datetime import datetime
 
 class View:
 
+
+
+    def menu(self):
+        while True:
+            choice = input("Que souhaitez-vous faire ?\n"
+                           "Ajouter un joueur = 1\n"
+                           "Ajouter un tournoi = 2\n"
+                           "Choisir un tournoi = 3\n"
+                           "Quitter le menu = 4\n"                           
+                           "Votre choix : ")
+            if choice.isnumeric() and int(choice) <=4:
+                break
+            else:
+                print("Merci de rentrer une donnée valide")
+        return choice
+
+
     def prompt_for_player(self):
         add_players =[]
 
@@ -56,6 +73,55 @@ class View:
 
         return add_players
 
+    def choose_players(self, players):
+        players_list = []
+        matching_list = []
+  #      print("Liste des joueurs : ")
+  #      for player in players:
+  #          print("Print choose player\n", player)
+  #          print("PRIIIIITNT du nom du joueur = ", player.name)
+
+        while True:
+            if players_list:
+                print("Joueur.s ajouté.s :", players_list)
+            add_player = input("Choisir un joueur ? O/N: ")
+            if add_player == "O":
+                print("YEEES")
+
+                while True:  # 2eme while
+
+                    ask_name_player = input("Avec quels joueurs souhaitez-vous jouer ? ")
+
+                    if all(char.isalpha() or char.isspace() for char in ask_name_player):
+                        print("Verif joueur", ask_name_player)
+
+                        for player in players:
+                            if ask_name_player == player.name:
+                                print("NOOOOM DU JOUEUUUUUR correspondant", ask_name_player, "=", player.name)
+                                print("Tous les joueurs correpondant ?", player)
+                                matching_list.append(player)
+                                if len(matching_list) >= 2:
+                                    print("plus de 2 correspondance dans la liste de joueurs. Ask_name =", ask_name_player, "player =", player, "matching_list = ", matching_list)
+                   #             players_list.append(ask_name_player)
+
+                            else:
+                                print("Joueur inconnu", player.name)
+                    else:
+                        print("Merci d'entrer un nom de joueur valide")
+
+                    another_player = input("Voulez ajouter un autre joueur? O/N? ")
+                    if another_player == "N":
+                        break
+
+
+            elif add_player == "N":
+                print("Vous avez ajouté : \n", players_list)
+                break
+            else:
+                print("Merci de saisir une donnée valide, O ou N")
+
+        return players_list
+
 
 
 
@@ -102,3 +168,6 @@ class View:
             else:
                 print("Merci d'entrer un nom de tournoi valide")
         return ask_name_tournament
+
+
+
