@@ -38,7 +38,7 @@ class Controller:
             elif response == "3":
                 print("choix 3 - choisir un tournoi")
                 if self.tournaments:
-                    self.select_tournament(self.tournaments)
+                    tournament = self.select_tournament(self.tournaments)
 
                     #revoir correspondance entre tournoi
 
@@ -46,7 +46,10 @@ class Controller:
 
                     if self.players:
                         print(self.players)
-                        self.view.choose_players(self.players)
+                        players = self.view.choose_players(self.players)
+                        if players:
+                            print("il y a des joueurs")
+                            self.initiate_tournament(tournament, players)
                     else:
                         print("aucun joueurs enregistrés")
 
@@ -114,9 +117,12 @@ class Controller:
 
     def initiate_tournament(self, tournament, players):
         print("Methode select tournament OK \n", tournament)
-
-        self.new_round(tournament)
+        score_tournament = 0
+        for player in players:
+            tournament.list_players.append([player, score_tournament])
         print("LE tournoi =", tournament.name_tournament, "les joueurs selectionnés =\n", tournament.list_players)
+        self.new_round(tournament)
+
 
 
     def new_round(self, tournament):
@@ -146,7 +152,7 @@ class Controller:
 
     def result_round(self, round, tournament):
         for match in round:
- #           print("Resultat de match", match)
+            print("Resultat de match", match)
             for player in tournament.list_players:
                 if player[0] == match.player1:
                     player[1] += match.score1
@@ -155,10 +161,10 @@ class Controller:
 
     def show_winner(self, tournament):
         sorted_final = sorted(tournament.list_players, key= lambda x: x[1], reverse=True)
-  #      print("\n\n -- Classement final -- \n")
+        print("\n\n -- Classement final -- \n")
         for player in sorted_final:
             pass
- #           print("Joueur :",player[0],"score de :", player[1], "\n")
+            print("Joueur :",player[0],"score de :", player[1], "\n")
 
 
     def run(self):

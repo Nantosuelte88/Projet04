@@ -7,18 +7,20 @@ class View:
 
     def menu(self):
         while True:
+            print("-------- MENU --------")
             choice = input("Que souhaitez-vous faire ?\n"
                            "Ajouter un joueur = 1\n"
                            "Ajouter un tournoi = 2\n"
                            "Choisir un tournoi = 3\n"
-                           "Quitter le menu = 4\n"
-                           "test = Capitalize\n"                           
+                           "Quitter  = 4\n"
+                           "---------------------- \n\n"                         
                            "Votre choix : ")
-            if choice.isnumeric() and int(choice) <=4:
+            if choice.isnumeric() and int(choice) <=3:
                 break
-            elif choice.capitalize() == "Test":
-                print("good", choice)
-
+            elif choice.isnumeric() and int(choice) ==4:
+                quit = input("Attention, vous allez quitter le programme, valider votre choix ? O/N : ")
+                if quit == "O":
+                    break
             else:
                 print("Merci de rentrer une donnée valide")
         return choice
