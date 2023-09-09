@@ -146,6 +146,8 @@ class Controller:
                 match = Match(player1, score1, player2, score2)
                 init_round.list_matchs.append(match)
             self.result_round(init_round.list_matchs, tournament)
+
+
         self.show_winner(tournament)
         return
 
