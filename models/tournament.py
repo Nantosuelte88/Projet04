@@ -10,13 +10,14 @@ class Tournament:
         self.name_tournament = name_tournament
         self.locality = locality
         self.start_date = start_date
-#        self.actual_round = actual_round # à connecter avec la classe Round
         self.description = description
         self.rounds = rounds
         self.end = False
 
         self.list_rounds = []
         self.list_players = []
+
+        self.statut = False
 
 
 

@@ -31,7 +31,7 @@ class View:
 
         while True:
             ask = input("Ajouter un joueur ? O/N : ")
-            if ask == "O":
+            if ask.capitalize() == "O":
                 print("Yep")
                 while True:
                     name = input("Nom du joueur: ")
@@ -72,7 +72,7 @@ class View:
                         print("Veuillez entrer un format d'identifiant d'échec valide AB12345")
                 add_players.append((name.capitalize(), last_name.capitalize(), date_birth, id_chess.upper()))
 
-            elif ask == "N":
+            elif ask.capitalize() == "N":
                 break
             else:
                 print("Merci de saisir une donnée valide, O ou N")
@@ -87,7 +87,7 @@ class View:
                 for player in players_list:
                     print(player.name, player.first_name, player.id_chess)
             add_player = input("Choisir un joueur ? O/N: ")
-            if add_player == "O":
+            if add_player.capitalize() == "O":
                 print("YEEES")
 
                 while True:  # 2eme while
@@ -153,7 +153,7 @@ class View:
                         break
 
 
-            elif add_player == "N":
+            elif add_player.capitalize() == "N":
                 print("Vous avez ajouté : \n", players_list)
                 break
             else:
@@ -169,7 +169,7 @@ class View:
 
         while True:
             ask = input("Ajouter un tournoi ? O/N : ")
-            if ask == "O":
+            if ask.capitalize() == "O":
                 print("Yep")
 
                 while True:
@@ -188,7 +188,7 @@ class View:
 
                 add_tournaments.append((name_tournament.capitalize(), locality.capitalize()))
 
-            elif ask == "N":
+            elif ask.capitalize() == "N":
                 break
             else:
                 print("Merci de saisir une donnée valide, O ou N")
@@ -208,6 +208,30 @@ class View:
                 print("Merci d'entrer un nom de tournoi valide")
 
         return ask_name_tournament.capitalize()
+
+
+    def next_round(self, round):
+        print("View next_round", round)
+        while True:
+            get_round = input("Voulez-vous rejouer un round ? O/N")
+            if get_round.capitalize() == "O":
+                return True
+            elif get_round.capitalize() == "N":
+                return False
+            else:
+                print("Merci de saisir une donnée valide")
+
+    def play_game(self, tournament):
+        print("View - play_game", tournament)
+        while True:
+            play = input("Souhaitez-vous commencer le tournoi ? O/N ")
+            if play.capitalize() == "O":
+                print("OUI", tournament)
+                return True
+            elif play.capitalize() == "N":
+                return False
+            else:
+                print("Merci de saisir une donnée valide")
 
 
 

@@ -14,6 +14,8 @@ from datetime import datetime
 
 ROUND_NUMBER = 4
 MATCH_SCORE = [(1, 0), (0.5, 0.5), (0, 1)]
+
+
 class Controller:
     """ Le Contrôleur """
 
@@ -23,7 +25,6 @@ class Controller:
 
         self.players: List[Player] = []
         self.tournaments: List[Tournament] = []
-
 
     def menu(self):
         while True:
@@ -40,7 +41,7 @@ class Controller:
                 if self.tournaments:
                     tournament = self.select_tournament(self.tournaments)
 
-                    #revoir correspondance entre tournoi
+                    # revoir correspondance entre tournoi
 
                     print("Choisir les joueurs")
 
@@ -52,6 +53,7 @@ class Controller:
                             self.initiate_tournament(tournament, players)
                     else:
                         print("aucun joueurs enregistrés")
+                        # faire boucle pour enregistrer les joueurs ou en choisir si ils existent !!!!!
 
                 else:
                     print("Pas de tournoi enregistré")
@@ -67,9 +69,7 @@ class Controller:
             player = Player(i[0], i[1], i[2], i[3])
             self.players.append(player)
         """
-
         # Avec la vue
-   #     list_prompt_players = []
         player_info = self.view.prompt_for_player()
         print(player_info)
         for player in player_info:
@@ -77,8 +77,6 @@ class Controller:
             self.players.append(player)
         print(self.players)
         return self.players
-
-
 
     def new_tournament(self):
 
@@ -92,8 +90,6 @@ class Controller:
         print("Print self tournaments = ", self.tournaments, "fin print self tournaments")
         return self.tournaments
 
-
-
     def select_tournament(self, tournaments):
         name_tournament = self.view.choose_tournament(self.tournaments)
         for tournament in tournaments:
@@ -103,8 +99,6 @@ class Controller:
             else:
                 print("NOPE pas de correspondance")
 
-
-
     def select_players(self):
         list_players = self.view.choose_players(self.players)
         print("PRINT SELF_PLAYYYYYERS : \n", list_players)
@@ -113,17 +107,21 @@ class Controller:
             print(self.players, self.players[0], self.players[0].name)
         # AJOUTER LES JOUEURS DANS tournament.list_players et faire un return
 
-
-
     def initiate_tournament(self, tournament, players):
         print("Methode select tournament OK \n", tournament)
         score_tournament = 0
         for player in players:
             tournament.list_players.append([player, score_tournament])
         print("LE tournoi =", tournament.name_tournament, "les joueurs selectionnés =\n", tournament.list_players)
-        self.new_round(tournament)
-
-
+        statut_tournament = False
+        play = self.view.play_game(tournament)
+        print("view play game")
+        if play:
+            print("OUI")
+            statut_tournament = True
+            self.new_round(tournament)
+        else:
+            print("NON")
 
     def new_round(self, tournament):
         for round in range(ROUND_NUMBER):
@@ -135,7 +133,7 @@ class Controller:
                 players = tournament.list_players
 
             else:
-                players = sorted(tournament.list_players, key= lambda x: x[1], reverse=True)
+                players = sorted(tournament.list_players, key=lambda x: x[1], reverse=True)
             print("-- ", init_round.name_round, "--")
             for player in range(0, len(players), 2):
                 random.shuffle(MATCH_SCORE)
@@ -146,11 +144,17 @@ class Controller:
                 match = Match(player1, score1, player2, score2)
                 init_round.list_matchs.append(match)
             self.result_round(init_round.list_matchs, tournament)
+            response_view = self.view.next_round(round)
+            if response_view:
+                print("Reponse vraie", round)
+            elif not response_view:
+                print("Reponse Fausse", round)
+                break
 
-
+        print("après boucle response view")
+        # mettre le classement à la fin seulement
         self.show_winner(tournament)
         return
-
 
     def result_round(self, round, tournament):
         for match in round:
@@ -167,7 +171,6 @@ class Controller:
         for player in sorted_final:
             pass
             print("Joueur :",player[0],"score de :", player[1], "\n")
-
 
     def run(self):
         self.menu()
