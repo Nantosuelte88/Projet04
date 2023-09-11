@@ -2,32 +2,61 @@ from datetime import datetime
 
 
 class View:
+    def menu(self, tournament):
 
-
-
-    def menu(self):
         while True:
-            print("-------- MENU --------")
-            choice = input("Que souhaitez-vous faire ?\n"
-                           "Ajouter un joueur = 1\n"
-                           "Ajouter un tournoi = 2\n"
-                           "Choisir un tournoi = 3\n"
-                           "Quitter  = 4\n"
-                           "---------------------- \n\n"                         
-                           "Votre choix : ")
-            if choice.isnumeric() and int(choice) <=3:
-                break
-            elif choice.isnumeric() and int(choice) ==4:
-                quit = input("Attention, vous allez quitter le programme, valider votre choix ? O/N : ")
-                if quit == "O":
-                    break
+            if tournament:
+                print("TEST tournoi actif")
+                while True:
+                    print("\n-------- MENU --------")
+                    choice = input("Que souhaitez-vous faire ?\n"
+                                   "Reprendre le tournoi = 1\n"
+                                   "Quitter le tournoi = 2\n"
+                                   "---------------------- \n\n"
+                                   "Votre choix : ")
+                    if choice.isnumeric() and int(choice) <= 2:
+                        print("TEST bon choix")
+                        break
+                    else:
+                        print("Merci d'entrer une donnée valide")
             else:
-                print("Merci de rentrer une donnée valide")
-        return choice
+                print("TEST tournoi inactif")
+                while True:
+                    print("\n-------- MENU --------")
+                    choice = input("Que souhaitez-vous faire ?\n"
+                                   "Créer un nouveau tournoi = 1\n"
+                                   "Choisir un tournoi = 2\n"
+                                   "Quitter = 3\n"
+                                   "---------------------- \n\n"
+                                   "Votre choix : ")
+                    if choice.isnumeric() and int(choice) <= 2:
+                        break
+                    elif choice.isnumeric() and int(choice) ==3:
+                        choose_quit = input("Attention, vous allez quitter le programme, valider votre choix ? O/N : ")
+                        if choose_quit.upper() == "O":
+                            break
+                    else:
+                        print("Merci d'entrer une donnée valide")
+            return choice
 
+    def menu_players(self):
+        while True:
+            print("\n-------- Choix des joueurs --------")
+            choice_for_players = \
+                input("Ajouter un nouveau joueur = 1\n"
+                      "Choisir un joueur existant = 2\n"
+                      "Selectionner 8 joueurs au hasard = 3\n"
+                      "Revenir au menu principal = 4\n"
+                      "---------------------- \n\n"
+                      "Votre choix : ")
+            if choice_for_players.isnumeric() and int(choice_for_players) <= 4:
+                break
+            else:
+                print("Meri d'entrer une donnée valide")
+        return choice_for_players
 
     def prompt_for_player(self):
-        add_players =[]
+        add_players = []
 
         while True:
             ask = input("Ajouter un joueur ? O/N : ")
@@ -110,7 +139,6 @@ class View:
                             else:
                                 print(u, "Joueur inconnu", player.name)
 
-
                         if len(matching_list) >= 2:
                             print(u, "plus de 2 correspondance dans la liste de joueurs.", len(matching_list),
                                   "Ask_name =", ask_name_player, "matching_list = ",
@@ -152,7 +180,6 @@ class View:
                     if another_player == "N":
                         break
 
-
             elif add_player.capitalize() == "N":
                 print("Vous avez ajouté : \n", players_list)
                 break
@@ -160,9 +187,6 @@ class View:
                 print("Merci de saisir une donnée valide, O ou N")
 
         return players_list
-
-
-
 
     def prompt_for_tournament(self):
         add_tournaments =[]

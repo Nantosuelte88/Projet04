@@ -27,40 +27,72 @@ class Controller:
         self.tournaments: List[Tournament] = []
 
     def menu(self):
+        tournament_is_activ = False
+        tournament = self.activ_tournament()
         while True:
-            response = self.view.menu()
+            response = self.view.menu(tournament_is_activ)
             print("Print du MENU", response)
-            if response == "1":
-                print("choix 1 - ajouter un joueur")
-                self.get_players()
-            elif response == "2":
-                print("choix 2 - ajouter un tournoi")
-                self.new_tournament()
-            elif response == "3":
-                print("choix 3 - choisir un tournoi")
-                if self.tournaments:
-                    tournament = self.select_tournament(self.tournaments)
-
-                    # revoir correspondance entre tournoi
-
-                    print("Choisir les joueurs")
-
-                    if self.players:
-                        print(self.players)
-                        players = self.view.choose_players(self.players)
-                        if players:
-                            print("il y a des joueurs")
-                            self.initiate_tournament(tournament, players)
+            if tournament_is_activ:
+                print("print du controller, tournament actif", tournament)
+                if response == "1":
+                    print("reprnedre le tournoi")
+                    break
+                elif response == "2":
+                    print("verifier le statut du tournoi", tournament, tournament_is_activ)
+                    tournament_is_activ = False
+                    print("False ?", tournament, tournament_is_activ)
+            else:
+                if response == "1":
+                    print("choix 1 - démarrer un tournoi")
+                    tournament = self.new_tournament()
+                elif response == "2":
+                    if self.tournaments:
+                        print("slef.tournament", self.tournaments)
+                        tournament = self.select_tournament(self.tournaments)
+                        print("Choisir les joueurs")
+                        choice_for_player = self.view.menu_players()
+                        print(choice_for_player)
+                        if choice_for_player == "1":
+                            print("TEST CHOIX JOUEUR 1")
+                            self.get_players()
+                            players = self.select_players(tournament)
+                            if players:
+                                print("il y a des joueurs")
+                                self.initiate_tournament(tournament, players)
+                        elif choice_for_player == "2":
+                            if self.players:
+                                print(self.players)
+                                players = self.select_players(tournament)
+                                if players:
+                                    print("il y a des joueurs")
+                                    self.initiate_tournament(tournament, players)
+                            else:
+                                print("aucun joueurs enregistrés")
+                                # faire boucle pour enregistrer les joueurs ou en choisir si ils existent !!!!!
+                        elif choice_for_player == "3":
+                            print("TEST choisir 8 joueurs au hasard")
                     else:
-                        print("aucun joueurs enregistrés")
-                        # faire boucle pour enregistrer les joueurs ou en choisir si ils existent !!!!!
+                        print("PAS de tournoi enregistré.s")
+                elif response == "3":
+                    print("choix 3 - quitter le menu")
+                    break
 
-                else:
-                    print("Pas de tournoi enregistré")
-            elif response == "4":
-                print("choix 4 - quitter le menu")
-                break
-
+    def activ_tournament(self):
+        while True:
+            if self.tournaments:
+                print("print premier if menu")
+                for tournament in self.tournaments:
+                    print(tournament.name_tournament, "statut =", tournament.statut)
+                    if tournament.statut:
+                        print(tournament.name_tournament, "est actif")
+                        tournament_is_activ = True
+                        return tournament_is_activ, tournament
+                    else:
+                        print(tournament.name_tournament, "statut inactif")
+                        return None
+            else:
+                print("print activ_tournament = pas de tournoi actif")
+                return None
 
     def get_players(self):
         """
@@ -79,9 +111,7 @@ class Controller:
         return self.players
 
     def new_tournament(self):
-
         tournament_info_view = self.view.prompt_for_tournament()
-
         for tournament in tournament_info_view:
       #      date = datetime.date.today()
             date = "04 Septembre"
@@ -99,29 +129,30 @@ class Controller:
             else:
                 print("NOPE pas de correspondance")
 
-    def select_players(self):
+    def select_players(self, tournament):
         list_players = self.view.choose_players(self.players)
         print("PRINT SELF_PLAYYYYYERS : \n", list_players)
-        for player,index in list_players:
+        score_tournament = 0
+        for player in list_players:
             print("PRINT dans methode select_player, player =", player)
             print(self.players, self.players[0], self.players[0].name)
+            tournament.list_players.append([player, score_tournament])
+        return tournament.list_players
+
         # AJOUTER LES JOUEURS DANS tournament.list_players et faire un return
 
     def initiate_tournament(self, tournament, players):
         print("Methode select tournament OK \n", tournament)
-        score_tournament = 0
-        for player in players:
-            tournament.list_players.append([player, score_tournament])
         print("LE tournoi =", tournament.name_tournament, "les joueurs selectionnés =\n", tournament.list_players)
-        statut_tournament = False
         play = self.view.play_game(tournament)
         print("view play game")
         if play:
             print("OUI")
-            statut_tournament = True
+            tournament.statut = True
             self.new_round(tournament)
         else:
             print("NON")
+            return None
 
     def new_round(self, tournament):
         for round in range(ROUND_NUMBER):
