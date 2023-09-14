@@ -30,6 +30,10 @@ class Controller:
         tournament_is_activ = False
         tournament = self.activ_tournament()
         while True:
+
+            if tournament:
+                tournament_is_activ = tournament[0]
+            print("resultat self__activ_tournament = ", tournament, "\ntournament_activ = ", tournament_is_activ)
             response = self.view.menu(tournament_is_activ)
             print("Print du MENU", response)
             if tournament_is_activ:
@@ -54,15 +58,16 @@ class Controller:
                         print(choice_for_player)
                         if choice_for_player == "1":
                             print("TEST CHOIX JOUEUR 1")
-                            self.get_players()
-                            players = self.select_players(tournament)
+                            new_players = self.get_players()
+                            players = self.select_players(tournament, new_players)
                             if players:
                                 print("il y a des joueurs")
                                 self.initiate_tournament(tournament, players)
                         elif choice_for_player == "2":
+                            new_players = None
                             if self.players:
                                 print(self.players)
-                                players = self.select_players(tournament)
+                                players = self.select_players(tournament, new_players)
                                 if players:
                                     print("il y a des joueurs")
                                     self.initiate_tournament(tournament, players)
@@ -79,6 +84,7 @@ class Controller:
 
     def activ_tournament(self):
         while True:
+
             if self.tournaments:
                 print("print premier if menu")
                 for tournament in self.tournaments:
@@ -129,10 +135,18 @@ class Controller:
             else:
                 print("NOPE pas de correspondance")
 
-    def select_players(self, tournament):
-        list_players = self.view.choose_players(self.players)
-        print("PRINT SELF_PLAYYYYYERS : \n", list_players)
+    def select_players(self, tournament, new_players):
+        print("TEST select players, tournoi :", tournament, "new_players :", new_players)
         score_tournament = 0
+        if not new_players:
+            print("print, select players, pas des nouveaux joueurs")
+            list_players = self.view.choose_players(self.players)
+            print("PRINT SELF_PLAYYYYYERS : \n", list_players)
+
+        else:
+            print("print, select players, ce sont des nouveaux joueurs")
+            list_players = new_players
+
         for player in list_players:
             print("PRINT dans methode select_player, player =", player)
             print(self.players, self.players[0], self.players[0].name)
