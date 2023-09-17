@@ -2,42 +2,25 @@ from datetime import datetime
 
 
 class View:
-    def menu(self, tournament):
+    def menu(self):
 
         while True:
-            if tournament:
-                print("TEST tournoi actif")
-                while True:
-                    print("\n-------- MENU --------")
-                    choice = input("Que souhaitez-vous faire ?\n"
-                                   "Reprendre le tournoi = 1\n"
-                                   "Quitter le tournoi = 2\n"
-                                   "---------------------- \n\n"
-                                   "Votre choix : ")
-                    if choice.isnumeric() and int(choice) <= 2:
-                        print("TEST bon choix")
-                        break
-                    else:
-                        print("Merci d'entrer une donnée valide")
+            print("\n-------- MENU --------")
+            choice = input("Que souhaitez-vous faire ?\n"
+                           "Créer un nouveau tournoi = 1\n"
+                           "Choisir un tournoi = 2\n"
+                           "Quitter = 3\n"
+                           "---------------------- \n\n"
+                           "Votre choix : ")
+            if choice.isnumeric() and int(choice) <= 2:
+                break
+            elif choice.isnumeric() and int(choice) ==3:
+                choose_quit = input("Attention, vous allez quitter le programme, valider votre choix ? O/N : ")
+                if choose_quit.upper() == "O":
+                    break
             else:
-                print("TEST tournoi inactif")
-                while True:
-                    print("\n-------- MENU --------")
-                    choice = input("Que souhaitez-vous faire ?\n"
-                                   "Créer un nouveau tournoi = 1\n"
-                                   "Choisir un tournoi = 2\n"
-                                   "Quitter = 3\n"
-                                   "---------------------- \n\n"
-                                   "Votre choix : ")
-                    if choice.isnumeric() and int(choice) <= 2:
-                        break
-                    elif choice.isnumeric() and int(choice) ==3:
-                        choose_quit = input("Attention, vous allez quitter le programme, valider votre choix ? O/N : ")
-                        if choose_quit.upper() == "O":
-                            break
-                    else:
-                        print("Merci d'entrer une donnée valide")
-            return choice
+                print("Merci d'entrer une donnée valide")
+        return choice
 
     def menu_players(self):
         while True:
