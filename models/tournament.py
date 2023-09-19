@@ -11,7 +11,7 @@ class Tournament:
         self.locality = locality
         self.start_date = start_date
         self.description = description
-        self.rounds = rounds
+        self.number_rounds = rounds
         self.end = False
 
         self.list_rounds = []

@@ -68,18 +68,21 @@ class View:
             return add_players
 
     def add_player_in_tournament(self):
+        selected_players = []
         while True:
             ask_name_player = input("Entrer le nom du joueur ? ")
 
             if all(char.isalpha() or char.isspace() for char in ask_name_player):
                 print("Verif joueur", ask_name_player)
-                return ask_name_player.capitalize()
+                selected_players.append(ask_name_player.capitalize())
             else:
                 print("Merci d'entrer un nom de joueur valide")
 
             another_player = input("Voulez ajouter un autre joueur? O/N? ")
             if another_player.upper() == "N":
                 break
+
+        return selected_players
 
     def choose_players(self, players):
         id_chess = input("plusieurs joueurs ont le même nom, merci de preciser son identifiant d'echec : ")
@@ -108,8 +111,8 @@ class View:
                            "2 - Modifier ces informations\n"
                            "Votre choix : ")
             if choice == "1":
-                add_tournaments.append((name_tournament.capitalize(), locality.capitalize()))
-                return add_tournaments
+        #        add_tournaments.append((name_tournament.capitalize(), locality.capitalize()))
+                return name_tournament.capitalize(), locality.capitalize()
 
 
 
