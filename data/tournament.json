@@ -1,85 +1,90 @@
-
-[
-  {
+{
     "tournament": {
-      "1": {
-        "name_tournament": "Test",
-        "locality": "Paris",
-        "start_date": "19/09/2023",
-        "end_date": "25/09/2023",
-        "number_rounds": 1,
-        "list_rounds": [
-          {
-            "name": "Round 1",
-            "list_matchs": [
-              {
-                "result_match": [
-                  [
-                    "HP12345",
-                    1
-                  ],
-                  [
-                    "GH12345",
-                    0
-                  ]
-                ]
-              }
+        "1": {
+            "name_tournament": "Test",
+            "locality": "Paris",
+            "start_date": "19/09/2023",
+            "end_date": "25/09/2023",
+            "number_rounds": 1,
+            "list_rounds": [
+                {
+                    "name_round": "Round 1",
+                    "list_matches": [
+                        {
+                            "result_match": [
+                                [
+                                    "HP12345",
+                                    1
+                                ],
+                                [
+                                    "GH12345",
+                                    0
+                                ]
+                            ]
+                        }
+                    ],
+                    "start_time": "19/09/2023-22:01:16",
+                    "end_time": "19/09/2023-22:15:06"
+                }
             ],
-            "start_time": "19/09/2023-22:01:16",
-            "end_time": "19/09/2023-22:15:06"
-          }
-        ],
-        "list_players": [
-          {
-            "id_chess": "HP12345",
-            "score_tournament": 1
-          },
-          {
-            "id_chess": "GH12345",
-            "score_tournament": 0
-          }
-        ],
-        "description": "50 points pour Gryffondor !"
-      }
-    },
-      "2": {
-        "name_tournament": "bloup",
-        "locality": "Paris",
-        "start_date": "19/09/2023",
-        "end_date": "25/09/2023",
-        "number_rounds": 1,
-        "list_rounds": [
-          {
-            "name": "Round 1",
-            "list_matchs": [
-              {
-                "result_match": [
-                  [
-                    "HP12345",
-                    1
-                  ],
-                  [
-                    "GH12345",
-                    0
-                  ]
-                ]
-              }
+            "list_players": [
+                {
+                    "id_chess": "HP12345",
+                    "score_tournament": 1
+                },
+                {
+                    "id_chess": "GH12345",
+                    "score_tournament": 0
+                }
             ],
-            "start_time": "19/09/2023-22:01:16",
-            "end_time": "19/09/2023-22:15:06"
-          }
-        ],
-        "list_players": [
-          {
-            "id_chess": "WG12345",
-            "score_tournament": 0.5
-          },
-          {
-            "id_chess": "WR12345",
-            "score_tournament": 0.5
-          }
-        ],
-        "description": "2eme tournoi !"
-      }
+            "description": "1er tournoi test, 1 round, 2 joueurs"
+        },
+        "2": {
+            "name_tournament": "Testdeux",
+            "locality": "Bordeaux",
+            "start_date": "19/09/2023",
+            "end_date": "25/09/2023",
+            "number_rounds": 1,
+            "list_rounds": [
+                {
+                    "name_round": "Round 1",
+                    "list_matches": [
+                        {
+                            "result_match": [
+                                [
+                                    "WR12345",
+                                    0.5
+                                ],
+                                [
+                                    "WG12345",
+                                    0.5
+                                ]
+                            ]
+                        }
+                    ],
+                    "start_time": "19/09/2023-22:01:16",
+                    "end_time": "19/09/2023-22:15:06"
+                }
+            ],
+            "list_players": [
+                {
+                    "id_chess": "WR12345",
+                    "score_tournament": 0.5
+                },
+                {
+                    "id_chess": "WG12345",
+                    "score_tournament": 0.5
+                }
+            ],
+            "description": "2eme tournoi test, 1 round, 2 joueurs"
+        },
+        "3": {
+            "name_tournament": "Hghbgf",
+            "locality": "Hgfhbgf",
+            "start_date": "04 Septembre",
+            "list_rounds": [],
+            "list_players": [],
+            "description": null
+        }
     }
-  ]
+}

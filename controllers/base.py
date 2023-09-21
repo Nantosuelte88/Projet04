@@ -17,7 +17,7 @@ from datetime import datetime
 ROUND_NUMBER = 4
 MATCH_SCORE = [(1, 0), (0.5, 0.5), (0, 1)]
 
-file_path_tournament = "tournament.json"
+file_path_tournament = "data/tournament.json"
 file_path_players = "players.json"
 
 
@@ -50,6 +50,7 @@ class Controller:
             elif response == "3":
                 print("choix 3 - rechercher un tournoi existant")
                 tournament = self.select_tournament(self.tournaments)
+                print("RETOUR MENU ->", tournament)
 
 
             elif response == "4":
@@ -130,37 +131,42 @@ class Controller:
         if os.path.exists(file_path_tournament):
             print("le fichier tournament.json existe")
             if os.path.getsize(file_path_tournament) > 0:
-                with open("tournament.json", "r") as my_file:
-                    current_tournament = json.load(my_file)
+                with open("data/tournament.json", "r") as my_file:
+                    tournament_data = json.load(my_file)
             else:
-                current_tournament = []
+                tournament_data = {"tournament": {}}
         else:
-            current_tournament = []
+            tournament_data = {"tournament": {}}
 
         tournament_info_view = self.view.prompt_for_tournament()
      #   date = datetime.datetime.now().strftime("%d.%m.%Y;%H:%M:%S")
         print("ENTIER:", tournament_info_view, "+[0]", tournament_info_view[0], "+[1]", tournament_info_view[1])
    #     date = datetime.date.today()
         date = "04 Septembre"
-        tournament = Tournament(tournament_info_view[0], tournament_info_view[1], date)
-        self.tournaments.append(tournament)
-        with open("tournament.json", "r") as my_file:
-            current_tournament = json.load(my_file)
-        dict_tournament = {
-            "name_tournament": tournament.name_tournament,
-            "locality": tournament.locality,
+ #       tournament = Tournament(tournament_info_view[0], tournament_info_view[1], date)
+ #       self.tournaments.append(tournament)
+#        with open("tournament.json", "r") as my_file:
+ #           current_tournament = json.load(my_file)
+        print(tournament_data)
+        print("AVANT if tournament, créeation tournoi dans fichier JSON")
+
+        new_tournament = {
+            "name_tournament": tournament_info_view[0],
+            "locality" : tournament_info_view[1],
             "start_date": date,
-            "list_rounds": tournament.list_rounds,
-            "list_players": tournament.list_players
-        }
-        current_tournament.append(dict_tournament)
-        with open("tournament.json", "w") as my_file:
-            json.dump(current_tournament, my_file)
-        print(tournament.name_tournament)
+            "list_rounds": [],
+            "list_players": [],
+            "description": None
+            }
+
+        next_available_key = str(len(tournament_data["tournament"]) + 1)
+        tournament_data["tournament"][next_available_key] = new_tournament
+        with open("data/tournament.json", "w") as my_file:
+            json.dump(tournament_data, my_file, indent=4)
+
         print("APRES JSON - tournoi")
         print("Print self tournaments = ", self.tournaments, "fin print self tournaments")
-        print("PRINTTEST TOURNAMENT JSON", current_tournament)
-        return tournament
+        return None
 
     def select_tournament(self, tournaments):
         name_tournament = self.view.choose_tournament(self.tournaments)
@@ -270,8 +276,8 @@ class Controller:
                 player2 = players[player +1][0]
                 score2 = MATCH_SCORE[0][1]
                 match = Match(player1, score1, player2, score2)
-                init_round.list_matchs.append(match)
-            self.result_round(init_round.list_matchs, tournament)
+                init_round.list_matches.append(match)
+            self.result_round(init_round.list_matches, tournament)
             response_view = self.view.next_round(round)
             if response_view:
                 print("Reponse vraie", round)
