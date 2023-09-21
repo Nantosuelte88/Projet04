@@ -18,7 +18,7 @@ ROUND_NUMBER = 4
 MATCH_SCORE = [(1, 0), (0.5, 0.5), (0, 1)]
 
 file_path_tournament = "data/tournament.json"
-file_path_players = "players.json"
+file_path_players = "data/players.json"
 
 
 class Controller:
@@ -36,7 +36,11 @@ class Controller:
             response = self.view.menu()
             if response == "1":
                 print("choix 1 - crée un nouveau joueur")
-                new_players = self.get_players()
+                player = self.get_players()
+                if player:
+                    print("Joueur enregistré dans le fichier")
+                else:
+                    print("Erreur, merci de recommencer")
             elif response == "2":
                 print("choix 2 - créer un tournoi")
                 tournament = self.new_tournament()
@@ -45,7 +49,8 @@ class Controller:
                 elif tournament:
                     print("retour menu- tournoi marche", tournament)
                     self.select_players(tournament)
-                    print("RETOUR dans le menu, select_players -> joueur dans la liste du tournoi :", tournament.name_tournament, "\n", tournament.list_players)
+                    print("RETOUR dans le menu, select_players -> joueur dans la liste du tournoi :",
+                          tournament.name_tournament, "\n", tournament.list_players)
 
             elif response == "3":
                 print("choix 3 - rechercher un tournoi existant")
@@ -82,41 +87,34 @@ class Controller:
         pass
 
     def get_players(self):
-        new_player = []
         if os.path.exists(file_path_players):
             print("le fichier player.json existe")
             if os.path.getsize(file_path_tournament) > 0:
-                with open("players.json", "r") as my_file:
+                with open("data/players.json", "r") as my_file:
                     current_players = json.load(my_file)
             else:
-                current_players = []
+                current_players = {"players": {}}
         else:
-            current_players = []
+            current_players = {"players": {}}
 
         player_info = self.view.prompt_for_player()
         print(player_info)
-        for player in player_info:
-            player = Player(player[0], player[1], player[2], player[3])
-            self.players.append(player)
-            print("AVANT JSON")
-            with open("players.json", "r") as my_file:
-                current_players = json.load(my_file)
-            dict_player = {
-                "name": player.name,
-                "first_name": player.first_name,
-                "date_birth": player.date_birth,
-                "id_chess": player.id_chess,
-            }
-            new_player.append(dict_player)
-            current_players.append(dict_player)
 
-            with open("players.json", "w") as my_file:
-                json.dump(current_players, my_file)
+        print("AVANT JSON")
+        dict_player = {
+            "name": player_info[0],
+            "first_name": player_info[1],
+            "date_birth": player_info[2],
+            "id_chess": player_info[3],
+        }
 
-            print("APRES JSON")
+        next_available_key = str(len(current_players["players"]) + 1)
+        current_players["players"][next_available_key] = dict_player
+        with open("data/players.json", "w") as my_file:
+            json.dump(current_players, my_file, indent=4)
 
-        print(self.players)
-        return self.players
+        print("APRES JSON")
+        return player_info
 
     def search_tournaments_json(self):
         if os.path.exists(file_path_tournament):
@@ -143,17 +141,17 @@ class Controller:
         print("ENTIER:", tournament_info_view, "+[0]", tournament_info_view[0], "+[1]", tournament_info_view[1])
    #     date = datetime.date.today()
         date = "04 Septembre"
- #       tournament = Tournament(tournament_info_view[0], tournament_info_view[1], date)
- #       self.tournaments.append(tournament)
-#        with open("tournament.json", "r") as my_file:
- #           current_tournament = json.load(my_file)
+        tournament = Tournament(tournament_info_view[0], tournament_info_view[1], date)
+        self.tournaments.append(tournament)
         print(tournament_data)
         print("AVANT if tournament, créeation tournoi dans fichier JSON")
 
         new_tournament = {
             "name_tournament": tournament_info_view[0],
-            "locality" : tournament_info_view[1],
+            "locality": tournament_info_view[1],
             "start_date": date,
+            "end_date": None,
+            "number_rounds": 4,
             "list_rounds": [],
             "list_players": [],
             "description": None
@@ -166,7 +164,7 @@ class Controller:
 
         print("APRES JSON - tournoi")
         print("Print self tournaments = ", self.tournaments, "fin print self tournaments")
-        return None
+        return tournament
 
     def select_tournament(self, tournaments):
         name_tournament = self.view.choose_tournament(self.tournaments)
@@ -181,9 +179,10 @@ class Controller:
         if os.path.exists(file_path_players):
             print("le fichier player.json existe")
             if os.path.getsize(file_path_tournament) > 0:
-                file_object = open("players.json", "r")
+                file_object = open("data/players.json", "r")
                 json_content = file_object.read()
-                players = json.loads(json_content)
+                json_dict = json.loads(json_content)
+                players = json_dict["players"]
     #            with open("players.json", "r") as my_file:
      #               current_players = json.load(my_file)
       #              players = current_players
@@ -197,39 +196,48 @@ class Controller:
         player_name = self.view.add_player_in_tournament()
         players_selected = []
 
+        print("!!!!!TEST!!!!!", players_json)
+        u = 0
+
         for name in player_name:
             found_name = []
-            print(name)
-            for player in players_json:
-                print("!!print du nom du joeur :", player["name"])
-                if player["name"] == name:
-                    print("Correspondance du nom !", player["name"], player["first_name"], player["date_birth"], player["id_chess"])
-                    found_name.append(player)
-                else:
-                    print("pas de correspondance", name)
+            for index in players_json:
 
-            if len(found_name) > 1:
-                print("sup à 1 = ", len(found_name))
-                id_chess_view = self.view.choose_players(found_name)
-                for player in players_json:
-                    if id_chess_view == player["id_chess"]:
-                        print("id correspondant", player["name"], player["first_name"], player["id_chess"])
-                        players_selected.append(player)
-            elif len(found_name) == 1:
-                print("egal à 1 = ", len(found_name))
-                players_selected.append(found_name)
-            else:
-                print("pas de joueur à ce nom")
-            print("PRINT de le liste polayers dans select players = \n\n ->", players_selected)
+                print("print index =", index)
+                player_index = players_json[index]
+                print("player index=", player_index)
+                print(u, "name ?", player_index["name"])
+                u +=1
+                if name == player_index["name"]:
+                    print("correspondance!", name, " et ", player_index["name"])
+                    found_name.append(index)
+                else:
+                    print("ne correspond pas", name, " et ", player_index["name"])
+
+        if len(found_name) > 1:
+            print("sup à 1 = ", len(found_name))
+            id_chess_view = self.view.choose_players(found_name)
+            for player in players_json:
+                if id_chess_view == player["id_chess"]:
+                    print("id correspondant", player["name"], player["first_name"], player["id_chess"])
+                    players_selected.append(player)
+        elif len(found_name) == 1:
+            print("egal à 1 = ", len(found_name))
+            players_selected.append(found_name)
+        else:
+            print("pas de joueur à ce nom")
+        print("PRINT de le liste polayers dans select players = \n\n ->", players_selected)
 
         for players in players_selected:
-            for player_json in players:
-                print("test de nom", player_json["name"])
-                player = Player(player_json["name"],
-                                player_json["first_name"],
-                                player_json["date_birth"],
-                                player_json["id_chess"])
-                tournament.list_players.append(player, score_tournament)
+            for index in players_json:
+                player_index = players_json[index]
+                print("test de nom", player_index["name"])
+                if name == player_index["name"]:
+                    player = Player(player_index["name"],
+                                    player_index["first_name"],
+                                    player_index["date_birth"],
+                                    player_index["id_chess"])
+                    tournament.list_players.append([player, score_tournament])
 
         return tournament
 

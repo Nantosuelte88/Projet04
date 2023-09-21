@@ -64,25 +64,30 @@ class View:
                         print("Veuillez entrer un format d'identifiant d'échec valide AB12345")
                 else:
                     print("Veuillez entrer un format d'identifiant d'échec valide AB12345")
-            add_players.append((name.capitalize(), last_name.capitalize(), date_birth, id_chess.upper()))
-            return add_players
+    #        add_players.append((name.capitalize(), last_name.capitalize(), date_birth, id_chess.upper()))
+            return name.capitalize(), last_name.capitalize(), date_birth.capitalize(), id_chess.upper()
 
     def add_player_in_tournament(self):
         selected_players = []
         while True:
-            ask_name_player = input("Entrer le nom du joueur ? ")
+            while True:
+                ask_name_player = input("Entrer le nom du joueur ? ")
 
-            if all(char.isalpha() or char.isspace() for char in ask_name_player):
-                print("Verif joueur", ask_name_player)
-                selected_players.append(ask_name_player.capitalize())
+                if all(char.isalpha() or char.isspace() for char in ask_name_player):
+                    print("Verif joueur", ask_name_player)
+                    selected_players.append(ask_name_player.capitalize())
+                else:
+                    print("Merci d'entrer un nom de joueur valide")
+
+                another_player = input("Voulez ajouter un autre joueur? O/N? ")
+                if another_player.upper() == "N":
+                    break
+            print(len(selected_players))
+            if (len(selected_players) %2) == 0:
+                print("Joueurs paires")
+                return selected_players
             else:
-                print("Merci d'entrer un nom de joueur valide")
-
-            another_player = input("Voulez ajouter un autre joueur? O/N? ")
-            if another_player.upper() == "N":
-                break
-
-        return selected_players
+                print("merci d'entrer un nombre de joueurs paires")
 
     def choose_players(self, players):
         id_chess = input("plusieurs joueurs ont le même nom, merci de preciser son identifiant d'echec : ")
