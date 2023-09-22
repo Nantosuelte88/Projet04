@@ -51,6 +51,7 @@ class Controller:
                     self.select_players(tournament)
                     print("RETOUR dans le menu, select_players -> joueur dans la liste du tournoi :",
                           tournament.name_tournament, "\n", tournament.list_players)
+                    self.initiate_tournament(tournament)
 
             elif response == "3":
                 print("choix 3 - rechercher un tournoi existant")
@@ -120,22 +121,16 @@ class Controller:
         if os.path.exists(file_path_tournament):
             print("le fichier tournament.json existe")
             if os.path.getsize(file_path_tournament) > 0:
-                file_object = open("tournament.json", "r")
-                json_content = file_object.read()
-                tournaments = json.loads(json_content)
-                return tournaments
-
-    def new_tournament(self):
-        if os.path.exists(file_path_tournament):
-            print("le fichier tournament.json existe")
-            if os.path.getsize(file_path_tournament) > 0:
                 with open("data/tournament.json", "r") as my_file:
                     tournament_data = json.load(my_file)
             else:
                 tournament_data = {"tournament": {}}
         else:
             tournament_data = {"tournament": {}}
+        return tournament_data
 
+    def new_tournament(self):
+        tournament_data = self.search_tournaments_json()
         tournament_info_view = self.view.prompt_for_tournament()
      #   date = datetime.datetime.now().strftime("%d.%m.%Y;%H:%M:%S")
         print("ENTIER:", tournament_info_view, "+[0]", tournament_info_view[0], "+[1]", tournament_info_view[1])
@@ -167,6 +162,9 @@ class Controller:
         return tournament
 
     def select_tournament(self, tournaments):
+        # faire instanciation du tournoi ici en choissisant les options
+        # -> si nouveau tournoi = ne pas faire la vue et l'instancier directement
+        # sinon faire choisir quel tournoi
         name_tournament = self.view.choose_tournament(self.tournaments)
         for tournament in tournaments:
             if name_tournament == tournament.name_tournament:
@@ -195,6 +193,7 @@ class Controller:
         players_json = self.search_players_json()
         player_name = self.view.add_player_in_tournament()
         players_selected = []
+        add_players_json = []
 
         print("!!!!!TEST!!!!!", players_json)
         u = 0
@@ -214,45 +213,58 @@ class Controller:
                 else:
                     print("ne correspond pas", name, " et ", player_index["name"])
 
-        if len(found_name) > 1:
-            print("sup à 1 = ", len(found_name))
-            id_chess_view = self.view.choose_players(found_name)
-            for player in players_json:
-                if id_chess_view == player["id_chess"]:
-                    print("id correspondant", player["name"], player["first_name"], player["id_chess"])
-                    players_selected.append(player)
-        elif len(found_name) == 1:
-            print("egal à 1 = ", len(found_name))
-            players_selected.append(found_name)
-        else:
-            print("pas de joueur à ce nom")
-        print("PRINT de le liste polayers dans select players = \n\n ->", players_selected)
+            # Vérification des doublons de noms de joueurs
+            if len(found_name) > 1:
+                print("sup à 1 = ", len(found_name))
+                id_chess_view = self.view.choose_players(found_name)
+                for player in players_json:
+                    if id_chess_view == player["id_chess"]:
+                        print("id correspondant", player["name"], player["first_name"], player["id_chess"])
+                        players_selected.append(player)
+            elif len(found_name) == 1:
+                print("egal à 1 = ", len(found_name))
+                players_selected.append(found_name)
+            else:
+                print("pas de joueur à ce nom")
+            print("PRINT de le liste polayers dans select players = \n\n ->", players_selected)
 
-        for players in players_selected:
+            # Instanciation de la classe Player, des joueurs selectionnés, depuis fichier JSon
             for index in players_json:
                 player_index = players_json[index]
                 print("test de nom", player_index["name"])
                 if name == player_index["name"]:
+                    print("instanciation de :", name)
                     player = Player(player_index["name"],
                                     player_index["first_name"],
                                     player_index["date_birth"],
                                     player_index["id_chess"])
+                    # Ajout des joueurs dans la liste des joueurs du tournoi
                     tournament.list_players.append([player, score_tournament])
+                    dict_player = {
+                            "id_chess": player_index["id_chess"],
+                            "score_tournament": score_tournament
+                        }
+                    add_players_json.append(dict_player)
+            print(add_players_json)
+        # ajout des joueurs dans le tournoi Json
+        tournaments_json = self.search_tournaments_json()
+        for tournament_key in tournaments_json:
+            tournament_info = tournaments_json[tournament_key]
+            for key, value in tournament_info.items():
+                print(value["name_tournament"])
+                if value["name_tournament"] == tournament.name_tournament:
+                    print("LE BON TOURNOI", tournament.name_tournament)
+                    print(value["list_players"])
+                    good_path = value["list_players"]
+                    good_path.extend(add_players_json)
+                    with open("data/tournament.json", "w") as my_file:
+                        json.dump(tournaments_json, my_file, indent=4)
+                else:
+                    print("PAS LE BON TOURNOI", tournament.name_tournament)
 
         return tournament
 
-
-
-  #      for player in players:
-   #         print("PRINT dans methode select_player, player =", player)
-    #        print(self.players, self.players[0], self.players[0].name)
-     #       tournament.list_players.append([player, score_tournament])
-
-#        return tournament.list_players
-
-        # AJOUTER LES JOUEURS DANS tournament.list_players et faire un return
-
-    def initiate_tournament(self, tournament, players):
+    def initiate_tournament(self, tournament):
         print("Methode select tournament OK \n", tournament)
         print("LE tournoi =", tournament.name_tournament, "les joueurs selectionnés =\n", tournament.list_players)
         play = self.view.play_game(tournament)
@@ -295,7 +307,7 @@ class Controller:
 
         print("après boucle response view")
         # mettre le classement à la fin seulement
-        self.show_winner(tournament)
+  #      self.show_winner(tournament)
         return
 
     def result_round(self, round, tournament):
