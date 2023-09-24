@@ -80,63 +80,75 @@
         },
         "3": {
             "name_tournament": "Azerty",
-            "locality": "Oij",
-            "start_date": "04 Septembre",
-            "end_date": null,
-            "number_rounds": 4,
-            "list_rounds": [],
-            "list_players": [],
-            "description": null
-        },
-        "4": {
-            "name_tournament": "Outriur",
-            "locality": "Trtge",
+            "locality": "Marseille",
             "start_date": "04 Septembre",
             "end_date": null,
             "number_rounds": 4,
             "list_rounds": [],
             "list_players": [
-                [
-                    "HP12345",
-                    0
-                ],
-                [
-                    "GH12345",
-                    0
-                ]
+                {
+                    "id_chess": "HP12345",
+                    "score_tournament": 0
+                },
+                {
+                    "id_chess": "GH12345",
+                    "score_tournament": 0
+                }
+            ],
+            "description": null
+        },
+        "4": {
+            "name_tournament": "Trotrooptyr",
+            "locality": "Ytotyhok",
+            "start_date": "04 Septembre",
+            "end_date": null,
+            "number_rounds": 4,
+            "list_rounds": [],
+            "list_players": [
+                {
+                    "id_chess": "HP12345",
+                    "score_tournament": 0
+                },
+                {
+                    "id_chess": "GH12345",
+                    "score_tournament": 0
+                }
             ],
             "description": null
         },
         "5": {
-            "name_tournament": "Poouuytr",
-            "locality": "Gfd",
+            "name_tournament": "Poiour",
+            "locality": "Iofrjed",
             "start_date": "04 Septembre",
             "end_date": null,
             "number_rounds": 4,
-            "list_rounds": [],
-            "list_players": [
+            "list_rounds": [
                 [
                     [
-                        {
-                            "id_chess": "HP12345",
-                            "score_tournament": 0
-                        }
-                    ]
-                ],
-                [
+                        "HP12345",
+                        1
+                    ],
                     [
-                        {
-                            "id_chess": "GH12345",
-                            "score_tournament": 0
-                        }
+                        "GH12345",
+                        0
                     ]
                 ]
+            ],
+            "list_players": [
+                {
+                    "id_chess": "HP12345",
+                    "score_tournament": 0
+                },
+                {
+                    "id_chess": "GH12345",
+                    "score_tournament": 0
+                }
             ],
             "description": null
         },
         "6": {
-            "name_tournament": "Jfoeuj",
-            "locality": "Fed",
+            "name_tournament": "Mokioju",
+            "locality": "Gfdgv",
             "start_date": "04 Septembre",
             "end_date": null,
             "number_rounds": 4,

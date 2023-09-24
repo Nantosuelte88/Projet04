@@ -119,7 +119,24 @@ class View:
         #        add_tournaments.append((name_tournament.capitalize(), locality.capitalize()))
                 return name_tournament.capitalize(), locality.capitalize()
 
-
+    def description(self):
+        while True:
+            ask_for_description = input("Souhaitez vous ajouter une description ? O/N : ")
+            if ask_for_description.upper() == "O":
+                description = input("Votre description : ")
+                if all(char.isalpha() or char.isspace() or char.isnumeric() for char in description):
+                    print(description.capitalize())
+                    choice = input("\n1 - Valider ces informations\n"
+                                   "2 - Modifier ces informations\n"
+                                   "Votre choix : ")
+                    if choice == "1":
+                        return description.capitalize()
+                else:
+                    print("Veuillez entrer une description valide sans caractères spéciaux.")
+            elif ask_for_description.upper() == "N":
+                return None
+            else:
+                print("Merci de saisir une donnée valide, O ou N")
 
     def choose_tournament(self, tournaments):
         print("Liste des tournois : ")
@@ -134,6 +151,30 @@ class View:
                 print("Merci d'entrer un nom de tournoi valide")
 
         return ask_name_tournament.capitalize()
+
+    def scores_match(self, player1, player2):
+        scores = []
+        print("\nMATCH\n", player1.name, player1.first_name, "VS", player2.name, player2.first_name, "\n")
+        print(player1.name, player1.first_name)
+        score1 = input("Score du premier joueur : ")
+        while True:
+            if score1 == "0" or score1 == "1" or score1 == "0.5":
+                print("bon score", score1)
+                scores.append(score1)
+                break
+            else:
+                print("Merci d'entrer une donnée correcte, 0, 1 ou 0.5.")
+        print(player2.name, player2.first_name)
+        score2 = input("Score du second joueur : ")
+        while True:
+            if score2 == "0" or score2 == "1" or score2 == "0.5":
+                print("bon score", score2)
+                scores.append(score2)
+                break
+            else:
+                print("Merci d'entrer une donnée correcte, 0, 1 ou 0.5.")
+        return scores
+
 
     def next_round(self, round):
         print("View next_round", round)

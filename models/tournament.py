@@ -5,13 +5,13 @@ class Tournament:
     un numéro du tour actuel, une liste des rounds, une liste des joueurs ainsi qu'une description
     pour les remarques générales du directeur du tournoi"""
 
-    def __init__(self, name_tournament, locality, start_date, description=None,
-                 rounds=4):
+    def __init__(self, name_tournament, locality, start_date, description,
+                 number_rounds):
         self.name_tournament = name_tournament
         self.locality = locality
         self.start_date = start_date
         self.description = description
-        self.number_rounds = rounds
+        self.number_rounds = number_rounds
         self.end = False
 
         self.list_rounds = []

@@ -6,7 +6,6 @@ from models.match import Match
 from models.round import Round
 from views.tournamenentview import View
 
-from dataplayers import PlAYERS
 
 import json
 import os
@@ -132,11 +131,13 @@ class Controller:
     def new_tournament(self):
         tournament_data = self.search_tournaments_json()
         tournament_info_view = self.view.prompt_for_tournament()
+        description = self.view.description()
+        print("Print de description == ", description)
      #   date = datetime.datetime.now().strftime("%d.%m.%Y;%H:%M:%S")
         print("ENTIER:", tournament_info_view, "+[0]", tournament_info_view[0], "+[1]", tournament_info_view[1])
    #     date = datetime.date.today()
         date = "04 Septembre"
-        tournament = Tournament(tournament_info_view[0], tournament_info_view[1], date)
+        tournament = Tournament(tournament_info_view[0], tournament_info_view[1], date, description, ROUND_NUMBER)
         self.tournaments.append(tournament)
         print(tournament_data)
         print("AVANT if tournament, créeation tournoi dans fichier JSON")
@@ -146,10 +147,10 @@ class Controller:
             "locality": tournament_info_view[1],
             "start_date": date,
             "end_date": None,
-            "number_rounds": 4,
+            "number_rounds": ROUND_NUMBER,
             "list_rounds": [],
             "list_players": [],
-            "description": None
+            "description": description
             }
 
         next_available_key = str(len(tournament_data["tournament"]) + 1)
@@ -162,9 +163,6 @@ class Controller:
         return tournament
 
     def select_tournament(self, tournaments):
-        # faire instanciation du tournoi ici en choissisant les options
-        # -> si nouveau tournoi = ne pas faire la vue et l'instancier directement
-        # sinon faire choisir quel tournoi
         name_tournament = self.view.choose_tournament(self.tournaments)
         for tournament in tournaments:
             if name_tournament == tournament.name_tournament:
@@ -265,6 +263,9 @@ class Controller:
         return tournament
 
     def initiate_tournament(self, tournament):
+        # faire instanciation du tournoi ici en choissisant les options
+        # -> si nouveau tournoi = ne pas faire la vue et l'instancier directement
+        # sinon faire choisir quel tournoi
         print("Methode select tournament OK \n", tournament)
         print("LE tournoi =", tournament.name_tournament, "les joueurs selectionnés =\n", tournament.list_players)
         play = self.view.play_game(tournament)
@@ -278,6 +279,8 @@ class Controller:
             return None
 
     def new_round(self, tournament):
+        add_matches_json = []
+        dict_match = []
         for round in range(ROUND_NUMBER):
             init_round = Round("Round " + str(round +1))
             tournament.list_rounds.append(init_round)
@@ -289,14 +292,59 @@ class Controller:
             else:
                 players = sorted(tournament.list_players, key=lambda x: x[1], reverse=True)
             print("-- ", init_round.name_round, "--")
+
+            # verification de l'emplacement dans le tournoi json
+            tournaments_json = self.search_tournaments_json()
+            for tournament_key in tournaments_json:
+                tournament_info = tournaments_json[tournament_key]
+                for key, value in tournament_info.items():
+                    print(value["name_tournament"])
+                    if value["name_tournament"] == tournament.name_tournament:
+                        print("LE BON TOURNOI", tournament.name_tournament)
+                        good_path_round = value["list_rounds"]
+                        good_path_matches = good_path_round["result_match"]
+                        dict_round = {
+                            "name_round": init_round,
+                            "list_matches": [
+                                {
+                                    "result_match": []
+                                }
+                            ]
+                        }
+                        print("print init round", init_round)
+
+                        good_path_matches.extend(dict_round)
+                        with open("data/tournament.json", "w") as my_file:
+                            json.dump(tournaments_json, my_file, indent=4)
+                    else:
+                        print("PAS LE BON TOURNOI", tournament.name_tournament)
+
             for player in range(0, len(players), 2):
-                random.shuffle(MATCH_SCORE)
+  #              random.shuffle(MATCH_SCORE)
                 player1 = players[player][0]
-                score1 = MATCH_SCORE[0][0]
+  #              score1 = MATCH_SCORE[0][0]
                 player2 = players[player +1][0]
-                score2 = MATCH_SCORE[0][1]
+  #              score2 = MATCH_SCORE[0][1]
+   #             match = self.play_match(player1, player2)
+                scores = self.view.scores_match(player1, player2)
+                score1 = int(scores[0])
+                score2 = int(scores[1])
+                print("Test View resultat de match\n"
+                      "p1 =", player1, "score1 =", score1, "\n",
+                      "p2 =", player2, "score2 =", score2)
                 match = Match(player1, score1, player2, score2)
+
+                dict_match = [
+                    [player1.id_chess, score1],
+                    [player2.id_chess, score2]
+                ]
+                print("dict_match = ", dict_match)
+
                 init_round.list_matches.append(match)
+                add_matches_json.append(dict_match)
+
+                # ajout du match dans la liste des rounds du tournoi Json
+
             self.result_round(init_round.list_matches, tournament)
             response_view = self.view.next_round(round)
             if response_view:
@@ -309,6 +357,9 @@ class Controller:
         # mettre le classement à la fin seulement
   #      self.show_winner(tournament)
         return
+
+    def play_match(self, player1, player2):
+        pass
 
     def result_round(self, round, tournament):
         for match in round:
