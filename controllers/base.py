@@ -281,6 +281,9 @@ class Controller:
     def new_round(self, tournament):
         add_matches_json = []
         dict_match = []
+        new_round = []
+        date_debut = "09/12/2121"
+        date_end = "02/01/2122"
         for round in range(ROUND_NUMBER):
             init_round = Round("Round " + str(round +1))
             tournament.list_rounds.append(init_round)
@@ -302,22 +305,19 @@ class Controller:
                     if value["name_tournament"] == tournament.name_tournament:
                         print("LE BON TOURNOI", tournament.name_tournament)
                         good_path_round = value["list_rounds"]
-                        good_path_matches = good_path_round["result_match"]
-                        dict_round = {
-                            "name_round": init_round,
-                            "list_matches": [
-                                {
-                                    "result_match": []
-                                }
-                            ]
+                        new_round = {
+                            "name_round": init_round.name_round,
+                            "list_matches": [],
+                            "star_time": date_debut,
+                            "end_time": date_end
                         }
-                        print("print init round", init_round)
-
-                        good_path_matches.extend(dict_round)
-                        with open("data/tournament.json", "w") as my_file:
-                            json.dump(tournaments_json, my_file, indent=4)
+                        print("!!!!!!! print init round", init_round.name_round)
+                        good_path_round.append(new_round)
+                        print("good_path", good_path_round)
                     else:
                         print("PAS LE BON TOURNOI", tournament.name_tournament)
+            with open("data/tournament.json", "w") as my_file:
+                json.dump(tournaments_json, my_file, indent=4)
 
             for player in range(0, len(players), 2):
   #              random.shuffle(MATCH_SCORE)
@@ -334,18 +334,18 @@ class Controller:
                       "p2 =", player2, "score2 =", score2)
                 match = Match(player1, score1, player2, score2)
 
-                dict_match = [
+                result_match = [
                     [player1.id_chess, score1],
                     [player2.id_chess, score2]
                 ]
-                print("dict_match = ", dict_match)
 
                 init_round.list_matches.append(match)
-                add_matches_json.append(dict_match)
-
                 # ajout du match dans la liste des rounds du tournoi Json
-
+                new_round["list_matches"].append({"result_match": result_match})
+                with open("data/tournament.json", "w") as my_file:
+                    json.dump(tournaments_json, my_file, indent=4)
             self.result_round(init_round.list_matches, tournament)
+            # Demande à l'utilisateur si il veut rejouer un round
             response_view = self.view.next_round(round)
             if response_view:
                 print("Reponse vraie", round)
