@@ -156,8 +156,9 @@ class View:
         scores = []
         print("\nMATCH\n", player1.name, player1.first_name, "VS", player2.name, player2.first_name, "\n")
         print(player1.name, player1.first_name)
-        score1 = input("Score du premier joueur : ")
+
         while True:
+            score1 = input("Score du premier joueur : ")
             if score1 == "0" or score1 == "1" or score1 == "0.5":
                 print("bon score", score1)
                 scores.append(score1)
@@ -165,8 +166,9 @@ class View:
             else:
                 print("Merci d'entrer une donnée correcte, 0, 1 ou 0.5.")
         print(player2.name, player2.first_name)
-        score2 = input("Score du second joueur : ")
+
         while True:
+            score2 = input("Score du second joueur : ")
             if score2 == "0" or score2 == "1" or score2 == "0.5":
                 print("bon score", score2)
                 scores.append(score2)

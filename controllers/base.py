@@ -278,9 +278,31 @@ class Controller:
             print("NON")
             return None
 
+    def modification_player(self):
+        pass
+
+    def update_description(self, tournament):
+        description_view = self.view.description()
+        if description_view:
+            tournament.description = description_view
+
+            tournaments_json = self.search_tournaments_json()
+            for tournament_key in tournaments_json:
+                tournament_info = tournaments_json[tournament_key]
+                for key, value in tournament_info.items():
+                    print(value["name_tournament"])
+                    if value["name_tournament"] == tournament.name_tournament:
+                        print("LE BON TOURNOI", tournament.name_tournament)
+                        value["description"] = description_view
+                        with open("data/tournament.json", "w") as my_file:
+                            json.dump(tournaments_json, my_file, indent=4)
+                    else:
+                        print("PAS LE BON TOURNOI", tournament.name_tournament)
+        else:
+            return None
+
     def new_round(self, tournament):
-        add_matches_json = []
-        dict_match = []
+
         new_round = []
         date_debut = "09/12/2121"
         date_end = "02/01/2122"
@@ -327,8 +349,8 @@ class Controller:
   #              score2 = MATCH_SCORE[0][1]
    #             match = self.play_match(player1, player2)
                 scores = self.view.scores_match(player1, player2)
-                score1 = int(scores[0])
-                score2 = int(scores[1])
+                score1 = float(scores[0])
+                score2 = float(scores[1])
                 print("Test View resultat de match\n"
                       "p1 =", player1, "score1 =", score1, "\n",
                       "p2 =", player2, "score2 =", score2)
@@ -347,16 +369,20 @@ class Controller:
                     json.dump(tournaments_json, my_file, indent=4)
 
             self.result_round(init_round.list_matches, tournament)
-            # Demande à l'utilisateur si il veut rejouer un round
-            if round != ROUND_NUMBER:
+
+            if round +1 != ROUND_NUMBER:
                 print("pas le meme Round =", round)
             else:
                 print("FIN ddes rounds ?!", round)
+
+            # Demande à l'utilisateur si il veut rejouer un round
             response_view = self.view.next_round(round)
             if response_view:
                 print("Reponse vraie", round)
             elif not response_view:
                 print("Reponse Fausse", round)
+                if not tournament.description:
+                    self.update_description(tournament)
                 break
 
         print("après boucle response view")
