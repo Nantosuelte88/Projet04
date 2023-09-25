@@ -340,12 +340,18 @@ class Controller:
                 ]
 
                 init_round.list_matches.append(match)
+
                 # ajout du match dans la liste des rounds du tournoi Json
                 new_round["list_matches"].append({"result_match": result_match})
                 with open("data/tournament.json", "w") as my_file:
                     json.dump(tournaments_json, my_file, indent=4)
+
             self.result_round(init_round.list_matches, tournament)
             # Demande à l'utilisateur si il veut rejouer un round
+            if round != ROUND_NUMBER:
+                print("pas le meme Round =", round)
+            else:
+                print("FIN ddes rounds ?!", round)
             response_view = self.view.next_round(round)
             if response_view:
                 print("Reponse vraie", round)
@@ -362,6 +368,7 @@ class Controller:
         pass
 
     def result_round(self, round, tournament):
+        # Mise à jour du score des joueurs
         for match in round:
             print("Resultat de match", match)
             for player in tournament.list_players:
@@ -369,6 +376,22 @@ class Controller:
                     player[1] += match.score1
                 elif player[0] == match.player2:
                     player[1] += match.score2
+
+        tournaments_json = self.search_tournaments_json()
+        for tournament_key in tournaments_json:
+            tournament_info = tournaments_json[tournament_key]
+            for key, value in tournament_info.items():
+                print(value["name_tournament"])
+                if value["name_tournament"] == tournament.name_tournament:
+                    print("LE BON TOURNOI", tournament.name_tournament)
+                    good_path_round = value["list_players"]
+                    for player in tournament.list_players:
+                        for player_info in good_path_round:
+                            if player[0].id_chess == player_info["id_chess"]:
+                                player_info["score_tournament"] = player[1]
+
+        with open("data/tournament.json", "w") as my_file:
+            json.dump(tournaments_json, my_file, indent=4)
 
     def show_winner(self, tournament):
         sorted_final = sorted(tournament.list_players, key= lambda x: x[1], reverse=True)
