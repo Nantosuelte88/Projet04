@@ -101,15 +101,6 @@ class View:
             else:
                 print("Veuillez entrer un nom valide sans chiffres ni caractères spéciaux.")
 
-    def show_players(self, players):
-        print("\n\nLes Joueurs :\n")
-        for player, players_details in enumerate(players, start=1):
-            print(f"Joueur", player,
-                  "\nNom :", players_details["name"],
-                  "\nPrenom :", players_details["first_name"],
-                  "\nDate de naissance :", players_details["date_birth"],
-                  "\nID d'échec :", players_details["id_chess"], "\n")
-
     def choose_players(self, players):
         print("DANS CHOOSE PLAYER", players)
         i = 1
@@ -122,6 +113,72 @@ class View:
             index_player = input("Veuillez indiquer le chiffre du joueur voulu : ")
             if index_player.isnumeric() and int(index_player) <= (i-1):
                 return players[int(index_player) - 1]
+            else:
+                print("Merci d'indiquer une donnée valide\n")
+
+    def show_players(self, players):
+        print("\n\nLes Joueurs :\n")
+        for player, players_details in enumerate(players, start=1):
+            print(f"Joueur", player,
+                  "\nNom :", players_details["name"],
+                  "\nPrenom :", players_details["first_name"],
+                  "\nDate de naissance :", players_details["date_birth"],
+                  "\nID d'échec :", players_details["id_chess"], "\n")
+
+    def modification_player(self, info_player):
+        print(f"Joueur :"
+              "\n1 - Nom :", info_player["name"],
+              "\n2 - Prenom :", info_player["first_name"],
+              "\n3 - Date de naissance :", info_player["date_birth"],
+              "\n4 - ID d'échec :", info_player["id_chess"], "\n")
+        while True:
+            choice = input("\nQue souhaitez-vous changer : ")
+            if choice.isnumeric() and int(choice) == 1:
+                while True:
+                    new_name = input("Nouveau nom du joueur: ")
+                    if new_name.isalpha():
+                        break
+                    else:
+                        print("Veuillez entrer un nom valide sans chiffres ni caractères spéciaux.")
+                return choice, new_name.capitalize()
+
+            elif choice.isnumeric() and int(choice) == 2:
+                while True:
+                    new_last_name = input("Nouveau prénom du joueur: ")
+                    if new_last_name.isalpha():
+                        break
+                    else:
+                        print("Veuillez entrer un prénom valide sans chiffres ni caractères spéciaux.")
+                return choice, new_last_name.capitalize()
+
+            elif choice.isnumeric() and int(choice) == 3:
+                while True:
+                    new_date_birth = input("Nouvelle date de naissance du joueur JJ/MM/AAAA: ")
+                    try:
+                        datetime.strptime(new_date_birth, '%d/%m/%Y')
+                        break
+                    except ValueError:
+                        print("Veuillez entrer une date au format JJ/MM/AAAA.")
+                return choice, new_date_birth
+
+            elif choice.isnumeric() and int(choice) == 4:
+                while True:
+                    new_id_chess = input("Nouvel dentifiant national d'échec, au format AB12345 :")
+                    if len(new_id_chess) == 7:
+                        print("Bien 7")  # test
+                        if new_id_chess[0:2].isalpha():
+                            print("Bien alpha :", new_id_chess[0:2])  # test
+                            if new_id_chess[2:7].isnumeric():
+                                print("Bien numeric :", new_id_chess[2:7])  # test
+                                break
+                            else:
+                                print("Veuillez entrer un format d'identifiant d'échec valide AB12345")
+                        else:
+                            print("Veuillez entrer un format d'identifiant d'échec valide AB12345")
+                    else:
+                        print("Veuillez entrer un format d'identifiant d'échec valide AB12345")
+                return choice, new_id_chess.upper()
+
             else:
                 print("Merci d'indiquer une donnée valide\n")
 

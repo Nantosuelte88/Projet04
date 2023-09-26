@@ -307,7 +307,6 @@ class Controller:
                 if player_name == player_index["name"]:
                     print("correspondance!", player_name, " et ", player_index["name"])
                     found_name.append(player_index)
-                    good_player.append(player_index)
                 else:
                     no_player.append(player)
 
@@ -325,6 +324,7 @@ class Controller:
                         no_player.append(player_details)
             elif len(found_name) == 1:
                 print("egal à 1 = ", len(found_name))
+                good_player.append(found_name)
             else:
                 print("pas de joueur à ce nom")
                 check = True
@@ -335,7 +335,7 @@ class Controller:
             else:
                 print("le joueur est ok", no_player)
                 break
-        # Fin version select !!!
+
         print("verif de check ->", check)
         if not check:
             print(good_player)
@@ -343,7 +343,33 @@ class Controller:
                 print("un seul joueur ok", good_player)
             elif len(good_player) > 1:
                 print("plusieurs joueurs dedans", good_player)
-        print("FIN BOUCLE MODIF")
+        print("FIN BOUCLE MODIF\n joueur ? =", good_player[0][0])
+        # Fin version select !!!
+        p = 0
+        for player in players_json:
+            print(p, players_json[player])
+            p +=1
+            if good_player[0][0] == players_json[player]:
+                print("bon joueur")
+                new_info = self.view.modification_player(players_json[player])
+                print(new_info)
+                if new_info[0] == "1":
+                    print("nouveau nom", new_info[1])
+                    players_json[player]["name"] = new_info[1]
+                elif new_info[0] == "2":
+                    print("nouveau prenom", new_info[1])
+                    players_json[player]["first_name"] = new_info[1]
+                elif new_info[0] == "3":
+                    print("nouvelle date de naissance", new_info[1])
+                    players_json[player]["date_birth"] = new_info[1]
+                elif new_info[0] == "4":
+                    print("nouvel id", new_info[1])
+                    players_json[player]["id_check"] = new_info[1]
+            else:
+                print("mauvais joueur")
+        with open("data/players.json", "w") as my_file:
+            json.dump(players_json, my_file, indent=4)
+        print("fin de modif")
 
     def update_description(self, tournament):
         description_view = self.view.description()
