@@ -54,7 +54,7 @@ class Controller:
 
             elif response == "3":
                 print("choix 3 - rechercher un tournoi existant")
-                tournament = self.select_tournament(self.tournaments)
+                tournament = self.select_tournament()
                 print("RETOUR MENU ->", tournament)
 
             elif response == "4":
@@ -173,14 +173,35 @@ class Controller:
         print("Print self tournaments = ", self.tournaments, "fin print self tournaments")
         return tournament
 
-    def select_tournament(self, tournaments):
-        name_tournament = self.view.choose_tournament(self.tournaments)
-        for tournament in tournaments:
-            if name_tournament == tournament.name_tournament:
-                print("NOM CORRESPONDANT !!!!! ", name_tournament, "=", tournament.name_tournament)
-                return tournament
+    def select_tournament(self):
+        check = False
+        found_tournament = []
+        tournaments_json = self.search_tournaments_json()
+        while True:
+            name_tournament = self.view.choose_tournament(check)
+            for tournament_key in tournaments_json:
+                tournament_info = tournaments_json[tournament_key]
+                for key, value in tournament_info.items():
+                    print(value["name_tournament"])
+                    if value["name_tournament"] == name_tournament:
+                        print("LE BON TOURNOI", name_tournament, "=", value["name_tournament"])
+                        found_tournament.append(value)
+                        break
+                    else:
+                        print("NOPE pas de correspondance")
+
+            if len(found_tournament) == 1:
+                print("egal à 1 = ", len(found_tournament))
+                print(found_tournament)
+                break
             else:
-                print("NOPE pas de correspondance")
+                print("pas de joueur à ce nom")
+                print(found_tournament)
+                check = True
+            print("verif check", check, found_tournament)
+
+        choice = self.view.show_tournament(found_tournament[0])
+        print("!!", found_tournament[0])
 
     def search_players_json(self):
         if os.path.exists(file_path_players):

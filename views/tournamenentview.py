@@ -227,10 +227,9 @@ class View:
             else:
                 print("Merci de saisir une donnée valide, O ou N")
 
-    def choose_tournament(self, tournaments):
-        print("Liste des tournois : ")
-        for tournament in tournaments:
-            print("Print select tournament\n", tournament)
+    def choose_tournament(self, check):
+        if check:
+            print("\nTournoi inconnu !")
         while True:
             ask_name_tournament = input("à quel tournoi souhaitez-vous jouer ?")
             if all(char.isalpha() or char.isspace() for char in ask_name_tournament):
@@ -241,6 +240,19 @@ class View:
 
         return ask_name_tournament.capitalize()
 
+    def show_tournament(self, tournament):
+        print(f"\n\nTournoi selectionné:\n"
+              "\nNom :", tournament["name_tournament"],
+              "\nLieu :", tournament["locality"],
+              "\nDate de debut :", tournament["start_date"],
+              "\nDate de fin :", tournament["end_date"],
+              "\nListe des rounds :", tournament["list_rounds"],
+              "\nListe des joueurs :", tournament["list_players"],
+              "\nDescription :", tournament["description"], "\n\n")
+        while True:
+            choice = input("Voulez-vous continuer le tournoi ? O/N: ")
+            if choice == "0"
+                return choice
     def scores_match(self, player1, player2):
         scores = []
         print("\nMATCH\n", player1.name, player1.first_name, "VS", player2.name, player2.first_name, "\n")
