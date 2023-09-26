@@ -10,12 +10,13 @@ class View:
                            "1 - Créer un nouveau joueur \n"
                            "2 - Créer un nouveau tournoi\n"
                            "3 - Rechercher un tournoi\n"
-                           "4 - Quitter\n"
+                           "4 - Modifier un joueur\n"
+                           "5 - Quitter\n"
                            "---------------------- \n\n"
                            "Votre choix : ")
-            if choice.isnumeric() and int(choice) <= 3:
+            if choice.isnumeric() and int(choice) <= 4:
                 break
-            elif choice.isnumeric() and int(choice) == 4:
+            elif choice.isnumeric() and int(choice) == 5:
                 choose_quit = input("Attention, vous allez quitter le programme, valider votre choix ? O/N : ")
                 if choose_quit.upper() == "O":
                     break
@@ -67,6 +68,14 @@ class View:
     #        add_players.append((name.capitalize(), last_name.capitalize(), date_birth, id_chess.upper()))
             return name.capitalize(), last_name.capitalize(), date_birth.capitalize(), id_chess.upper()
 
+    def show_player(self):
+        while True:
+            player = input("Entrer le nom du joueur : ")
+            if player.isalpha():
+                return player.capitalize()
+            else:
+                print("Veuillez entrer un nom valide sans chiffres ni caractères spéciaux.")
+
     def add_player_in_tournament(self):
         selected_players = []
         while True:
@@ -90,8 +99,19 @@ class View:
                 print("merci d'entrer un nombre de joueurs paires")
 
     def choose_players(self, players):
-        id_chess = input("plusieurs joueurs ont le même nom, merci de preciser son identifiant d'echec : ")
-        return id_chess.upper()
+        print("DANS CHOOSE PLAYER", players)
+        i = 1
+        print("\nAttention", len(players), "joueurs portent ce nom \n")
+        for player in players:
+            print(i, "-", player["name"], player["first_name"], player["date_birth"], player["id_chess"])
+            i += 1
+        while True:
+            print("i =", (i-1))
+            index_player = input("Veuillez indiquer le chiffre du joueur voulu : ")
+            if index_player.isnumeric() and int(index_player) <= (i-1):
+                return players[int(index_player) - 1]
+            else:
+                print("Merci d'indiquer une donnée valide\n")
 
     def prompt_for_tournament(self):
         add_tournaments =[]
@@ -200,6 +220,7 @@ class View:
                 return False
             else:
                 print("Merci de saisir une donnée valide")
+
 
 
 

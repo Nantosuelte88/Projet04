@@ -57,9 +57,12 @@ class Controller:
                 tournament = self.select_tournament(self.tournaments)
                 print("RETOUR MENU ->", tournament)
 
-
             elif response == "4":
-                print("choix 4 - quitter le menu")
+                print("choix 4 - Modifier un joueur")
+                self.modification_player()
+
+            elif response == "5":
+                print("choix 5 - quitter le menu")
                 break
 
     def activ_tournament(self):
@@ -84,9 +87,6 @@ class Controller:
         """
 
     def file_json_player(self):
-        pass
-
-    def get_players(self):
         if os.path.exists(file_path_players):
             print("le fichier player.json existe")
             if os.path.getsize(file_path_tournament) > 0:
@@ -96,7 +96,10 @@ class Controller:
                 current_players = {"players": {}}
         else:
             current_players = {"players": {}}
+        return current_players
 
+    def get_players(self):
+        current_players = self.file_json_player()
         player_info = self.view.prompt_for_player()
         print(player_info)
 
@@ -179,10 +182,8 @@ class Controller:
                 json_content = file_object.read()
                 json_dict = json.loads(json_content)
                 players = json_dict["players"]
-    #            with open("players.json", "r") as my_file:
-     #               current_players = json.load(my_file)
-      #              players = current_players
-                return players
+
+        return players
 
     def select_players(self, tournament):
         print("TEST select players, tournoi :", tournament)
@@ -279,7 +280,43 @@ class Controller:
             return None
 
     def modification_player(self):
-        pass
+        no_player = []
+        found_name = []
+        u = 0
+        player_name = self.view.show_player()
+        players_json = self.search_players_json()
+        for player in players_json:
+            print("print index =", player)
+            player_index = players_json[player]
+            print("player index=", player_index)
+            print(u, "name ?", player_index["name"])
+            u += 1
+            if player_name == player_index["name"]:
+                print("correspondance!", player_name, " et ", player_index["name"])
+                found_name.append(player_index)
+            else:
+                no_player.append(player)
+        if players_json is not None:
+            if len(found_name) > 1:
+                print("sup à 1 = ", len(found_name))
+                good_player = self.view.choose_players(found_name)
+                print("!!!", good_player, "!!!!", players_json)
+                for player_details in players_json.values():
+                    if good_player == player_details:
+                        print("id correspondant", player_details["name"], player_details["first_name"],
+                              player_details["id_chess"])
+                    else:
+                        print("player non correspondant", good_player, "!=", player_details["name"])
+                        no_player.append(player_details)
+            elif len(found_name) == 1:
+                print("egal à 1 = ", len(found_name))
+            else:
+                print("pas de joueur à ce nom")
+
+        if len(no_player) == len(players_json):
+            print("joueur inconnu!", no_player)
+        else:
+            print("le joueur est ok", no_player)
 
     def update_description(self, tournament):
         description_view = self.view.description()
