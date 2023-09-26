@@ -62,7 +62,10 @@ class Controller:
                 self.modification_player()
 
             elif response == "5":
-                print("choix 5 - quitter le menu")
+                print("choix 5 - voir les joueurs")
+                self.show_players()
+            elif response == "6":
+                print("choix 6 - quitter le menu")
                 break
 
     def activ_tournament(self):
@@ -97,6 +100,11 @@ class Controller:
         else:
             current_players = {"players": {}}
         return current_players
+
+    def show_players(self):
+        players = self.file_json_player()
+        sorted_players = sorted(players["players"].values(), key=lambda x: x["name"])
+        self.view.show_players(sorted_players)
 
     def get_players(self):
         current_players = self.file_json_player()
@@ -280,43 +288,62 @@ class Controller:
             return None
 
     def modification_player(self):
+        check = False
         no_player = []
         found_name = []
-        u = 0
-        player_name = self.view.show_player()
-        players_json = self.search_players_json()
-        for player in players_json:
-            print("print index =", player)
-            player_index = players_json[player]
-            print("player index=", player_index)
-            print(u, "name ?", player_index["name"])
-            u += 1
-            if player_name == player_index["name"]:
-                print("correspondance!", player_name, " et ", player_index["name"])
-                found_name.append(player_index)
-            else:
-                no_player.append(player)
-        if players_json is not None:
+        good_player = []
+
+        # Prochaine version du select joueur
+        while True:
+            u = 0
+            player_name = self.view.show_player(check)
+            players_json = self.search_players_json()
+            for player in players_json:
+                print("print index =", player)
+                player_index = players_json[player]
+                print("player index=", player_index)
+                print(u, "name ?", player_index["name"])
+                u += 1
+                if player_name == player_index["name"]:
+                    print("correspondance!", player_name, " et ", player_index["name"])
+                    found_name.append(player_index)
+                    good_player.append(player_index)
+                else:
+                    no_player.append(player)
+
             if len(found_name) > 1:
                 print("sup à 1 = ", len(found_name))
-                good_player = self.view.choose_players(found_name)
-                print("!!!", good_player, "!!!!", players_json)
+                check_player = self.view.choose_players(found_name)
+                print("!!!", check_player, "!!!!", players_json)
                 for player_details in players_json.values():
-                    if good_player == player_details:
+                    if check_player == player_details:
                         print("id correspondant", player_details["name"], player_details["first_name"],
                               player_details["id_chess"])
+                        good_player.append(player_details)
                     else:
-                        print("player non correspondant", good_player, "!=", player_details["name"])
+                        print("player non correspondant", check_player, "!=", player_details["name"])
                         no_player.append(player_details)
             elif len(found_name) == 1:
                 print("egal à 1 = ", len(found_name))
             else:
                 print("pas de joueur à ce nom")
+                check = True
 
-        if len(no_player) == len(players_json):
-            print("joueur inconnu!", no_player)
-        else:
-            print("le joueur est ok", no_player)
+            if len(no_player) == len(players_json):
+                print("joueur inconnu!", no_player)
+                check = True
+            else:
+                print("le joueur est ok", no_player)
+                break
+        # Fin version select !!!
+        print("verif de check ->", check)
+        if not check:
+            print(good_player)
+            if len(good_player) == 1:
+                print("un seul joueur ok", good_player)
+            elif len(good_player) > 1:
+                print("plusieurs joueurs dedans", good_player)
+        print("FIN BOUCLE MODIF")
 
     def update_description(self, tournament):
         description_view = self.view.description()
