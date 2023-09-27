@@ -17,7 +17,7 @@ class Tournament:
         self.list_rounds = []
         self.list_players = []
 
-        self.statut = False
+        self.statut = True
 
 
 

@@ -249,10 +249,21 @@ class View:
               "\nListe des rounds :", tournament["list_rounds"],
               "\nListe des joueurs :", tournament["list_players"],
               "\nDescription :", tournament["description"], "\n\n")
-        while True:
-            choice = input("Voulez-vous continuer le tournoi ? O/N: ")
-            if choice == "0"
-                return choice
+
+    def continue_tournament(self, tournament, check_status):
+        if check_status:
+            print("Souhaitez-vous continuer le tournoi", tournament, "?")
+            while True:
+                choice = input("O/N : ")
+                if choice.upper() == "O":
+                    return True
+                elif choice.upper() == "N":
+                    return False
+                else:
+                    print("Merci de saisir une donnée valide, O ou N")
+        else:
+            print("Ce tournoi est fini")
+
     def scores_match(self, player1, player2):
         scores = []
         print("\nMATCH\n", player1.name, player1.first_name, "VS", player2.name, player2.first_name, "\n")

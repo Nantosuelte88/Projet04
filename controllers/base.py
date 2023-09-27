@@ -200,8 +200,43 @@ class Controller:
                 check = True
             print("verif check", check, found_tournament)
 
-        choice = self.view.show_tournament(found_tournament[0])
+        self.view.show_tournament(found_tournament[0])
+
+        # Instanciation du tournoi
+        tournament = Tournament(found_tournament[0]["name_tournament"],
+                                found_tournament[0]["locality"],
+                                found_tournament[0]["start_date"],
+                                found_tournament[0]["description"],
+                                found_tournament[0]["number_rounds"]
+                                )
+        tournament.list_rounds = found_tournament[0]["list_rounds"],
+        tournament.list_players = found_tournament[0]["list_players"],
+        self.tournaments.append(tournament)
+
+        print("nombre de rounds",tournament.number_rounds,
+              "len de list de rounds", len(tournament.list_rounds), "\n", tournament.list_rounds)
         print("!!", found_tournament[0])
+
+        print("des joueeurs ?", tournament.list_players)
+        if len(tournament.list_rounds) == tournament.number_rounds:
+            print("Tournoi fini")
+            check_tournament = True
+            self.view.continue_tournament(tournament.name_tournament, check_tournament)
+        elif len(tournament.list_rounds) < tournament.number_rounds:
+            print("tournoi en cours")
+            check_tournament = False
+            ask_user = self.view.continue_tournament(tournament.name_tournament, check_tournament)
+            if ask_user:
+                if len(tournament.list_players) == 1 and len(tournament.list_players[0]) == 0:
+                    print("pas de joueur", tournament.list_players)
+                    self.select_players(tournament)
+                else:
+                    print("des joueurs", tournament.list_players)
+                    self.new_round(tournament)
+        else:
+            print("wtf ??")
+
+        return tournament
 
     def search_players_json(self):
         if os.path.exists(file_path_players):
@@ -211,8 +246,9 @@ class Controller:
                 json_content = file_object.read()
                 json_dict = json.loads(json_content)
                 players = json_dict["players"]
-
-        return players
+                return players
+        else:
+            return None
 
     def select_players(self, tournament):
         print("TEST select players, tournoi :", tournament)
@@ -413,92 +449,95 @@ class Controller:
             return None
 
     def new_round(self, tournament):
-
+        round_number = tournament.number_rounds
         new_round = []
         date_debut = "09/12/2121"
         date_end = "02/01/2122"
-        for round in range(ROUND_NUMBER):
-            init_round = Round("Round " + str(round +1))
-            tournament.list_rounds.append(init_round)
+        if len(tournament.list_rounds) < round_number:
+            for round in range(ROUND_NUMBER):
+                init_round = Round("Round " + str(round + 1))
+                tournament.list_rounds.append(init_round)
 
-            if init_round.name_round == "Round 1":
-                random.shuffle(tournament.list_players)
-                players = tournament.list_players
+                if init_round.name_round == "Round 1":
+                    random.shuffle(tournament.list_players)
+                    players = tournament.list_players
 
-            else:
-                players = sorted(tournament.list_players, key=lambda x: x[1], reverse=True)
-            print("-- ", init_round.name_round, "--")
+                else:
+                    players = sorted(tournament.list_players, key=lambda x: x[1], reverse=True)
+                print("-- ", init_round.name_round, "--")
 
-            # verification de l'emplacement dans le tournoi json
-            tournaments_json = self.search_tournaments_json()
-            for tournament_key in tournaments_json:
-                tournament_info = tournaments_json[tournament_key]
-                for key, value in tournament_info.items():
-                    print(value["name_tournament"])
-                    if value["name_tournament"] == tournament.name_tournament:
-                        print("LE BON TOURNOI", tournament.name_tournament)
-                        good_path_round = value["list_rounds"]
-                        new_round = {
-                            "name_round": init_round.name_round,
-                            "list_matches": [],
-                            "star_time": date_debut,
-                            "end_time": date_end
-                        }
-                        print("!!!!!!! print init round", init_round.name_round)
-                        good_path_round.append(new_round)
-                        print("good_path", good_path_round)
-                    else:
-                        print("PAS LE BON TOURNOI", tournament.name_tournament)
-            with open("data/tournament.json", "w") as my_file:
-                json.dump(tournaments_json, my_file, indent=4)
-
-            for player in range(0, len(players), 2):
-  #              random.shuffle(MATCH_SCORE)
-                player1 = players[player][0]
-  #              score1 = MATCH_SCORE[0][0]
-                player2 = players[player +1][0]
-  #              score2 = MATCH_SCORE[0][1]
-   #             match = self.play_match(player1, player2)
-                scores = self.view.scores_match(player1, player2)
-                score1 = float(scores[0])
-                score2 = float(scores[1])
-                print("Test View resultat de match\n"
-                      "p1 =", player1, "score1 =", score1, "\n",
-                      "p2 =", player2, "score2 =", score2)
-                match = Match(player1, score1, player2, score2)
-
-                result_match = [
-                    [player1.id_chess, score1],
-                    [player2.id_chess, score2]
-                ]
-
-                init_round.list_matches.append(match)
-
-                # ajout du match dans la liste des rounds du tournoi Json
-                new_round["list_matches"].append({"result_match": result_match})
+                # verification de l'emplacement dans le tournoi json
+                tournaments_json = self.search_tournaments_json()
+                for tournament_key in tournaments_json:
+                    tournament_info = tournaments_json[tournament_key]
+                    for key, value in tournament_info.items():
+                        print(value["name_tournament"])
+                        if value["name_tournament"] == tournament.name_tournament:
+                            print("LE BON TOURNOI", tournament.name_tournament)
+                            good_path_round = value["list_rounds"]
+                            new_round = {
+                                "name_round": init_round.name_round,
+                                "list_matches": [],
+                                "star_time": date_debut,
+                                "end_time": date_end
+                            }
+                            print("!!!!!!! print init round", init_round.name_round)
+                            good_path_round.append(new_round)
+                            print("good_path", good_path_round)
+                        else:
+                            print("PAS LE BON TOURNOI", tournament.name_tournament)
                 with open("data/tournament.json", "w") as my_file:
                     json.dump(tournaments_json, my_file, indent=4)
 
-            self.result_round(init_round.list_matches, tournament)
+                for player in range(0, len(players), 2):
+      #              random.shuffle(MATCH_SCORE)
+                    player1 = players[player][0]
+      #              score1 = MATCH_SCORE[0][0]
+                    player2 = players[player +1][0]
+      #              score2 = MATCH_SCORE[0][1]
+       #             match = self.play_match(player1, player2)
+                    scores = self.view.scores_match(player1, player2)
+                    score1 = float(scores[0])
+                    score2 = float(scores[1])
+                    print("Test View resultat de match\n"
+                          "p1 =", player1, "score1 =", score1, "\n",
+                          "p2 =", player2, "score2 =", score2)
+                    match = Match(player1, score1, player2, score2)
 
-            if round +1 != ROUND_NUMBER:
-                print("pas le meme Round =", round)
-            else:
-                print("FIN ddes rounds ?!", round)
+                    result_match = [
+                        [player1.id_chess, score1],
+                        [player2.id_chess, score2]
+                    ]
 
-            # Demande à l'utilisateur si il veut rejouer un round
-            response_view = self.view.next_round(round)
-            if response_view:
-                print("Reponse vraie", round)
-            elif not response_view:
-                print("Reponse Fausse", round)
-                if not tournament.description:
-                    self.update_description(tournament)
-                break
+                    init_round.list_matches.append(match)
 
+                    # ajout du match dans la liste des rounds du tournoi Json
+                    new_round["list_matches"].append({"result_match": result_match})
+                    with open("data/tournament.json", "w") as my_file:
+                        json.dump(tournaments_json, my_file, indent=4)
+
+                self.result_round(init_round.list_matches, tournament)
+
+                if round +1 != ROUND_NUMBER:
+                    print("pas le meme Round =", round)
+                else:
+                    print("FIN ddes rounds ?!", round)
+
+                # Demande à l'utilisateur si il veut rejouer un round
+                response_view = self.view.next_round(round)
+                if response_view:
+                    print("Reponse vraie", round)
+                elif not response_view:
+                    print("Reponse Fausse", round)
+                    if not tournament.description:
+                        self.update_description(tournament)
+                    break
+        elif len(tournament.list_rounds) == round_number:
+            print("tournoi fini")
+            self.show_winner(tournament)
+            tournament.statut = False
         print("après boucle response view")
-        # mettre le classement à la fin seulement
-  #      self.show_winner(tournament)
+
         return
 
     def play_match(self, player1, player2):
