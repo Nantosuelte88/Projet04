@@ -220,11 +220,11 @@ class Controller:
         print("des joueeurs ?", tournament.list_players)
         if len(tournament.list_rounds) == tournament.number_rounds:
             print("Tournoi fini")
-            check_tournament = True
+            check_tournament = False
             self.view.continue_tournament(tournament.name_tournament, check_tournament)
         elif len(tournament.list_rounds) < tournament.number_rounds:
             print("tournoi en cours")
-            check_tournament = False
+            check_tournament = True
             ask_user = self.view.continue_tournament(tournament.name_tournament, check_tournament)
             if ask_user:
                 if len(tournament.list_players) == 1 and len(tournament.list_players[0]) == 0:
@@ -245,7 +245,9 @@ class Controller:
                 file_object = open("data/players.json", "r")
                 json_content = file_object.read()
                 json_dict = json.loads(json_content)
+                print("print de json dict", json_dict)
                 players = json_dict["players"]
+                print("Print de players", players)
                 return players
         else:
             return None
@@ -254,7 +256,7 @@ class Controller:
         print("TEST select players, tournoi :", tournament)
         print("PRINT test du nom du t-ournoi, bug ou pas ? --- >", tournament.name_tournament)
         score_tournament = 0
-        players_json = self.search_players_json()
+        players_json = self.file_json_player()
         player_name = self.view.add_player_in_tournament()
         players_selected = []
         add_players_json = []
@@ -282,9 +284,11 @@ class Controller:
                 print("sup à 1 = ", len(found_name))
                 id_chess_view = self.view.choose_players(found_name)
                 for player in players_json:
-                    if id_chess_view == player["id_chess"]:
-                        print("id correspondant", player["name"], player["first_name"], player["id_chess"])
-                        players_selected.append(player)
+                    for index in players_json:
+                        player_index = players_json[index]
+                        if id_chess_view == player_index["id_chess"]:
+                            print("id correspondant", player_index["name"], player_index["first_name"], player_index["id_chess"])
+                            players_selected.append(player)
             elif len(found_name) == 1:
                 print("egal à 1 = ", len(found_name))
                 players_selected.append(found_name)
