@@ -209,10 +209,15 @@ class Controller:
                                 found_tournament[0]["description"],
                                 found_tournament[0]["number_rounds"]
                                 )
-        tournament.list_rounds = found_tournament[0]["list_rounds"],
-        tournament.list_players = found_tournament[0]["list_players"],
-        self.tournaments.append(tournament)
 
+        # à MODIFIER !!!! Erreur lors de l'instanciation du tournoi, la liste des joueurs doit ensuite
+        # instancier les joueurs et pas juste enregistrer les id
+
+        tournament.list_rounds = found_tournament[0]["list_rounds"]
+        tournament.list_players = found_tournament[0]["list_players"]
+        self.tournaments.append(tournament)
+        print("!!!!!", tournament.list_rounds)
+        print("!!!!!", tournament.list_players)
         print("nombre de rounds",tournament.number_rounds,
               "len de list de rounds", len(tournament.list_rounds), "\n", tournament.list_rounds)
         print("!!", found_tournament[0])
@@ -227,11 +232,18 @@ class Controller:
             check_tournament = True
             ask_user = self.view.continue_tournament(tournament.name_tournament, check_tournament)
             if ask_user:
-                if len(tournament.list_players) == 1 and len(tournament.list_players[0]) == 0:
+                print(len(tournament.list_players))
+#                if len(tournament.list_players) == 1 and len(tournament.list_players[0]) == 0:
+                if not tournament.list_players:
                     print("pas de joueur", tournament.list_players)
-                    self.select_players(tournament)
+                    players = self.select_players(tournament)
+                    if players:
+                        print("players :", players, "=", tournament.list_players)
+                        self.new_round(tournament)
+                    else:
+                        print("pas de players", players)
                 else:
-                    print("des joueurs", tournament.list_players)
+                    print("des joueurs", tournament.list_players, "=", tournament.list_players)
                     self.new_round(tournament)
         else:
             print("wtf ??")
@@ -256,28 +268,26 @@ class Controller:
         print("TEST select players, tournoi :", tournament)
         print("PRINT test du nom du t-ournoi, bug ou pas ? --- >", tournament.name_tournament)
         score_tournament = 0
-        players_json = self.file_json_player()
+        current_players = self.file_json_player()
         player_name = self.view.add_player_in_tournament()
         players_selected = []
         add_players_json = []
-
+        players_json = current_players["players"]
         print("!!!!!TEST!!!!!", players_json)
         u = 0
 
+
         for name in player_name:
             found_name = []
-            for index in players_json:
-
-                print("print index =", index)
-                player_index = players_json[index]
-                print("player index=", player_index)
-                print(u, "name ?", player_index["name"])
+            for players_id, players_info in players_json.items():
+                print("player index=", players_info)
+                print(u, "name ?", players_info["name"])
                 u +=1
-                if name == player_index["name"]:
-                    print("correspondance!", name, " et ", player_index["name"])
-                    found_name.append(index)
+                if name == players_info["name"]:
+                    print("correspondance!", name, " et ", players_info["name"])
+                    found_name.append(players_info)
                 else:
-                    print("ne correspond pas", name, " et ", player_index["name"])
+                    print("ne correspond pas", name, " et ", players_info["name"])
 
             # Vérification des doublons de noms de joueurs
             if len(found_name) > 1:
@@ -297,19 +307,20 @@ class Controller:
             print("PRINT de le liste polayers dans select players = \n\n ->", players_selected)
 
             # Instanciation de la classe Player, des joueurs selectionnés, depuis fichier JSon
-            for index in players_json:
-                player_index = players_json[index]
-                print("test de nom", player_index["name"])
-                if name == player_index["name"]:
+            for players_id, players_info in players_json.items():
+                print("test de nom", players_info["name"])
+                if name == players_info["name"]:
                     print("instanciation de :", name)
-                    player = Player(player_index["name"],
-                                    player_index["first_name"],
-                                    player_index["date_birth"],
-                                    player_index["id_chess"])
+                    player = Player(players_info["name"],
+                                    players_info["first_name"],
+                                    players_info["date_birth"],
+                                    players_info["id_chess"])
                     # Ajout des joueurs dans la liste des joueurs du tournoi
+                    print(player)
+                    print("tournament list", tournament.list_players)
                     tournament.list_players.append([player, score_tournament])
                     dict_player = {
-                            "id_chess": player_index["id_chess"],
+                            "id_chess": players_info["id_chess"],
                             "score_tournament": score_tournament
                         }
                     add_players_json.append(dict_player)
@@ -329,6 +340,8 @@ class Controller:
                         json.dump(tournaments_json, my_file, indent=4)
                 else:
                     print("PAS LE BON TOURNOI", tournament.name_tournament)
+
+        print("JOUEUR DANS LE TOURNOI ????", tournament.list_players)
 
         return tournament
 
@@ -458,7 +471,7 @@ class Controller:
         date_debut = "09/12/2121"
         date_end = "02/01/2122"
         if len(tournament.list_rounds) < round_number:
-            for round in range(ROUND_NUMBER):
+            for round in range(round_number):
                 init_round = Round("Round " + str(round + 1))
                 tournament.list_rounds.append(init_round)
 
@@ -469,6 +482,8 @@ class Controller:
                 else:
                     players = sorted(tournament.list_players, key=lambda x: x[1], reverse=True)
                 print("-- ", init_round.name_round, "--")
+
+                print("verification des joueurs :", players)
 
                 # verification de l'emplacement dans le tournoi json
                 tournaments_json = self.search_tournaments_json()
@@ -493,11 +508,14 @@ class Controller:
                 with open("data/tournament.json", "w") as my_file:
                     json.dump(tournaments_json, my_file, indent=4)
 
+            # il faut instancier le joueur depuis son id
+
+
                 for player in range(0, len(players), 2):
       #              random.shuffle(MATCH_SCORE)
-                    player1 = players[player][0]
+                    player1 = players[player]
       #              score1 = MATCH_SCORE[0][0]
-                    player2 = players[player +1][0]
+                    player2 = players[player +1]
       #              score2 = MATCH_SCORE[0][1]
        #             match = self.play_match(player1, player2)
                     scores = self.view.scores_match(player1, player2)
