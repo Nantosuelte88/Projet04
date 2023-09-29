@@ -93,7 +93,39 @@
                 },
                 {
                     "name_round": "Round 1",
-                    "list_matches": [],
+                    "list_matches": [
+                        {
+                            "result_match": [
+                                [
+                                    "HP12345",
+                                    1.0
+                                ],
+                                [
+                                    "GH12345",
+                                    0.0
+                                ]
+                            ]
+                        }
+                    ],
+                    "star_time": "09/12/2121",
+                    "end_time": "02/01/2122"
+                },
+                {
+                    "name_round": "Round 2",
+                    "list_matches": [
+                        {
+                            "result_match": [
+                                [
+                                    "HP12345",
+                                    1.0
+                                ],
+                                [
+                                    "GH12345",
+                                    0.0
+                                ]
+                            ]
+                        }
+                    ],
                     "star_time": "09/12/2121",
                     "end_time": "02/01/2122"
                 }
@@ -101,11 +133,11 @@
             "list_players": [
                 {
                     "id_chess": "HP12345",
-                    "score_tournament": 0
+                    "score_tournament": 2.0
                 },
                 {
                     "id_chess": "GH12345",
-                    "score_tournament": 0
+                    "score_tournament": 0.0
                 }
             ],
             "description": null

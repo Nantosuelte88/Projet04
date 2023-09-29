@@ -266,9 +266,9 @@ class View:
 
     def scores_match(self, player1, player2):
         scores = []
-        print("MAtch", player1, "VS", player2)
-#        print("\nMATCH\n", player1.name, player1.first_name, "VS", player2.name, player2.first_name, "\n")
- #       print(player1.name, player1.first_name)
+ #       print("MAtch", player1.name, player1.first_name, "VS", player2.name, player2.first_name)
+        print("\nMATCH\n", player1.name, player1.first_name, "VS", player2.name, player2.first_name, "\n")
+        print(player1.name, player1.first_name)
 
         while True:
             score1 = input("Score du premier joueur : ")

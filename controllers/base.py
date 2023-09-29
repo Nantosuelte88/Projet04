@@ -213,8 +213,28 @@ class Controller:
         # à MODIFIER !!!! Erreur lors de l'instanciation du tournoi, la liste des joueurs doit ensuite
         # instancier les joueurs et pas juste enregistrer les id
 
+        current_players = self.file_json_player()
+        players_json = current_players["players"]
+        players_info = found_tournament[0]["list_players"]
+        for player_id in players_info:
+            print("Recherche de joueur id")
+            print(player_id["id_chess"])
+            score_tournament = player_id["score_tournament"]
+            for players, players_info in players_json.items():
+                if player_id["id_chess"] == players_info["id_chess"]:
+                    print("c'est le bon joueur", players_info["id_chess"], players_info["name"])
+                    # Instanciation du joueur
+                    player = Player(players_info["name"],
+                                    players_info["first_name"],
+                                    players_info["date_birth"],
+                                    players_info["id_chess"])
+                    print("Verif joueur", player)
+                    tournament.list_players.append([player, score_tournament])
+                else:
+                    print("ce n'est pas le bon joueur", players_info["id_chess"], players_info["name"])
+
         tournament.list_rounds = found_tournament[0]["list_rounds"]
-        tournament.list_players = found_tournament[0]["list_players"]
+
         self.tournaments.append(tournament)
         print("!!!!!", tournament.list_rounds)
         print("!!!!!", tournament.list_players)
@@ -512,10 +532,11 @@ class Controller:
 
 
                 for player in range(0, len(players), 2):
+                    print("BUG : 01:", players[0][0])
       #              random.shuffle(MATCH_SCORE)
-                    player1 = players[player]
+                    player1 = players[0][0]
       #              score1 = MATCH_SCORE[0][0]
-                    player2 = players[player +1]
+                    player2 = players[0 + 1][0]
       #              score2 = MATCH_SCORE[0][1]
        #             match = self.play_match(player1, player2)
                     scores = self.view.scores_match(player1, player2)
