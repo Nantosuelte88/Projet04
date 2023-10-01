@@ -492,7 +492,7 @@ class Controller:
         date_end = "02/01/2122"
         if len(tournament.list_rounds) < round_number:
             for round in range(round_number):
-                init_round = Round("Round " + str(round + 1))
+                init_round = Round("Round " + str(len(tournament.list_rounds) + 1))
                 tournament.list_rounds.append(init_round)
 
                 if init_round.name_round == "Round 1":
@@ -529,7 +529,6 @@ class Controller:
                     json.dump(tournaments_json, my_file, indent=4)
 
             # il faut instancier le joueur depuis son id
-
 
                 for player in range(0, len(players), 2):
                     print("BUG : 01:", players[0][0])

@@ -87,12 +87,6 @@
             "list_rounds": [
                 {
                     "name_round": "Round 1",
-                    "list_matches": [],
-                    "star_time": "09/12/2121",
-                    "end_time": "02/01/2122"
-                },
-                {
-                    "name_round": "Round 1",
                     "list_matches": [
                         {
                             "result_match": [
@@ -128,6 +122,25 @@
                     ],
                     "star_time": "09/12/2121",
                     "end_time": "02/01/2122"
+                },
+                {
+                    "name_round": "Round 3",
+                    "list_matches": [
+                        {
+                            "result_match": [
+                                [
+                                    "GH12345",
+                                    1.0
+                                ],
+                                [
+                                    "HP12345",
+                                    0.0
+                                ]
+                            ]
+                        }
+                    ],
+                    "star_time": "09/12/2121",
+                    "end_time": "02/01/2122"
                 }
             ],
             "list_players": [
@@ -137,10 +150,10 @@
                 },
                 {
                     "id_chess": "GH12345",
-                    "score_tournament": 0.0
+                    "score_tournament": 4.0
                 }
             ],
-            "description": null
+            "description": "Grogorvk 58 r4f7 tfrez e74df"
         }
     }
 }
