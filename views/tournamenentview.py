@@ -26,8 +26,6 @@ class View:
         return choice
 
     def prompt_for_player(self):
-        add_players = []
-
         while True:
             while True:
                 name = input("Nom du joueur: ")
@@ -69,27 +67,22 @@ class View:
     #        add_players.append((name.capitalize(), last_name.capitalize(), date_birth, id_chess.upper()))
             return name.capitalize(), last_name.capitalize(), date_birth.capitalize(), id_chess.upper()
 
-    def add_player_in_tournament(self):
-        selected_players = []
+    def add_player_in_tournament(self, players, peers):
+        if players:
+            print("Les joueurs selectionnés")
+            for player in players:
+                print(player)
+        if not peers:
+            print("Veuillez entrer un nombre de joueurs pairs s'il vous plait")
+
         while True:
-            while True:
-                ask_name_player = input("Entrer le nom du joueur ? ")
-
-                if all(char.isalpha() or char.isspace() for char in ask_name_player):
-                    print("Verif joueur", ask_name_player)
-                    selected_players.append(ask_name_player.capitalize())
-                else:
-                    print("Merci d'entrer un nom de joueur valide")
-
-                another_player = input("Voulez ajouter un autre joueur? O/N? ")
-                if another_player.upper() == "N":
-                    break
-            print(len(selected_players))
-            if (len(selected_players) %2) == 0:
-                print("Joueurs paires")
-                return selected_players
+            another_player = input("Voulez ajouter un autre joueur? O/N? ")
+            if another_player.upper() == "N":
+                return False
+            elif another_player.upper() == "U":
+                return True
             else:
-                print("merci d'entrer un nombre de joueurs paires")
+                print("Merci d'indiquer une donnée valide, O ou N \n")
 
     def show_player(self, check):
         if check:
@@ -163,7 +156,7 @@ class View:
 
             elif choice.isnumeric() and int(choice) == 4:
                 while True:
-                    new_id_chess = input("Nouvel dentifiant national d'échec, au format AB12345 :")
+                    new_id_chess = input("Nouvel dentifiant national d'échec, au format AB12345: ")
                     if len(new_id_chess) == 7:
                         print("Bien 7")  # test
                         if new_id_chess[0:2].isalpha():

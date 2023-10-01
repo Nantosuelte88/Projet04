@@ -47,7 +47,7 @@ class Controller:
                     break
                 elif tournament:
                     print("retour menu- tournoi marche", tournament)
-                    self.select_players(tournament)
+                    self.add_player_in_tournament(tournament)
                     print("RETOUR dans le menu, select_players -> joueur dans la liste du tournoi :",
                           tournament.name_tournament, "\n", tournament.list_players)
                     self.initiate_tournament(tournament)
@@ -256,7 +256,7 @@ class Controller:
 #                if len(tournament.list_players) == 1 and len(tournament.list_players[0]) == 0:
                 if not tournament.list_players:
                     print("pas de joueur", tournament.list_players)
-                    players = self.select_players(tournament)
+                    players = self.add_player_in_tournament(tournament)
                     if players:
                         print("players :", players, "=", tournament.list_players)
                         self.new_round(tournament)
@@ -284,49 +284,97 @@ class Controller:
         else:
             return None
 
-    def select_players(self, tournament):
-        print("TEST select players, tournoi :", tournament)
-        print("PRINT test du nom du t-ournoi, bug ou pas ? --- >", tournament.name_tournament)
-        score_tournament = 0
+    def select_players(self):
         current_players = self.file_json_player()
-        player_name = self.view.add_player_in_tournament()
         players_selected = []
-        add_players_json = []
         players_json = current_players["players"]
-        print("!!!!!TEST!!!!!", players_json)
-        u = 0
+        check = False
+        no_player = []
+        found_name = []
+        good_player = []
+        player_name = self.view.show_player(check)
+        # Prochaine version du select joueur
 
-
-        for name in player_name:
-            found_name = []
-            for players_id, players_info in players_json.items():
-                print("player index=", players_info)
-                print(u, "name ?", players_info["name"])
-                u +=1
-                if name == players_info["name"]:
-                    print("correspondance!", name, " et ", players_info["name"])
-                    found_name.append(players_info)
+        while True:
+            u = 0
+            for player in players_json:
+                print("print index =", player)
+                player_index = players_json[player]
+                print("player index=", player_index)
+                print(u, "name ?", player_index["name"])
+                u += 1
+                if player_name == player_index["name"]:
+                    print("correspondance!", player_name, " et ", player_index["name"])
+                    found_name.append(player_index)
                 else:
-                    print("ne correspond pas", name, " et ", players_info["name"])
+                    no_player.append(player)
 
-            # Vérification des doublons de noms de joueurs
             if len(found_name) > 1:
                 print("sup à 1 = ", len(found_name))
-                id_chess_view = self.view.choose_players(found_name)
-                for player in players_json:
-                    for index in players_json:
-                        player_index = players_json[index]
-                        if id_chess_view == player_index["id_chess"]:
-                            print("id correspondant", player_index["name"], player_index["first_name"], player_index["id_chess"])
-                            players_selected.append(player)
+                check_player = self.view.choose_players(found_name)
+                print("!!!", check_player, "!!!!", players_json)
+                for player_details in players_json.values():
+                    if check_player == player_details:
+                        print("id correspondant", player_details["name"], player_details["first_name"],
+                              player_details["id_chess"])
+                        good_player.append(player_details)
+                    else:
+                        print("player non correspondant", check_player, "!=", player_details["name"])
+                        no_player.append(player_details)
             elif len(found_name) == 1:
                 print("egal à 1 = ", len(found_name))
-                players_selected.append(found_name)
+                good_player.append(found_name)
             else:
                 print("pas de joueur à ce nom")
-            print("PRINT de le liste polayers dans select players = \n\n ->", players_selected)
+                check = True
 
+            if len(no_player) == len(players_json):
+                print("joueur inconnu!", no_player)
+                check = True
+            else:
+                print("le joueur est ok", no_player)
+
+            print(good_player)
+            print("verif de check ->", check)
+            if not check:
+                print(good_player)
+                if len(good_player) == 1:
+                    print("un seul joueur ok", good_player)
+                    players_selected.append(good_player[0][0])
+                    break
+                elif len(good_player) > 1:
+                    print("plusieurs joueurs dedans", good_player)
+        print("FIN BOUCLE MODIF\n joueur ? =", good_player)
+        print("---------  !!!print de players selcted!!!!", players_selected, "\n", good_player,
+              "\n\n --------")
+        return players_selected
+
+    def add_player_in_tournament(self, tournament):
+        print("TEST select players, tournoi :", tournament)
+        print("PRINT test du nom du t-ournoi, bug ou pas ? --- >", tournament.name_tournament)
+        current_players = self.file_json_player()
+        players_json = current_players["players"]
+        score_tournament = 0
+        add_players_json = []
+        players = []
+
+        while True:
+            if players:
+                ask_for_more_players = self.view.show_players()
+                if ask_for_more_players:
+                    print(ask_for_more_players)
+                    player = self.select_players()
+                    print("PLAYER", player)
+                    break
+                else:
+                    print(ask_for_more_players)
+                    break
+            else:
+                player = self.select_players()
             # Instanciation de la classe Player, des joueurs selectionnés, depuis fichier JSon
+            print("frztjiijgotjioerjierijroe", player)
+            name = player
+
             for players_id, players_info in players_json.items():
                 print("test de nom", players_info["name"])
                 if name == players_info["name"]:
@@ -344,7 +392,9 @@ class Controller:
                             "score_tournament": score_tournament
                         }
                     add_players_json.append(dict_player)
-            print(add_players_json)
+
+        print("______", add_players_json)
+        print("---->", tournament.list_players)
         # ajout des joueurs dans le tournoi Json
         tournaments_json = self.search_tournaments_json()
         for tournament_key in tournaments_json:
@@ -355,7 +405,7 @@ class Controller:
                     print("LE BON TOURNOI", tournament.name_tournament)
                     print(value["list_players"])
                     good_path = value["list_players"]
-                    good_path.extend(add_players_json)
+                    good_path.extend(add_players_json[0])
                     with open("data/tournament.json", "w") as my_file:
                         json.dump(tournaments_json, my_file, indent=4)
                 else:
@@ -438,6 +488,8 @@ class Controller:
             elif len(good_player) > 1:
                 print("plusieurs joueurs dedans", good_player)
         print("FIN BOUCLE MODIF\n joueur ? =", good_player[0][0])
+
+
         # Fin version select !!!
         p = 0
         for player in players_json:
