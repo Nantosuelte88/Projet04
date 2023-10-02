@@ -349,7 +349,27 @@ class Controller:
               "\n\n --------")
         return players_selected
 
+    def ask_for_players(self, tournament, peers):
+        while True:
+            if tournament.list_players:
+                print("paire ou non ?", len(tournament.list_players))
+                ask_for_more_players = self.view.add_player_in_tournament(tournament.list_players, peers)
+                if ask_for_more_players:
+                    print(ask_for_more_players)
+                    player = self.select_players()
+                    print("PLAYER", player)
+                    return player
+                else:
+                    print(ask_for_more_players)
+                    break
+            else:
+                player = self.select_players()
+                return player
+
+        return None
+
     def add_player_in_tournament(self, tournament):
+        a = 0
         print("TEST select players, tournoi :", tournament)
         print("PRINT test du nom du t-ournoi, bug ou pas ? --- >", tournament.name_tournament)
         current_players = self.file_json_player()
@@ -357,61 +377,67 @@ class Controller:
         score_tournament = 0
         add_players_json = []
         players = []
+        peers = False
 
         while True:
-            if players:
-                ask_for_more_players = self.view.show_players()
-                if ask_for_more_players:
-                    print(ask_for_more_players)
-                    player = self.select_players()
-                    print("PLAYER", player)
-                    break
-                else:
-                    print(ask_for_more_players)
-                    break
+            player = self.ask_for_players(tournament, peers)
+            print("\n--- a ---\n")
+
+            if player:
+                print("VERIFICATIOON tournament mist player", tournament.list_players)
+                # Instanciation de la classe Player, des joueurs selectionnés, depuis fichier JSon
+                print("frztjiijgotjioerjierijroe", player)
+                name = player[0]["name"]
+
+                for players_id, players_info in players_json.items():
+                    print("test de nom", players_info["name"])
+                    if name == players_info["name"]:
+                        print("instanciation de :", name)
+                        player_dict = Player(players_info["name"],
+                                        players_info["first_name"],
+                                        players_info["date_birth"],
+                                        players_info["id_chess"])
+                        # Ajout des joueurs dans la liste des joueurs du tournoi
+                        print(player_dict)
+                        print("avant, tournament list", tournament.list_players)
+                        tournament.list_players.append([player_dict, score_tournament])
+                        print("après, tournament list", tournament.list_players)
+                        dict_player = {
+                                "id_chess": player_dict.id_chess,
+                                "score_tournament": score_tournament
+                            }
+                        add_players_json.append(dict_player)
+
+                print("______", add_players_json)
+                print("---->", tournament.list_players)
+                # ajout des joueurs dans le tournoi Json
+                tournaments_json = self.search_tournaments_json()
+                for tournament_key in tournaments_json:
+                    tournament_info = tournaments_json[tournament_key]
+                    for key, value in tournament_info.items():
+                        print(value["name_tournament"])
+                        if value["name_tournament"] == tournament.name_tournament:
+                            print("LE BON TOURNOI", tournament.name_tournament)
+                            print(value["list_players"])
+                            good_path = value["list_players"]
+                            good_path.extend(add_players_json[0])
+                            with open("data/tournament.json", "w") as my_file:
+                                json.dump(tournaments_json, my_file, indent=4)
+                        else:
+                            print("PAS LE BON TOURNOI", tournament.name_tournament)
+
+                print("JOUEUR DANS LE TOURNOI ????", tournament.list_players)
+
             else:
-                player = self.select_players()
-            # Instanciation de la classe Player, des joueurs selectionnés, depuis fichier JSon
-            print("frztjiijgotjioerjierijroe", player)
-            name = player
+                print("pas de nouveaux joueurs")
 
-            for players_id, players_info in players_json.items():
-                print("test de nom", players_info["name"])
-                if name == players_info["name"]:
-                    print("instanciation de :", name)
-                    player = Player(players_info["name"],
-                                    players_info["first_name"],
-                                    players_info["date_birth"],
-                                    players_info["id_chess"])
-                    # Ajout des joueurs dans la liste des joueurs du tournoi
-                    print(player)
-                    print("tournament list", tournament.list_players)
-                    tournament.list_players.append([player, score_tournament])
-                    dict_player = {
-                            "id_chess": players_info["id_chess"],
-                            "score_tournament": score_tournament
-                        }
-                    add_players_json.append(dict_player)
-
-        print("______", add_players_json)
-        print("---->", tournament.list_players)
-        # ajout des joueurs dans le tournoi Json
-        tournaments_json = self.search_tournaments_json()
-        for tournament_key in tournaments_json:
-            tournament_info = tournaments_json[tournament_key]
-            for key, value in tournament_info.items():
-                print(value["name_tournament"])
-                if value["name_tournament"] == tournament.name_tournament:
-                    print("LE BON TOURNOI", tournament.name_tournament)
-                    print(value["list_players"])
-                    good_path = value["list_players"]
-                    good_path.extend(add_players_json[0])
-                    with open("data/tournament.json", "w") as my_file:
-                        json.dump(tournaments_json, my_file, indent=4)
-                else:
-                    print("PAS LE BON TOURNOI", tournament.name_tournament)
-
-        print("JOUEUR DANS LE TOURNOI ????", tournament.list_players)
+            if (len(tournament.list_players) % 2) == 0:
+                print("joueurs pairs")
+                peers = True
+                break
+            else:
+                print("joueurs impairs")
+                peers = False
 
         return tournament
 

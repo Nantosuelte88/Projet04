@@ -156,8 +156,8 @@
             "description": "Grogorvk 58 r4f7 tfrez e74df"
         },
         "4": {
-            "name_tournament": "Sun",
-            "locality": "Triofkjikrgjd",
+            "name_tournament": "Igorj",
+            "locality": "Frd",
             "start_date": "04 Septembre",
             "end_date": null,
             "number_rounds": 4,
@@ -166,8 +166,8 @@
             "description": null
         },
         "5": {
-            "name_tournament": "Goreik",
-            "locality": "Gtrf",
+            "name_tournament": "Yt",
+            "locality": "O",
             "start_date": "04 Septembre",
             "end_date": null,
             "number_rounds": 4,
@@ -176,8 +176,8 @@
             "description": null
         },
         "6": {
-            "name_tournament": "Grfg",
-            "locality": "Gregre",
+            "name_tournament": "Ihtr",
+            "locality": "K",
             "start_date": "04 Septembre",
             "end_date": null,
             "number_rounds": 4,
@@ -186,8 +186,8 @@
             "description": null
         },
         "7": {
-            "name_tournament": "Grtegv",
-            "locality": "Gregre",
+            "name_tournament": "Tioy",
+            "locality": "H",
             "start_date": "04 Septembre",
             "end_date": null,
             "number_rounds": 4,
@@ -196,8 +196,8 @@
             "description": null
         },
         "8": {
-            "name_tournament": "Hfgh",
-            "locality": "Hfgh",
+            "name_tournament": "Uireg",
+            "locality": "G",
             "start_date": "04 Septembre",
             "end_date": null,
             "number_rounds": 4,
@@ -206,153 +206,241 @@
             "description": null
         },
         "9": {
-            "name_tournament": "Jrgh",
-            "locality": "Terdgfre",
+            "name_tournament": "Tr",
+            "locality": "Grerd",
             "start_date": "04 Septembre",
             "end_date": null,
             "number_rounds": 4,
             "list_rounds": [],
-            "list_players": [],
+            "list_players": [
+                "id_chess",
+                "score_tournament",
+                "id_chess",
+                "score_tournament"
+            ],
             "description": null
         },
         "10": {
-            "name_tournament": "Ygtrfghb",
-            "locality": "Gtfgvf",
+            "name_tournament": "Rg",
+            "locality": "Gre",
             "start_date": "04 Septembre",
             "end_date": null,
             "number_rounds": 4,
             "list_rounds": [],
-            "list_players": [],
+            "list_players": [
+                "id_chess",
+                "score_tournament"
+            ],
             "description": null
         },
         "11": {
-            "name_tournament": "Htgfhbfg",
-            "locality": "Htyg",
+            "name_tournament": "Tr",
+            "locality": "Hb",
             "start_date": "04 Septembre",
             "end_date": null,
             "number_rounds": 4,
             "list_rounds": [],
-            "list_players": [],
+            "list_players": [
+                "id_chess",
+                "score_tournament"
+            ],
             "description": null
         },
         "12": {
-            "name_tournament": "Yguygyh",
-            "locality": "Ijij",
+            "name_tournament": "Ht",
+            "locality": "H",
             "start_date": "04 Septembre",
             "end_date": null,
             "number_rounds": 4,
             "list_rounds": [],
-            "list_players": [],
+            "list_players": [
+                "id_chess",
+                "score_tournament"
+            ],
             "description": null
         },
         "13": {
-            "name_tournament": "Ygg",
-            "locality": "Uih",
+            "name_tournament": "Testeuh",
+            "locality": "Kjiet",
             "start_date": "04 Septembre",
             "end_date": null,
             "number_rounds": 4,
             "list_rounds": [],
-            "list_players": [],
+            "list_players": [
+                "id_chess",
+                "score_tournament"
+            ],
             "description": null
         },
         "14": {
-            "name_tournament": "Er",
-            "locality": "Grd",
+            "name_tournament": "U",
+            "locality": "Frds",
             "start_date": "04 Septembre",
             "end_date": null,
             "number_rounds": 4,
             "list_rounds": [],
-            "list_players": [],
+            "list_players": [
+                "id_chess",
+                "score_tournament"
+            ],
             "description": null
         },
         "15": {
-            "name_tournament": "Hytr",
-            "locality": "Erz",
+            "name_tournament": "Jigre",
+            "locality": "Gr",
             "start_date": "04 Septembre",
             "end_date": null,
             "number_rounds": 4,
             "list_rounds": [],
-            "list_players": [],
+            "list_players": [
+                "id_chess",
+                "score_tournament"
+            ],
             "description": null
         },
         "16": {
-            "name_tournament": "Treij",
-            "locality": "Rezf",
+            "name_tournament": "Ghrte",
+            "locality": "Grv",
             "start_date": "04 Septembre",
             "end_date": null,
             "number_rounds": 4,
             "list_rounds": [],
-            "list_players": [],
+            "list_players": [
+                "id_chess",
+                "score_tournament"
+            ],
             "description": null
         },
         "17": {
-            "name_tournament": "Tf",
-            "locality": "Yg",
+            "name_tournament": "Ht",
+            "locality": "Thg",
             "start_date": "04 Septembre",
             "end_date": null,
             "number_rounds": 4,
             "list_rounds": [],
-            "list_players": [],
+            "list_players": [
+                "id_chess",
+                "score_tournament"
+            ],
             "description": null
         },
         "18": {
-            "name_tournament": "Rz",
-            "locality": "Tgr",
+            "name_tournament": "H",
+            "locality": "H",
             "start_date": "04 Septembre",
             "end_date": null,
             "number_rounds": 4,
             "list_rounds": [],
-            "list_players": [],
+            "list_players": [
+                "id_chess",
+                "score_tournament"
+            ],
             "description": null
         },
         "19": {
-            "name_tournament": "Gre",
-            "locality": "Tre",
+            "name_tournament": "Ui",
+            "locality": "K",
             "start_date": "04 Septembre",
             "end_date": null,
             "number_rounds": 4,
             "list_rounds": [],
-            "list_players": [],
+            "list_players": [
+                "id_chess",
+                "score_tournament"
+            ],
             "description": null
         },
         "20": {
-            "name_tournament": "Juegr",
-            "locality": "Egr",
+            "name_tournament": "Gr",
+            "locality": "Grg",
             "start_date": "04 Septembre",
             "end_date": null,
             "number_rounds": 4,
             "list_rounds": [],
-            "list_players": [],
+            "list_players": [
+                "id_chess",
+                "score_tournament"
+            ],
             "description": null
         },
         "21": {
-            "name_tournament": "Iokj",
-            "locality": "Juhjuh",
+            "name_tournament": "G",
+            "locality": "Gdf",
             "start_date": "04 Septembre",
             "end_date": null,
             "number_rounds": 4,
             "list_rounds": [],
-            "list_players": [],
+            "list_players": [
+                "id_chess",
+                "score_tournament"
+            ],
             "description": null
         },
         "22": {
-            "name_tournament": "Re",
-            "locality": "F",
+            "name_tournament": "F",
+            "locality": "Fds",
             "start_date": "04 Septembre",
             "end_date": null,
             "number_rounds": 4,
             "list_rounds": [],
-            "list_players": [],
+            "list_players": [
+                "id_chess",
+                "score_tournament"
+            ],
             "description": null
         },
         "23": {
-            "name_tournament": "Trg",
-            "locality": "F",
+            "name_tournament": "Hrt",
+            "locality": "H",
             "start_date": "04 Septembre",
             "end_date": null,
             "number_rounds": 4,
             "list_rounds": [],
-            "list_players": [],
+            "list_players": [
+                "id_chess",
+                "score_tournament"
+            ],
+            "description": null
+        },
+        "24": {
+            "name_tournament": "Iketr",
+            "locality": "Gy",
+            "start_date": "04 Septembre",
+            "end_date": null,
+            "number_rounds": 4,
+            "list_rounds": [],
+            "list_players": [
+                "id_chess",
+                "score_tournament"
+            ],
+            "description": null
+        },
+        "25": {
+            "name_tournament": "Grfd",
+            "locality": "Gfd",
+            "start_date": "04 Septembre",
+            "end_date": null,
+            "number_rounds": 4,
+            "list_rounds": [],
+            "list_players": [
+                "id_chess",
+                "score_tournament"
+            ],
+            "description": null
+        },
+        "26": {
+            "name_tournament": "Tf",
+            "locality": "Jji",
+            "start_date": "04 Septembre",
+            "end_date": null,
+            "number_rounds": 4,
+            "list_rounds": [],
+            "list_players": [
+                "id_chess",
+                "score_tournament",
+                "id_chess",
+                "score_tournament"
+            ],
             "description": null
         }
     }

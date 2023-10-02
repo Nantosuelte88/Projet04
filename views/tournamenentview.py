@@ -69,17 +69,23 @@ class View:
 
     def add_player_in_tournament(self, players, peers):
         if players:
-            print("Les joueurs selectionnés")
+            i = 1
+            print("\n\nLes joueurs selectionnés\n")
             for player in players:
-                print(player)
+                print(i, "-",
+                      player[0].name,
+                      player[0].first_name,
+                      player[0].id_chess,
+                      "\n")
+                i += 1
         if not peers:
-            print("Veuillez entrer un nombre de joueurs pairs s'il vous plait")
+            print("Veuillez entrer un nombre de joueurs pairs s'il vous plait\n\n")
 
         while True:
             another_player = input("Voulez ajouter un autre joueur? O/N? ")
             if another_player.upper() == "N":
                 return False
-            elif another_player.upper() == "U":
+            elif another_player.upper() == "O":
                 return True
             else:
                 print("Merci d'indiquer une donnée valide, O ou N \n")
@@ -111,12 +117,13 @@ class View:
 
     def show_players(self, players):
         print("\n\nLes Joueurs :\n")
+
         for player, players_details in enumerate(players, start=1):
             print(f"Joueur", player,
-                  "\nNom :", players_details["name"],
-                  "\nPrenom :", players_details["first_name"],
-                  "\nDate de naissance :", players_details["date_birth"],
-                  "\nID d'échec :", players_details["id_chess"], "\n")
+                  "\nNom :", players_details.name,
+                  "\nPrenom :", players_details.first_name,
+                  "\nDate de naissance :", players_details.date_birth,
+                  "\nID d'échec :", players_details.id_chess, "\n")
 
     def modification_player(self, info_player):
         print(f"Joueur :"
