@@ -35,7 +35,11 @@
                 {
                     "id_chess": "GH12345",
                     "score_tournament": 0
-                }
+                },
+                "id_chess",
+                "score_tournament",
+                "id_chess",
+                "score_tournament"
             ],
             "description": "1er tournoi test, 1 round, 2 joueurs"
         },
@@ -369,10 +373,33 @@
             "start_date": "04 Septembre",
             "end_date": null,
             "number_rounds": 4,
-            "list_rounds": [],
+            "list_rounds": [
+                {
+                    "name_round": "Round 1",
+                    "list_matches": [],
+                    "star_time": "09/12/2121",
+                    "end_time": "02/01/2122"
+                }
+            ],
             "list_players": [
                 "id_chess",
-                "score_tournament"
+                "score_tournament",
+                {
+                    "id_chess": "GH12345",
+                    "score_tournament": 0
+                },
+                {
+                    "id_chess": "GH12345",
+                    "score_tournament": 0
+                },
+                {
+                    "id_chess": "GH12345",
+                    "score_tournament": 0
+                },
+                {
+                    "id_chess": "GH12345",
+                    "score_tournament": 0
+                }
             ],
             "description": null
         },
@@ -440,6 +467,266 @@
                 "score_tournament",
                 "id_chess",
                 "score_tournament"
+            ],
+            "description": null
+        },
+        "27": {
+            "name_tournament": "Test",
+            "locality": "Lroythp",
+            "start_date": "04 Septembre",
+            "end_date": null,
+            "number_rounds": 4,
+            "list_rounds": [],
+            "list_players": [
+                "id_chess",
+                "score_tournament",
+                "id_chess",
+                "score_tournament"
+            ],
+            "description": null
+        },
+        "28": {
+            "name_tournament": "Yu",
+            "locality": "Jy",
+            "start_date": "04 Septembre",
+            "end_date": null,
+            "number_rounds": 4,
+            "list_rounds": [],
+            "list_players": [
+                "id_chess",
+                "score_tournament",
+                "id_chess",
+                "score_tournament"
+            ],
+            "description": null
+        },
+        "29": {
+            "name_tournament": "Granger",
+            "locality": "Hy",
+            "start_date": "04 Septembre",
+            "end_date": null,
+            "number_rounds": 4,
+            "list_rounds": [],
+            "list_players": [],
+            "description": null
+        },
+        "30": {
+            "name_tournament": "Trh",
+            "locality": "Hbng",
+            "start_date": "04 Septembre",
+            "end_date": null,
+            "number_rounds": 4,
+            "list_rounds": [],
+            "list_players": [
+                "id_chess",
+                "score_tournament",
+                "id_chess",
+                "score_tournament",
+                "id_chess",
+                "score_tournament"
+            ],
+            "description": null
+        },
+        "31": {
+            "name_tournament": "Trh",
+            "locality": "Tgh",
+            "start_date": "04 Septembre",
+            "end_date": null,
+            "number_rounds": 4,
+            "list_rounds": [],
+            "list_players": [
+                "id_chess",
+                "score_tournament",
+                "id_chess",
+                "score_tournament",
+                "id_chess",
+                "score_tournament"
+            ],
+            "description": null
+        },
+        "32": {
+            "name_tournament": "Hyt",
+            "locality": "Yt",
+            "start_date": "04 Septembre",
+            "end_date": null,
+            "number_rounds": 4,
+            "list_rounds": [],
+            "list_players": [
+                "id_chess",
+                "score_tournament",
+                "id_chess",
+                "score_tournament",
+                "id_chess",
+                "score_tournament",
+                "id_chess",
+                "score_tournament"
+            ],
+            "description": null
+        },
+        "33": {
+            "name_tournament": "Tyh",
+            "locality": "Trhg",
+            "start_date": "04 Septembre",
+            "end_date": null,
+            "number_rounds": 4,
+            "list_rounds": [],
+            "list_players": [
+                "id_chess",
+                "score_tournament"
+            ],
+            "description": null
+        },
+        "34": {
+            "name_tournament": "Opfk",
+            "locality": "Ff",
+            "start_date": "04 Septembre",
+            "end_date": null,
+            "number_rounds": 4,
+            "list_rounds": [],
+            "list_players": [
+                "id_chess",
+                "score_tournament"
+            ],
+            "description": null
+        },
+        "35": {
+            "name_tournament": "Hyt",
+            "locality": "Tg",
+            "start_date": "04 Septembre",
+            "end_date": null,
+            "number_rounds": 4,
+            "list_rounds": [],
+            "list_players": [
+                "id_chess",
+                "score_tournament",
+                "id_chess",
+                "score_tournament"
+            ],
+            "description": null
+        },
+        "36": {
+            "name_tournament": "Trh",
+            "locality": "H",
+            "start_date": "04 Septembre",
+            "end_date": null,
+            "number_rounds": 4,
+            "list_rounds": [],
+            "list_players": [
+                "id_chess",
+                "score_tournament"
+            ],
+            "description": null
+        },
+        "37": {
+            "name_tournament": "Ytr",
+            "locality": "Gh",
+            "start_date": "04 Septembre",
+            "end_date": null,
+            "number_rounds": 4,
+            "list_rounds": [],
+            "list_players": [
+                "id_chess",
+                "score_tournament",
+                "id_chess",
+                "score_tournament"
+            ],
+            "description": null
+        },
+        "38": {
+            "name_tournament": "Y",
+            "locality": "Htgf",
+            "start_date": "04 Septembre",
+            "end_date": null,
+            "number_rounds": 4,
+            "list_rounds": [
+                {
+                    "name_round": "Round 1",
+                    "list_matches": [
+                        {
+                            "result_match": [
+                                [
+                                    "HP12345",
+                                    1.0
+                                ],
+                                [
+                                    "MD12345",
+                                    0.0
+                                ]
+                            ]
+                        },
+                        {
+                            "result_match": [
+                                [
+                                    "HP12345",
+                                    1.0
+                                ],
+                                [
+                                    "MD12345",
+                                    0.0
+                                ]
+                            ]
+                        }
+                    ],
+                    "star_time": "09/12/2121",
+                    "end_time": "02/01/2122"
+                }
+            ],
+            "list_players": [
+                "id_chess",
+                "score_tournament",
+                "id_chess",
+                "score_tournament",
+                "id_chess",
+                "score_tournament",
+                "id_chess",
+                "score_tournament"
+            ],
+            "description": null
+        },
+        "39": {
+            "name_tournament": "G",
+            "locality": "Gred",
+            "start_date": "04 Septembre",
+            "end_date": null,
+            "number_rounds": 4,
+            "list_rounds": [
+                {
+                    "name_round": "Round 1",
+                    "list_matches": [
+                        {
+                            "result_match": [
+                                [
+                                    "HP12345",
+                                    1.0
+                                ],
+                                [
+                                    "MD12345",
+                                    0.0
+                                ]
+                            ]
+                        }
+                    ],
+                    "star_time": "09/12/2121",
+                    "end_time": "02/01/2122"
+                }
+            ],
+            "list_players": [
+                {
+                    "id_chess": "GH12345",
+                    "score_tournament": 0
+                },
+                {
+                    "id_chess": "GH12345",
+                    "score_tournament": 0
+                },
+                {
+                    "id_chess": "GH12345",
+                    "score_tournament": 0
+                },
+                {
+                    "id_chess": "GH12345",
+                    "score_tournament": 0
+                }
             ],
             "description": null
         }

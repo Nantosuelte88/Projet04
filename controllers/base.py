@@ -312,12 +312,13 @@ class Controller:
             if len(found_name) > 1:
                 print("sup à 1 = ", len(found_name))
                 check_player = self.view.choose_players(found_name)
-                print("!!!", check_player, "!!!!", players_json)
+                print("!!!", check_player, "!!!!")
                 for player_details in players_json.values():
+                    print("\n\n\n\n player_details = ", player_details)
                     if check_player == player_details:
                         print("id correspondant", player_details["name"], player_details["first_name"],
                               player_details["id_chess"])
-                        good_player.append(player_details)
+                        good_player.append([player_details])
                     else:
                         print("player non correspondant", check_player, "!=", player_details["name"])
                         no_player.append(player_details)
@@ -344,7 +345,7 @@ class Controller:
                     break
                 elif len(good_player) > 1:
                     print("plusieurs joueurs dedans", good_player)
-        print("FIN BOUCLE MODIF\n joueur ? =", good_player)
+        print("FIN BOUCLE select\n joueur ? =", good_player)
         print("---------  !!!print de players selcted!!!!", players_selected, "\n", good_player,
               "\n\n --------")
         return players_selected
@@ -353,6 +354,7 @@ class Controller:
         while True:
             if tournament.list_players:
                 print("paire ou non ?", len(tournament.list_players))
+                print(peers)
                 ask_for_more_players = self.view.add_player_in_tournament(tournament.list_players, peers)
                 if ask_for_more_players:
                     print(ask_for_more_players)
@@ -388,10 +390,11 @@ class Controller:
                 # Instanciation de la classe Player, des joueurs selectionnés, depuis fichier JSon
                 print("frztjiijgotjioerjierijroe", player)
                 name = player[0]["name"]
+                id_chess = player[0]["id_chess"]
 
                 for players_id, players_info in players_json.items():
                     print("test de nom", players_info["name"])
-                    if name == players_info["name"]:
+                    if name == players_info["name"] and id_chess == players_info["id_chess"]:
                         print("instanciation de :", name)
                         player_dict = Player(players_info["name"],
                                         players_info["first_name"],
@@ -420,7 +423,7 @@ class Controller:
                             print("LE BON TOURNOI", tournament.name_tournament)
                             print(value["list_players"])
                             good_path = value["list_players"]
-                            good_path.extend(add_players_json[0])
+                            good_path.append(add_players_json[0])
                             with open("data/tournament.json", "w") as my_file:
                                 json.dump(tournaments_json, my_file, indent=4)
                         else:
@@ -431,13 +434,14 @@ class Controller:
             else:
                 print("pas de nouveaux joueurs")
 
-            if (len(tournament.list_players) % 2) == 0:
-                print("joueurs pairs")
-                peers = True
-                break
-            else:
-                print("joueurs impairs")
-                peers = False
+                if (len(tournament.list_players) % 2) == 0:
+                    print("joueurs pairs")
+                    peers = True
+                    break
+
+                else:
+                    print("joueurs impairs")
+                    peers = False
 
         return tournament
 
@@ -513,14 +517,13 @@ class Controller:
                 print("un seul joueur ok", good_player)
             elif len(good_player) > 1:
                 print("plusieurs joueurs dedans", good_player)
-        print("FIN BOUCLE MODIF\n joueur ? =", good_player[0][0])
-
+        print("FIN BOUCLE modif\n joueur ? =", good_player[0][0])
 
         # Fin version select !!!
         p = 0
         for player in players_json:
             print(p, players_json[player])
-            p +=1
+            p += 1
             if good_player[0][0] == players_json[player]:
                 print("bon joueur")
                 new_info = self.view.modification_player(players_json[player])
