@@ -288,67 +288,74 @@ class Controller:
         current_players = self.file_json_player()
         players_selected = []
         players_json = current_players["players"]
-        check = False
         no_player = []
         found_name = []
         good_player = []
-        player_name = self.view.show_player(check)
-        # Prochaine version du select joueur
+        check = False
 
         while True:
-            u = 0
-            for player in players_json:
-                print("print index =", player)
-                player_index = players_json[player]
-                print("player index=", player_index)
-                print(u, "name ?", player_index["name"])
-                u += 1
-                if player_name == player_index["name"]:
-                    print("correspondance!", player_name, " et ", player_index["name"])
-                    found_name.append(player_index)
-                else:
-                    no_player.append(player)
+            print("Verif de check avant ", check)
+            player_name = self.view.show_player(check)
+            print("Verif de check apres", check)
 
-            if len(found_name) > 1:
-                print("sup à 1 = ", len(found_name))
-                check_player = self.view.choose_players(found_name)
-                print("!!!", check_player, "!!!!")
-                for player_details in players_json.values():
-                    print("\n\n\n\n player_details = ", player_details)
-                    if check_player == player_details:
-                        print("id correspondant", player_details["name"], player_details["first_name"],
-                              player_details["id_chess"])
-                        good_player.append([player_details])
-                    else:
-                        print("player non correspondant", check_player, "!=", player_details["name"])
-                        no_player.append(player_details)
-            elif len(found_name) == 1:
-                print("egal à 1 = ", len(found_name))
-                good_player.append(found_name)
-            else:
-                print("pas de joueur à ce nom")
-                check = True
-
-            if len(no_player) == len(players_json):
-                print("joueur inconnu!", no_player)
-                check = True
-            else:
-                print("le joueur est ok", no_player)
-
-            print(good_player)
-            print("verif de check ->", check)
             if not check:
-                print(good_player)
-                if len(good_player) == 1:
-                    print("un seul joueur ok", good_player)
-                    players_selected.append(good_player[0][0])
-                    break
-                elif len(good_player) > 1:
-                    print("plusieurs joueurs dedans", good_player)
-        print("FIN BOUCLE select\n joueur ? =", good_player)
-        print("---------  !!!print de players selcted!!!!", players_selected, "\n", good_player,
-              "\n\n --------")
-        return players_selected
+                while True:
+                    u = 0
+                    for player in players_json:
+                        print("print index =", player)
+                        player_index = players_json[player]
+                        print("player index=", player_index)
+                        print(u, "name ?", player_index["name"])
+                        u += 1
+                        if player_name == player_index["name"]:
+                            print("correspondance!", player_name, " et ", player_index["name"])
+                            found_name.append(player_index)
+                        else:
+                            no_player.append(player)
+
+                    if len(found_name) > 1:
+                        print("sup à 1 = ", len(found_name))
+                        check_player = self.view.choose_players(found_name)
+                        print("!!!", check_player, "!!!!")
+                        for player_details in players_json.values():
+                            print("\n\n\n\n player_details = ", player_details)
+                            if check_player == player_details:
+                                print("id correspondant", player_details["name"], player_details["first_name"],
+                                      player_details["id_chess"])
+                                good_player.append([player_details])
+                            else:
+                                print("player non correspondant", check_player, "!=", player_details["name"])
+                                no_player.append(player_details)
+                    elif len(found_name) == 1:
+                        print("egal à 1 = ", len(found_name))
+                        good_player.append(found_name)
+                    else:
+                        print("pas de joueur à ce nom")
+                        check = True
+                        break
+
+                    if len(no_player) == len(players_json):
+                        print("joueur inconnu!", no_player)
+                        check = True
+                    else:
+                        print("le joueur est ok", no_player)
+                        check = False
+
+                    print(good_player)
+                    print("verif de check ->", check)
+                    if not check:
+                        print(good_player)
+                        if len(good_player) == 1:
+                            print("un seul joueur ok", good_player)
+                            players_selected.append(good_player[0][0])
+                            break
+                        elif len(good_player) > 1:
+                            print("plusieurs joueurs dedans", good_player)
+
+            print("FIN BOUCLE select\n joueur ? =", good_player)
+            print("---------  !!!print de players selcted!!!!", players_selected, "\n", good_player,
+                  "\n\n --------")
+            return players_selected
 
     def ask_for_players(self, tournament, peers):
         while True:
