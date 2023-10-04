@@ -10,7 +10,7 @@ from views.tournamenentview import View
 import json
 import os
 import random
-import datetime
+#import datetime
 from datetime import datetime
 
 ROUND_NUMBER = 4
@@ -22,7 +22,6 @@ file_path_players = "data/players.json"
 
 class Controller:
     """ Le Contrôleur """
-
     def __init__(self, view):
 
         self.view = view
@@ -165,10 +164,13 @@ class Controller:
         current_players = self.file_json_player()
         players_json = current_players["players"]
         players_info = found_tournament[0]["list_players"]
+        print("____ ", players_info)
         for player_id in players_info:
-            score_tournament = player_id["score_tournament"]
+            print("print ecnore", player_id)
+            score_tournament = player_id[0]["score_tournament"]
             for players, players_info in players_json.items():
-                if player_id["id_chess"] == players_info["id_chess"]:
+                print("players:", players, "-", players_info)
+                if player_id[0]["id_chess"] == players_info["id_chess"]:
                     # Instanciation du joueur
                     player = Player(players_info["name"],
                                     players_info["first_name"],
@@ -460,8 +462,9 @@ class Controller:
     def new_round(self, tournament):
         round_number = tournament.number_rounds
         new_round = []
-        date_debut = "09/12/2121"
-        date_end = "02/01/2122"
+        date_debut = "13 jullet"
+ #       date_debut = datetime.now()
+        date_end = "None"
         if len(tournament.list_rounds) < round_number:
             for round in range(round_number):
                 init_round = Round("Round " + str(len(tournament.list_rounds) + 1))
@@ -482,9 +485,7 @@ class Controller:
                 for tournament_key in tournaments_json:
                     tournament_info = tournaments_json[tournament_key]
                     for key, value in tournament_info.items():
-                        print(value["name_tournament"])
                         if value["name_tournament"] == tournament.name_tournament:
-                            print("LE BON TOURNOI", tournament.name_tournament)
                             good_path_round = value["list_rounds"]
                             new_round = {
                                 "name_round": init_round.name_round,
@@ -492,22 +493,18 @@ class Controller:
                                 "star_time": date_debut,
                                 "end_time": date_end
                             }
-                            print("!!!!!!! print init round", init_round.name_round)
                             good_path_round.append(new_round)
-                            print("good_path", good_path_round)
-                        else:
-                            print("PAS LE BON TOURNOI", tournament.name_tournament)
                 with open("data/tournament.json", "w") as my_file:
                     json.dump(tournaments_json, my_file, indent=4)
 
             # il faut instancier le joueur depuis son id
 
                 for player in range(0, len(players), 2):
-                    print("BUG : 01:", players[0][0])
+                    print("BUG : 01:", players[player][0])
       #              random.shuffle(MATCH_SCORE)
-                    player1 = players[0][0]
+                    player1 = players[player][0]
       #              score1 = MATCH_SCORE[0][0]
-                    player2 = players[0 + 1][0]
+                    player2 = players[player + 1][0]
       #              score2 = MATCH_SCORE[0][1]
        #             match = self.play_match(player1, player2)
                     scores = self.view.scores_match(player1, player2)
@@ -532,10 +529,11 @@ class Controller:
 
                 self.result_round(init_round.list_matches, tournament)
 
-                if round +1 != ROUND_NUMBER:
+                if round + 1 != ROUND_NUMBER:
                     print("pas le meme Round =", round)
                 else:
                     print("FIN ddes rounds ?!", round)
+
 
                 # Demande à l'utilisateur si il veut rejouer un round
                 response_view = self.view.next_round(round)
@@ -577,8 +575,11 @@ class Controller:
                     good_path_round = value["list_players"]
                     for player in tournament.list_players:
                         for player_info in good_path_round:
-                            if player[0].id_chess == player_info["id_chess"]:
-                                player_info["score_tournament"] = player[1]
+                            print("__", player[0].id_chess)
+                            print("--", player)
+                            print("--", player_info)
+                            if player[0].id_chess == player_info[0]["id_chess"]:
+                                player_info[0]["score_tournament"] = player[1]
 
         with open("data/tournament.json", "w") as my_file:
             json.dump(tournaments_json, my_file, indent=4)

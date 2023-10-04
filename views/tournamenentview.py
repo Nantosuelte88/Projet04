@@ -231,7 +231,7 @@ class View:
         if check:
             print("\nTournoi inconnu !")
         while True:
-            ask_name_tournament = input("à quel tournoi souhaitez-vous jouer ?")
+            ask_name_tournament = input("à quel tournoi souhaitez-vous jouer ? ")
             if all(char.isalpha() or char.isspace() for char in ask_name_tournament):
                 print("Verif tournoi", ask_name_tournament)
                 break
