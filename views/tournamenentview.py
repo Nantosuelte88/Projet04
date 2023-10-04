@@ -294,7 +294,7 @@ class View:
     def next_round(self, round):
         print("View next_round", round)
         while True:
-            get_round = input("Voulez-vous rejouer un round ? O/N")
+            get_round = input("Voulez-vous rejouer un round ? O/N ")
             if get_round.capitalize() == "O":
                 return True
             elif get_round.capitalize() == "N":

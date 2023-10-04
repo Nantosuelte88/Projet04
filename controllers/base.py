@@ -109,16 +109,17 @@ class Controller:
         tournament_data = self.search_tournaments_json()
         tournament_info_view = self.view.prompt_for_tournament()
         description = self.view.description()
-     #   date = datetime.datetime.now().strftime("%d.%m.%Y;%H:%M:%S")
-   #     date = datetime.date.today()
-        date = "04 Septembre"
-        tournament = Tournament(tournament_info_view[0], tournament_info_view[1], date, description, ROUND_NUMBER)
+        date_debut = datetime.now()
+        format_date = date_debut.strftime("%d/%m/%Y-%H:%M:%S")
+        tournament = Tournament(tournament_info_view[0], tournament_info_view[1], date_debut, description, ROUND_NUMBER)
         self.tournaments.append(tournament)
+        print("print date", date_debut)
+        print("print dans json", format_date)
 
         new_tournament = {
             "name_tournament": tournament_info_view[0],
             "locality": tournament_info_view[1],
-            "start_date": date,
+            "start_date": format_date,
             "end_date": None,
             "number_rounds": ROUND_NUMBER,
             "list_rounds": [],
@@ -462,9 +463,8 @@ class Controller:
     def new_round(self, tournament):
         round_number = tournament.number_rounds
         new_round = []
-        date_debut = "13 jullet"
- #       date_debut = datetime.now()
-        date_end = "None"
+        date_debut = datetime.now()
+        format_date_debut = date_debut.strftime("%d/%m/%Y - %H:%M:%S")
         if len(tournament.list_rounds) < round_number:
             for round in range(round_number):
                 init_round = Round("Round " + str(len(tournament.list_rounds) + 1))
@@ -490,8 +490,8 @@ class Controller:
                             new_round = {
                                 "name_round": init_round.name_round,
                                 "list_matches": [],
-                                "star_time": date_debut,
-                                "end_time": date_end
+                                "star_time": format_date_debut,
+                                "end_time": None
                             }
                             good_path_round.append(new_round)
                 with open("data/tournament.json", "w") as my_file:
@@ -500,19 +500,11 @@ class Controller:
             # il faut instancier le joueur depuis son id
 
                 for player in range(0, len(players), 2):
-                    print("BUG : 01:", players[player][0])
-      #              random.shuffle(MATCH_SCORE)
                     player1 = players[player][0]
-      #              score1 = MATCH_SCORE[0][0]
                     player2 = players[player + 1][0]
-      #              score2 = MATCH_SCORE[0][1]
-       #             match = self.play_match(player1, player2)
                     scores = self.view.scores_match(player1, player2)
                     score1 = float(scores[0])
                     score2 = float(scores[1])
-                    print("Test View resultat de match\n"
-                          "p1 =", player1, "score1 =", score1, "\n",
-                          "p2 =", player2, "score2 =", score2)
                     match = Match(player1, score1, player2, score2)
 
                     result_match = [
@@ -524,6 +516,9 @@ class Controller:
 
                     # ajout du match dans la liste des rounds du tournoi Json
                     new_round["list_matches"].append({"result_match": result_match})
+                    date_end = datetime.now()
+                    format_date_end = date_end.strftime("%d/%m/%Y - %H:%M:%S")
+                    new_round["end_time"] = format_date_end
                     with open("data/tournament.json", "w") as my_file:
                         json.dump(tournaments_json, my_file, indent=4)
 
@@ -533,7 +528,19 @@ class Controller:
                     print("pas le meme Round =", round)
                 else:
                     print("FIN ddes rounds ?!", round)
-
+                    tournaments_json = self.search_tournaments_json()
+                    end_time_tournament = datetime.now()
+                    format_end_time = end_time_tournament.strftime("%d/%m/%Y - %H:%M:%S")
+                    for tournament_key in tournaments_json:
+                        tournament_info = tournaments_json[tournament_key]
+                        for key, value in tournament_info.items():
+                            if value["name_tournament"] == tournament.name_tournament:
+                                print(value["end_time"])
+                                if not value["end_time"]:
+                                    print("pas de date de fin de tournoi")
+                                    value["end_time"] = format_end_time
+                                else:
+                                    print("il y a une date de fin de tournoi")
 
                 # Demande à l'utilisateur si il veut rejouer un round
                 response_view = self.view.next_round(round)
@@ -544,11 +551,11 @@ class Controller:
                     if not tournament.description:
                         self.update_description(tournament)
                     break
-        elif len(tournament.list_rounds) == round_number:
-            print("tournoi fini")
-            self.show_winner(tournament)
-            tournament.statut = False
-        print("après boucle response view")
+                elif len(tournament.list_rounds) == round_number:
+                    print("tournoi fini")
+                    self.show_winner(tournament)
+                    tournament.statut = False
+                print("après boucle response view")
 
         return
 
