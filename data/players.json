@@ -1,68 +1,70 @@
 {
-    "1": {
-        "name": "Potter",
-        "first_name": "Harry",
-        "date_birth": "07/31/1980",
-        "id_chess": "HP12345"
-    },
-    "2": {
-        "name": "Granger",
-        "first_name": "Hermione",
-        "date_birth": "09/19/1979",
-        "id_chess": "GH12345"
-    },
-    "3": {
-        "name": "Weasley",
-        "first_name": "Ron",
-        "date_birth": "03/01/1980",
-        "id_chess": "WR12345"
-    },
-    "4": {
-        "name": "Weasley",
-        "first_name": "Ginny",
-        "date_birth": "08/11/1981",
-        "id_chess": "WG12345"
-    },
-    "5": {
-        "name": "Malefoy",
-        "first_name": "Drago",
-        "date_birth": "06/05/1980",
-        "id_chess": "MD12345"
-    },
-    "6": {
-        "name": "Lovegood",
-        "first_name": "Luna",
-        "date_birth": "02/13/1980",
-        "id_chess": "LL12345"
-    },
-    "7": {
-        "name": "Londubat",
-        "first_name": "Neville",
-        "date_birth": "07/30/1980",
-        "id_chess": "LN12345"
-    },
-    "8": {
-        "name": "Chang",
-        "first_name": "Cho",
-        "date_birth": "24/04/1979",
-        "id_chess": "CC12345"
-    },
-    "9": {
-        "name": "Michel",
-        "first_name": "Testeuh",
-        "date_birth": "05/05/2365",
-        "id_chess": "DF12345"
-    },
-    "10": {
-        "name": "Test",
-        "first_name": "Test",
-        "date_birth": "01/01/2305",
-        "id_chess": "TT12345"
-    },
-    "11": {
-        "name": "Michel",
-        "first_name": "Arthuros",
-        "date_birth": "02/02/0202",
-        "id_chess": "RT12345"
+    "players": {
+        "1": {
+            "name": "Potter",
+            "first_name": "Harry",
+            "date_birth": "07/31/1980",
+            "id_chess": "HP12345"
+        },
+        "2": {
+            "name": "Granger",
+            "first_name": "Hermione",
+            "date_birth": "09/19/1979",
+            "id_chess": "GH12345"
+        },
+        "3": {
+            "name": "Weasley",
+            "first_name": "Ron",
+            "date_birth": "03/01/1980",
+            "id_chess": "WR12345"
+        },
+        "4": {
+            "name": "Weasley",
+            "first_name": "Ginny",
+            "date_birth": "08/11/1981",
+            "id_chess": "WG12345"
+        },
+        "5": {
+            "name": "Malefoy",
+            "first_name": "Drago",
+            "date_birth": "06/05/1980",
+            "id_chess": "MD12345"
+        },
+        "6": {
+            "name": "Lovegood",
+            "first_name": "Luna",
+            "date_birth": "02/13/1980",
+            "id_chess": "LL12345"
+        },
+        "7": {
+            "name": "Londubat",
+            "first_name": "Neville",
+            "date_birth": "07/30/1980",
+            "id_chess": "LN12345"
+        },
+        "8": {
+            "name": "Chang",
+            "first_name": "Cho",
+            "date_birth": "24/04/1979",
+            "id_chess": "CC12345"
+        },
+        "9": {
+            "name": "Michel",
+            "first_name": "Testeuh",
+            "date_birth": "05/05/2365",
+            "id_chess": "DF12345"
+        },
+        "10": {
+            "name": "Test",
+            "first_name": "Test",
+            "date_birth": "01/01/2305",
+            "id_chess": "TT12345"
+        },
+        "11": {
+            "name": "Michel",
+            "first_name": "Arthuros",
+            "date_birth": "01/01/1111",
+            "id_chess": "RT12345"
+        }
     }
 }

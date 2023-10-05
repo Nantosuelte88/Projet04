@@ -70,7 +70,7 @@ class Controller:
     def show_players(self):
         players = self.file_json_player()
         print("Quoi encore ?", players)
-        sorted_players = sorted(players.values(), key=lambda x: x["name"])
+        sorted_players = sorted(players["players"].values(), key=lambda x: x["name"])
         self.view.show_players(sorted_players)
 
     def get_players(self):
@@ -201,11 +201,11 @@ class Controller:
     def search_players_json(self):
         if os.path.exists(file_path_players):
             if os.path.getsize(file_path_tournament) > 0:
-                file_object = open(file_path_players, "r")
-                json_content = file_object.read()
-                json_dict = json.loads(json_content)
-                players = json_dict["players"]
-                return players
+                with open(file_path_players, "r") as file_object:
+                    json_content = file_object.read()
+                    json_dict = json.loads(json_content)
+                    players = json_dict["players"]
+                    return players
         else:
             return None
 
@@ -373,7 +373,7 @@ class Controller:
             else:
                 print("mauvais joueur")
         with open(file_path_players, "w") as my_file:
-            json.dump(players_json, my_file, indent=4)
+            json.dump({"players": players_json}, my_file, indent=4)
         print("fin de modif")
 
     def update_description(self, tournament):

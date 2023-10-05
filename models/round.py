@@ -15,25 +15,3 @@ class Round:
                f"Date de début : {self.round_start} . " \
                f"Date de fin : {self.round_end} . " \
                f"MATCH : {self.list_matches}"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
