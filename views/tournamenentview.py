@@ -11,13 +11,14 @@ class View:
                            "2 - Créer un nouveau tournoi\n"
                            "3 - Rechercher un tournoi\n"
                            "4 - Modifier un joueur\n"
-                           "5 - Voir les joueurs\n"                           
-                           "6 - Quitter\n"
+                           "5 - Voir les joueurs\n"
+                           "6 - Voir les tournois\n"                           
+                           "7 - Quitter\n"
                            "---------------------- \n\n"
                            "Votre choix : ")
-            if choice.isnumeric() and int(choice) <= 5:
+            if choice.isnumeric() and int(choice) <= 6:
                 break
-            elif choice.isnumeric() and int(choice) == 6:
+            elif choice.isnumeric() and int(choice) == 7:
                 choose_quit = input("Attention, vous allez quitter le programme, valider votre choix ? O/N : ")
                 if choose_quit.upper() == "O":
                     break
@@ -124,6 +125,29 @@ class View:
                   "\nPrenom :", players_details["first_name"],
                   "\nDate de naissance :", players_details["date_birth"],
                   "\nID d'échec :", players_details["id_chess"], "\n")
+
+    def show_tournaments(self, tournaments):
+        print("\n\nLes tournois enregistrés :\n")
+
+        for tournament_id, tournament_details in tournaments["tournament"].items():
+            print(f"Tournoi", tournament_id,
+                  "\nNom :", tournament_details["name_tournament"],
+                  "\nlieu :", tournament_details["locality"],
+                  "\nDate de debut :", tournament_details["start_date"],
+                  "\nDate de fin :", tournament_details["end_date"],
+                  "\nNombre de rounds :", tournament_details["number_rounds"],
+                  "\nListe des rounds :")
+            for round_info in tournament_details["list_rounds"]:
+                print("Nom du round :", round_info["name_round"],
+                      "\nListe des matchs :")
+                for match in round_info["list_matches"]:
+                    print(" - Résultat du match :", match["result_match"])
+                print("\nDate de début :", round_info["start_time"],
+                      "\nDate de fin :", round_info["end_time"], "\n")
+            for player_info in tournament_details["list_players"]:
+                print("Id du joueur :", player_info["id_chess"],
+                      "\nScore du joueur :", player_info["score_tournament"])
+            print("Description :", tournament_details["description"])
 
     def modification_player(self, info_player):
         print(f"Joueur :"

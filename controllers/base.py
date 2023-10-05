@@ -53,6 +53,8 @@ class Controller:
             elif response == "5":
                 self.show_players()
             elif response == "6":
+                self.show_tournaments()
+            elif response == "7":
                 break
 
     def file_json_player(self):
@@ -67,11 +69,27 @@ class Controller:
             current_players = {"players": {}}
         return current_players
 
+    def search_tournaments_json(self):
+        if os.path.exists(file_path_tournament):
+            if os.path.getsize(file_path_tournament) > 0:
+                with open(file_path_tournament, "r") as my_file:
+                    tournament_data = json.load(my_file)
+            else:
+                tournament_data = {"tournament": {}}
+        else:
+            tournament_data = {"tournament": {}}
+        return tournament_data
+
     def show_players(self):
         players = self.file_json_player()
         print("Quoi encore ?", players)
         sorted_players = sorted(players["players"].values(), key=lambda x: x["name"])
         self.view.show_players(sorted_players)
+
+    def show_tournaments(self):
+        tournaments = self.search_tournaments_json()
+        print(tournaments)
+        self.view.show_tournaments(tournaments)
 
     def get_players(self):
         current_players = self.file_json_player()
@@ -90,17 +108,6 @@ class Controller:
             json.dump(current_players, my_file, indent=4)
 
         return player_info
-
-    def search_tournaments_json(self):
-        if os.path.exists(file_path_tournament):
-            if os.path.getsize(file_path_tournament) > 0:
-                with open(file_path_tournament, "r") as my_file:
-                    tournament_data = json.load(my_file)
-            else:
-                tournament_data = {"tournament": {}}
-        else:
-            tournament_data = {"tournament": {}}
-        return tournament_data
 
     def new_tournament(self):
         tournament_data = self.search_tournaments_json()
@@ -340,41 +347,26 @@ class Controller:
             tournament.status = True
             self.new_round(tournament)
         else:
-            print("NON")
             return None
 
     def modification_player(self):
-        # ajout select
         good_player = self.select_player()
         players_json = self.search_players_json()
-        print("Select dans modif", good_player)
 
-        # Fin select !!!
-        p = 0
         for player in players_json:
-            print(p, players_json[player])
-            p += 1
             if good_player[0][0] == players_json[player]:
-                print("bon joueur")
                 new_info = self.view.modification_player(players_json[player])
-                print(new_info)
                 if new_info[0] == "1":
-                    print("nouveau nom", new_info[1])
                     players_json[player]["name"] = new_info[1]
                 elif new_info[0] == "2":
-                    print("nouveau prenom", new_info[1])
                     players_json[player]["first_name"] = new_info[1]
                 elif new_info[0] == "3":
-                    print("nouvelle date de naissance", new_info[1])
                     players_json[player]["date_birth"] = new_info[1]
                 elif new_info[0] == "4":
-                    print("nouvel id", new_info[1])
                     players_json[player]["id_check"] = new_info[1]
-            else:
-                print("mauvais joueur")
         with open(file_path_players, "w") as my_file:
             json.dump({"players": players_json}, my_file, indent=4)
-        print("fin de modif")
+        return None
 
     def update_description(self, tournament):
         description_view = self.view.description()
@@ -472,7 +464,6 @@ class Controller:
                     print("tournoi fini")
                     tournament.status = False
                     self.show_winner(tournament)
-                    print("FIN ddes rounds ?!", len(tournament.list_rounds))
                     tournaments_json = self.search_tournaments_json()
                     end_time_tournament = datetime.now()
                     format_end_time = end_time_tournament.strftime("%d/%m/%Y - %H:%M:%S")
@@ -481,17 +472,10 @@ class Controller:
                         tournament_info = tournaments_json[tournament_key]
                         for key, value in tournament_info.items():
                             if value["name_tournament"] == tournament.name_tournament:
-                                print(value["end_date"])
                                 if not value["end_date"]:
-                                    print("pas de date de fin de tournoi")
                                     value["end_date"] = format_end_time
                                     with open(file_path_tournament, "w") as my_file:
                                         json.dump(tournaments_json, my_file, indent=4)
-                                else:
-                                    print("il y a une date de fin de tournoi")
-                print("après boucle response view")
-        else:
-            print("Le tournoi est fini, faire action")
 
         return None
 
