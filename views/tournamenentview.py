@@ -120,10 +120,10 @@ class View:
 
         for player, players_details in enumerate(players, start=1):
             print(f"Joueur", player,
-                  "\nNom :", players_details.name,
-                  "\nPrenom :", players_details.first_name,
-                  "\nDate de naissance :", players_details.date_birth,
-                  "\nID d'échec :", players_details.id_chess, "\n")
+                  "\nNom :", players_details["name"],
+                  "\nPrenom :", players_details["first_name"],
+                  "\nDate de naissance :", players_details["date_birth"],
+                  "\nID d'échec :", players_details["id_chess"], "\n")
 
     def modification_player(self, info_player):
         print(f"Joueur :"
@@ -266,7 +266,6 @@ class View:
 
     def scores_match(self, player1, player2):
         scores = []
- #       print("MAtch", player1.name, player1.first_name, "VS", player2.name, player2.first_name)
         print("\nMATCH\n", player1.name, player1.first_name, "VS", player2.name, player2.first_name, "\n")
         print(player1.name, player1.first_name)
 
@@ -289,7 +288,6 @@ class View:
             else:
                 print("Merci d'entrer une donnée correcte, 0, 1 ou 0.5.")
         return scores
-
 
     def next_round(self, round):
         print("View next_round", round)
@@ -314,6 +312,14 @@ class View:
             else:
                 print("Merci de saisir une donnée valide")
 
+    def show_final_players(self, players, status):
+        if status:
+            print("\n\n -- Classement actuel -- \n")
+        else:
+            print("\n\n -- Classement final -- \n")
+        for player in players:
+            print("Joueur :",player[0],"score de :", player[1], "\n")
+        return None
 
 
 

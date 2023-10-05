@@ -19,8 +19,6 @@ class Tournament:
 
         self.status = True
 
-
-
     def __str__(self):
         return f"Nom du tournoi : {self.name_tournament}\n" \
                f"Localisation : {self.locality}\n" \
