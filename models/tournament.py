@@ -12,12 +12,12 @@ class Tournament:
         self.start_date = start_date
         self.description = description
         self.number_rounds = number_rounds
-        self.end = False
+        self.end_date = False
 
         self.list_rounds = []
         self.list_players = []
 
-        self.statut = True
+        self.status = True
 
 
 
@@ -25,4 +25,4 @@ class Tournament:
         return f"Nom du tournoi : {self.name_tournament}\n" \
                f"Localisation : {self.locality}\n" \
                f"Date de début : {self.start_date}\n" \
-               f"Statut : {self.statut}\n"
+               f"Statut : {self.status}\n"

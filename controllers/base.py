@@ -10,7 +10,6 @@ from views.tournamenentview import View
 import json
 import os
 import random
-#import datetime
 from datetime import datetime
 
 ROUND_NUMBER = 4
@@ -111,10 +110,8 @@ class Controller:
         description = self.view.description()
         date_debut = datetime.now()
         format_date = date_debut.strftime("%d/%m/%Y-%H:%M:%S")
-        tournament = Tournament(tournament_info_view[0], tournament_info_view[1], date_debut, description, ROUND_NUMBER)
+        tournament = Tournament(tournament_info_view[0], tournament_info_view[1], format_date, description, ROUND_NUMBER)
         self.tournaments.append(tournament)
-        print("print date", date_debut)
-        print("print dans json", format_date)
 
         new_tournament = {
             "name_tournament": tournament_info_view[0],
@@ -146,7 +143,6 @@ class Controller:
                     if value["name_tournament"] == name_tournament:
                         found_tournament.append(value)
                         break
-
             if len(found_tournament) == 1:
                 break
             else:
@@ -165,12 +161,9 @@ class Controller:
         current_players = self.file_json_player()
         players_json = current_players["players"]
         players_info = found_tournament[0]["list_players"]
-        print("____ ", players_info)
         for player_id in players_info:
-            print("print ecnore", player_id)
             score_tournament = player_id[0]["score_tournament"]
             for players, players_info in players_json.items():
-                print("players:", players, "-", players_info)
                 if player_id[0]["id_chess"] == players_info["id_chess"]:
                     # Instanciation du joueur
                     player = Player(players_info["name"],
@@ -236,6 +229,7 @@ class Controller:
                 check_player = self.view.choose_players(found_name)
                 for player_details in players_json.values():
                     if check_player == player_details:
+                        # Attention, parfois il renvoie un joueur inconnu ?!!!!
                         good_player.append([player_details])
                     else:
                         no_player.append(player_details)
@@ -244,20 +238,14 @@ class Controller:
 
             if len(no_player) == len(players_json):
                 check = True
-                print("WTF?", check, no_player, players_json, "\n len", len(no_player), len(players_json))
-            else:
-                check = False
-                print("WTF?", check, no_player, players_json, "\n len", len(no_player), len(players_json))
+                print(no_player)
+                print(players_json)
 
             if not check:
-                print("---->", good_player, "/", good_player[0][0])
                 if len(good_player) == 1:
                     players_selected.append(good_player[0][0])
                     break
-            elif check:
-                print("joueur inconnu")
 
-        print("Verification players_selected", players_selected)
         return players_selected, check
 
     def ask_for_players(self, tournament, peers):
@@ -291,7 +279,6 @@ class Controller:
         while True:
             add_players_json = []
             ask_player = self.ask_for_players(tournament, peers)
-            print("vaske_player?", ask_player)
             if not ask_player:
                 if (len(tournament.list_players) % 2) == 0:
                     peers = True
@@ -302,8 +289,6 @@ class Controller:
             else:
                 player = ask_player[0]
                 new_player = ask_player[1]
-                print("verification de player", player)
-                print("player oui", player)
                 name = player[0][0]["name"]
                 id_chess = player[0][0]["id_chess"]
 
@@ -314,14 +299,12 @@ class Controller:
                                              players_info["date_birth"],
                                              players_info["id_chess"])
                         # Ajout des joueurs dans la liste des joueurs du tournoi
-                        print(player_dict)
                         tournament.list_players.append([player_dict, score_tournament])
                         dict_player = {
                             "id_chess": player_dict.id_chess,
                             "score_tournament": score_tournament
                         }
                         add_players_json.append(dict_player)
-                        print("!!", add_players_json)
 
                         # ajout des joueurs dans le tournoi Json
                         tournaments_json = self.search_tournaments_json()
@@ -338,18 +321,11 @@ class Controller:
         return tournament
 
     def initiate_tournament(self, tournament):
-        # faire instanciation du tournoi ici en choissisant les options
-        # -> si nouveau tournoi = ne pas faire la vue et l'instancier directement
-        # sinon faire choisir quel tournoi
-        print("Methode select tournament OK \n", tournament)
-        print("LE tournoi =", tournament.name_tournament, "les joueurs selectionnés =\n", tournament.list_players)
         for player in tournament.list_players:
             print(player[0].name, player[0].first_name)
         play = self.view.play_game(tournament)
-        print("view play game")
         if play:
-            print("OUI")
-            tournament.statut = True
+            tournament.status = True
             self.new_round(tournament)
         else:
             print("NON")
@@ -367,44 +343,29 @@ class Controller:
             player_name = self.view.show_player(check)
             players_json = self.search_players_json()
             for player in players_json:
-                print("print index =", player)
                 player_index = players_json[player]
-                print("player index=", player_index)
-                print(u, "name ?", player_index["name"])
-                u += 1
                 if player_name == player_index["name"]:
-                    print("correspondance!", player_name, " et ", player_index["name"])
                     found_name.append(player_index)
                 else:
                     no_player.append(player)
 
             if len(found_name) > 1:
-                print("sup à 1 = ", len(found_name))
                 check_player = self.view.choose_players(found_name)
-                print("!!!", check_player, "!!!!", players_json)
                 for player_details in players_json.values():
                     if check_player == player_details:
-                        print("id correspondant", player_details["name"], player_details["first_name"],
-                              player_details["id_chess"])
                         good_player.append(player_details)
                     else:
-                        print("player non correspondant", check_player, "!=", player_details["name"])
                         no_player.append(player_details)
             elif len(found_name) == 1:
-                print("egal à 1 = ", len(found_name))
                 good_player.append(found_name)
             else:
-                print("pas de joueur à ce nom")
                 check = True
 
             if len(no_player) == len(players_json):
-                print("joueur inconnu!", no_player)
                 check = True
             else:
-                print("le joueur est ok", no_player)
                 break
 
-        print("verif de check ->", check)
         if not check:
             print(good_player)
             if len(good_player) == 1:
@@ -465,10 +426,16 @@ class Controller:
         new_round = []
         date_debut = datetime.now()
         format_date_debut = date_debut.strftime("%d/%m/%Y - %H:%M:%S")
-        if len(tournament.list_rounds) < round_number:
-            for round in range(round_number):
+        print("verif de round", len(tournament.list_rounds))
+        round_actual = len(tournament.list_rounds)
+        print(round_actual)
+        if round_actual <= round_number:
+            print("___", round_actual)
+            for round_to_play in range(round_actual, round_number):
                 init_round = Round("Round " + str(len(tournament.list_rounds) + 1))
                 tournament.list_rounds.append(init_round)
+                print("INIT ROUUUUUUND", init_round.name_round)
+                print("round acutel", round_actual)
 
                 if init_round.name_round == "Round 1":
                     random.shuffle(tournament.list_players)
@@ -476,9 +443,6 @@ class Controller:
 
                 else:
                     players = sorted(tournament.list_players, key=lambda x: x[1], reverse=True)
-                print("-- ", init_round.name_round, "--")
-
-                print("verification des joueurs :", players)
 
                 # verification de l'emplacement dans le tournoi json
                 tournaments_json = self.search_tournaments_json()
@@ -496,8 +460,6 @@ class Controller:
                             good_path_round.append(new_round)
                 with open("data/tournament.json", "w") as my_file:
                     json.dump(tournaments_json, my_file, indent=4)
-
-            # il faut instancier le joueur depuis son id
 
                 for player in range(0, len(players), 2):
                     player1 = players[player][0]
@@ -524,47 +486,49 @@ class Controller:
 
                 self.result_round(init_round.list_matches, tournament)
 
-                if round + 1 != ROUND_NUMBER:
-                    print("pas le meme Round =", round)
-                else:
-                    print("FIN ddes rounds ?!", round)
+                if len(tournament.list_rounds) < round_number:
+                    # Demande à l'utilisateur si il veut rejouer un round
+                    response_view = self.view.next_round(round_actual)
+                    if response_view:
+                        print("Reponse vraie", round_actual)
+                    elif not response_view:
+                        print("Reponse Fausse", round_actual)
+                        if not tournament.description:
+                            self.update_description(tournament)
+                            break
+                elif len(tournament.list_rounds) == round_number:
+                    print("tournoi fini")
+                    #self.show_winner(tournament)
+                    tournament.status = False
+                    print("FIN ddes rounds ?!", len(tournament.list_rounds))
                     tournaments_json = self.search_tournaments_json()
                     end_time_tournament = datetime.now()
                     format_end_time = end_time_tournament.strftime("%d/%m/%Y - %H:%M:%S")
+                    tournament.end = end_time_tournament
                     for tournament_key in tournaments_json:
                         tournament_info = tournaments_json[tournament_key]
                         for key, value in tournament_info.items():
                             if value["name_tournament"] == tournament.name_tournament:
-                                print(value["end_time"])
-                                if not value["end_time"]:
+                                print(value["end_date"])
+                                if not value["end_date"]:
                                     print("pas de date de fin de tournoi")
-                                    value["end_time"] = format_end_time
+                                    value["end_date"] = format_end_time
+                                    with open("data/tournament.json", "w") as my_file:
+                                        json.dump(tournaments_json, my_file, indent=4)
                                 else:
                                     print("il y a une date de fin de tournoi")
-
-                # Demande à l'utilisateur si il veut rejouer un round
-                response_view = self.view.next_round(round)
-                if response_view:
-                    print("Reponse vraie", round)
-                elif not response_view:
-                    print("Reponse Fausse", round)
-                    if not tournament.description:
-                        self.update_description(tournament)
-                    break
-                elif len(tournament.list_rounds) == round_number:
-                    print("tournoi fini")
-                    self.show_winner(tournament)
-                    tournament.statut = False
                 print("après boucle response view")
+        else:
+            print("Le tournoi est fini, faire action")
 
-        return
+        return None
 
     def play_match(self, player1, player2):
         pass
 
-    def result_round(self, round, tournament):
+    def result_round(self, matches_round, tournament):
         # Mise à jour du score des joueurs
-        for match in round:
+        for match in matches_round:
             print("Resultat de match", match)
             for player in tournament.list_players:
                 if player[0] == match.player1:
@@ -576,15 +540,10 @@ class Controller:
         for tournament_key in tournaments_json:
             tournament_info = tournaments_json[tournament_key]
             for key, value in tournament_info.items():
-                print(value["name_tournament"])
                 if value["name_tournament"] == tournament.name_tournament:
-                    print("LE BON TOURNOI", tournament.name_tournament)
                     good_path_round = value["list_players"]
                     for player in tournament.list_players:
                         for player_info in good_path_round:
-                            print("__", player[0].id_chess)
-                            print("--", player)
-                            print("--", player_info)
                             if player[0].id_chess == player_info[0]["id_chess"]:
                                 player_info[0]["score_tournament"] = player[1]
 
