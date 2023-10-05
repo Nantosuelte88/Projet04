@@ -326,6 +326,7 @@ class Controller:
                             "score_tournament": score_tournament
                         }
                         add_players_json.append(dict_player)
+                        print("!!!!! BUG BUG BUGgreokpergkoegrko",add_players_json)
 
                         # ajout des joueurs dans le tournoi Json
                         tournaments_json = self.search_tournaments_json()
@@ -334,7 +335,7 @@ class Controller:
                             for key, value in tournament_info.items():
                                 if value["name_tournament"] == tournament.name_tournament:
                                     good_path = value["list_players"]
-                                    good_path.append(add_players_json)
+                                    good_path.append(add_players_json[0])
                                     with open(file_path_tournament, "w") as my_file:
                                         json.dump(tournaments_json, my_file, indent=4)
                 print("bug quelque part ?", peers, ask_player, player, new_player)
