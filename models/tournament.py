@@ -22,5 +22,4 @@ class Tournament:
     def __str__(self):
         return f"Nom du tournoi : {self.name_tournament}\n" \
                f"Localisation : {self.locality}\n" \
-               f"Date de début : {self.start_date}\n" \
-               f"Statut : {self.status}\n"
+               f"Date de début : {self.start_date}\n"

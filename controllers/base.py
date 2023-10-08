@@ -18,6 +18,31 @@ file_path_tournament = "data/tournament.json"
 file_path_players = "data/players.json"
 
 
+def file_json_player():
+    if os.path.exists(file_path_players):
+        print("le fichier player.json existe")
+        if os.path.getsize(file_path_tournament) > 0:
+            with open(file_path_players, "r") as my_file:
+                current_players = json.load(my_file)
+        else:
+            current_players = {"players": {}}
+    else:
+        current_players = {"players": {}}
+    return current_players
+
+
+def search_tournaments_json():
+    if os.path.exists(file_path_tournament):
+        if os.path.getsize(file_path_tournament) > 0:
+            with open(file_path_tournament, "r") as my_file:
+                tournament_data = json.load(my_file)
+        else:
+            tournament_data = {"tournament": {}}
+    else:
+        tournament_data = {"tournament": {}}
+    return tournament_data
+
+
 class Controller:
     """ Le Contrôleur """
     def __init__(self, view):
@@ -57,42 +82,19 @@ class Controller:
             elif response == "7":
                 break
 
-    def file_json_player(self):
-        if os.path.exists(file_path_players):
-            print("le fichier player.json existe")
-            if os.path.getsize(file_path_tournament) > 0:
-                with open(file_path_players, "r") as my_file:
-                    current_players = json.load(my_file)
-            else:
-                current_players = {"players": {}}
-        else:
-            current_players = {"players": {}}
-        return current_players
-
-    def search_tournaments_json(self):
-        if os.path.exists(file_path_tournament):
-            if os.path.getsize(file_path_tournament) > 0:
-                with open(file_path_tournament, "r") as my_file:
-                    tournament_data = json.load(my_file)
-            else:
-                tournament_data = {"tournament": {}}
-        else:
-            tournament_data = {"tournament": {}}
-        return tournament_data
-
     def show_players(self):
-        players = self.file_json_player()
+        players = file_json_player()
         print("Quoi encore ?", players)
         sorted_players = sorted(players["players"].values(), key=lambda x: x["name"])
         self.view.show_players(sorted_players)
 
     def show_tournaments(self):
-        tournaments = self.search_tournaments_json()
+        tournaments = search_tournaments_json()
         print(tournaments)
         self.view.show_tournaments(tournaments)
 
     def get_players(self):
-        current_players = self.file_json_player()
+        current_players = file_json_player()
         player_info = self.view.prompt_for_player()
 
         dict_player = {
@@ -110,7 +112,7 @@ class Controller:
         return player_info
 
     def new_tournament(self):
-        tournament_data = self.search_tournaments_json()
+        tournament_data = search_tournaments_json()
         tournament_info_view = self.view.prompt_for_tournament()
         description = self.view.description()
         date_debut = datetime.now()
@@ -144,7 +146,7 @@ class Controller:
     def select_tournament(self):
         check = False
         found_tournament = []
-        tournaments_json = self.search_tournaments_json()
+        tournaments_json = search_tournaments_json()
         while True:
             name_tournament = self.view.choose_tournament(check)
             for tournament_key in tournaments_json:
@@ -168,7 +170,7 @@ class Controller:
                                 found_tournament[0]["number_rounds"]
                                 )
 
-        current_players = self.file_json_player()
+        current_players = file_json_player()
         players_json = current_players["players"]
         players_info = found_tournament[0]["list_players"]
         for player_id in players_info:
@@ -205,19 +207,8 @@ class Controller:
 
         return tournament
 
-    def search_players_json(self):
-        if os.path.exists(file_path_players):
-            if os.path.getsize(file_path_tournament) > 0:
-                with open(file_path_players, "r") as file_object:
-                    json_content = file_object.read()
-                    json_dict = json.loads(json_content)
-                    players = json_dict["players"]
-                    return players
-        else:
-            return None
-
     def select_player(self):
-        current_players = self.file_json_player()
+        current_players = file_json_player()
         players_json = current_players["players"]
         check = False
 
@@ -258,6 +249,8 @@ class Controller:
                 check = True
                 print("??", no_player)
                 print(players_json)
+            else:
+                check = False
 
             if not check:
                 if len(good_player) == 1:
@@ -292,21 +285,22 @@ class Controller:
                 return player, new_player
 
     def add_player_in_tournament(self, tournament):
-        current_players = self.file_json_player()
+        current_players = file_json_player()
         players_json = current_players["players"]
         score_tournament = 0
         peers = False
 
         while True:
+            if (len(tournament.list_players) % 2) == 0:
+                peers = True
+            else:
+                peers = False
             add_players_json = []
             ask_player = self.ask_for_players(tournament, peers)
+
             if not ask_player:
-                if (len(tournament.list_players) % 2) == 0:
-                    peers = True
+                if peers:
                     break
-                else:
-                    peers = False
-                    print("pas pair", ask_player)
             else:
                 player = ask_player[0]
                 new_player = ask_player[1]
@@ -326,10 +320,10 @@ class Controller:
                             "score_tournament": score_tournament
                         }
                         add_players_json.append(dict_player)
-                        print("!!!!! BUG BUG BUGgreokpergkoegrko",add_players_json)
+                        print("!!!!! BUG BUG BUGgreokpergkoegrko", add_players_json)
 
                         # ajout des joueurs dans le tournoi Json
-                        tournaments_json = self.search_tournaments_json()
+                        tournaments_json = search_tournaments_json()
                         for tournament_key in tournaments_json:
                             tournament_info = tournaments_json[tournament_key]
                             for key, value in tournament_info.items():
@@ -352,7 +346,7 @@ class Controller:
 
     def modification_player(self):
         good_player = self.select_player()
-        players_json = self.search_players_json()
+        players_json = file_json_player()
 
         for player in players_json:
             if good_player[0][0] == players_json[player]:
@@ -374,7 +368,7 @@ class Controller:
         if description_view:
             tournament.description = description_view
 
-            tournaments_json = self.search_tournaments_json()
+            tournaments_json = search_tournaments_json()
             for tournament_key in tournaments_json:
                 tournament_info = tournaments_json[tournament_key]
                 for key, value in tournament_info.items():
@@ -409,7 +403,7 @@ class Controller:
                     players = sorted(tournament.list_players, key=lambda x: x[1], reverse=True)
 
                 # verification de l'emplacement dans le tournoi json
-                tournaments_json = self.search_tournaments_json()
+                tournaments_json = search_tournaments_json()
                 for tournament_key in tournaments_json:
                     tournament_info = tournaments_json[tournament_key]
                     for key, value in tournament_info.items():
@@ -465,7 +459,7 @@ class Controller:
                     print("tournoi fini")
                     tournament.status = False
                     self.show_winner(tournament)
-                    tournaments_json = self.search_tournaments_json()
+                    tournaments_json = search_tournaments_json()
                     end_time_tournament = datetime.now()
                     format_end_time = end_time_tournament.strftime("%d/%m/%Y - %H:%M:%S")
                     tournament.end = end_time_tournament
@@ -490,7 +484,7 @@ class Controller:
                 elif player[0] == match.player2:
                     player[1] += match.score2
 
-        tournaments_json = self.search_tournaments_json()
+        tournaments_json = search_tournaments_json()
         for tournament_key in tournaments_json:
             tournament_info = tournaments_json[tournament_key]
             for key, value in tournament_info.items():
@@ -498,8 +492,8 @@ class Controller:
                     good_path_round = value["list_players"]
                     for player in tournament.list_players:
                         for player_info in good_path_round:
-                            if player[0].id_chess == player_info[0]["id_chess"]:
-                                player_info[0]["score_tournament"] = player[1]
+                            if player[0].id_chess == player_info["id_chess"]:
+                                player_info["score_tournament"] = player[1]
 
         with open(file_path_tournament, "w") as my_file:
             json.dump(tournaments_json, my_file, indent=4)

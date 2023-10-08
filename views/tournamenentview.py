@@ -130,7 +130,7 @@ class View:
         print("\n\nLes tournois enregistrés :\n")
 
         for tournament_id, tournament_details in tournaments["tournament"].items():
-            print(f"Tournoi", tournament_id,
+            print(f"\n\n\nTournoi", tournament_id,
                   "\nNom :", tournament_details["name_tournament"],
                   "\nlieu :", tournament_details["locality"],
                   "\nDate de debut :", tournament_details["start_date"],
@@ -144,10 +144,11 @@ class View:
                     print(" - Résultat du match :", match["result_match"])
                 print("\nDate de début :", round_info["start_time"],
                       "\nDate de fin :", round_info["end_time"], "\n")
+            print("\nLes joueurs et leurs scores :")
             for player_info in tournament_details["list_players"]:
-                print("Id du joueur :", player_info["id_chess"],
+                print("\nId du joueur :", player_info["id_chess"],
                       "\nScore du joueur :", player_info["score_tournament"])
-            print("Description :", tournament_details["description"])
+            print("\n\nDescription :", tournament_details["description"])
 
     def modification_player(self, info_player):
         print(f"Joueur :"
@@ -207,7 +208,6 @@ class View:
                 print("Merci d'indiquer une donnée valide\n")
 
     def prompt_for_tournament(self):
-        add_tournaments = []
         while True:
 
             while True:
@@ -229,7 +229,6 @@ class View:
                            "2 - Modifier ces informations\n"
                            "Votre choix : ")
             if choice == "1":
-        #        add_tournaments.append((name_tournament.capitalize(), locality.capitalize()))
                 return name_tournament.capitalize(), locality.capitalize()
 
     def description(self):
@@ -342,8 +341,5 @@ class View:
         else:
             print("\n\n -- Classement final -- \n")
         for player in players:
-            print("Joueur :",player[0],"score de :", player[1], "\n")
+            print("Joueur :", player[0], "score de :", player[1], "\n")
         return None
-
-
-

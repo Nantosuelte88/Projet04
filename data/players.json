@@ -47,24 +47,6 @@
             "first_name": "Cho",
             "date_birth": "24/04/1979",
             "id_chess": "CC12345"
-        },
-        "9": {
-            "name": "Michel",
-            "first_name": "Testeuh",
-            "date_birth": "05/05/2365",
-            "id_chess": "DF12345"
-        },
-        "10": {
-            "name": "Test",
-            "first_name": "Test",
-            "date_birth": "01/01/2305",
-            "id_chess": "TT12345"
-        },
-        "11": {
-            "name": "Michel",
-            "first_name": "Arthuros",
-            "date_birth": "01/01/1111",
-            "id_chess": "RT12345"
         }
     }
 }
