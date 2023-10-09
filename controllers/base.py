@@ -153,8 +153,6 @@ class Controller:
             else:
                 check = True
 
-        self.view.show_tournament(found_tournament[0])
-
         # Instanciation du tournoi
         tournament = Tournament(found_tournament[0]["name_tournament"],
                                 found_tournament[0]["locality"],
@@ -178,7 +176,7 @@ class Controller:
                     tournament.list_players.append([player, score_tournament])
 
         tournament.list_rounds = found_tournament[0]["list_rounds"]
-
+        self.view.show_tournament(tournament)
         self.tournaments.append(tournament)
 
         if len(tournament.list_rounds) == tournament.number_rounds:
