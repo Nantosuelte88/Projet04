@@ -9,7 +9,6 @@ class Match:
 
         self.result_match = ([player1, score1], [player2, score2])
 
-
     def __str__(self):
         return f"\n{self.player1} = {self.score1}\n" \
                f"{self.player2} = {self.score2}\n" \

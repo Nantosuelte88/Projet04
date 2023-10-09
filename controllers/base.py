@@ -5,14 +5,12 @@ from models.tournament import Tournament
 from models.match import Match
 from models.round import Round
 
-
 import json
 import os
 import random
 from datetime import datetime
 
 ROUND_NUMBER = 4
-MATCH_SCORE = [(1, 0), (0.5, 0.5), (0, 1)]
 
 file_path_tournament = "data/tournament.json"
 file_path_players = "data/players.json"
@@ -20,7 +18,6 @@ file_path_players = "data/players.json"
 
 def file_json_player():
     if os.path.exists(file_path_players):
-        print("le fichier player.json existe")
         if os.path.getsize(file_path_tournament) > 0:
             with open(file_path_players, "r") as my_file:
                 current_players = json.load(my_file)
@@ -56,18 +53,16 @@ class Controller:
         while True:
             response = self.view.menu()
             if response == "1":
-                player = self.get_players()
-                if player:
-                    print("Joueur enregistré dans le fichier")
-                else:
-                    print("Erreur, merci de recommencer")
+                self.get_players()
             elif response == "2":
                 tournament = self.new_tournament()
                 if not tournament:
                     break
                 elif tournament:
-                    self.add_player_in_tournament(tournament)
-                    self.initiate_tournament(tournament)
+                    players = self.view.players_for_tournament()
+                    if players:
+                        self.add_player_in_tournament(tournament)
+                        self.initiate_tournament(tournament)
 
             elif response == "3":
                 self.select_tournament()
@@ -84,13 +79,11 @@ class Controller:
 
     def show_players(self):
         players = file_json_player()
-        print("Quoi encore ?", players)
         sorted_players = sorted(players["players"].values(), key=lambda x: x["name"])
         self.view.show_players(sorted_players)
 
     def show_tournaments(self):
         tournaments = search_tournaments_json()
-        print(tournaments)
         self.view.show_tournaments(tournaments)
 
     def get_players(self):
@@ -174,9 +167,9 @@ class Controller:
         players_json = current_players["players"]
         players_info = found_tournament[0]["list_players"]
         for player_id in players_info:
-            score_tournament = player_id[0]["score_tournament"]
+            score_tournament = player_id["score_tournament"]
             for players, players_info in players_json.items():
-                if player_id[0]["id_chess"] == players_info["id_chess"]:
+                if player_id["id_chess"] == players_info["id_chess"]:
                     # Instanciation du joueur
                     player = Player(players_info["name"],
                                     players_info["first_name"],
@@ -190,12 +183,10 @@ class Controller:
 
         if len(tournament.list_rounds) == tournament.number_rounds:
             check_tournament = False
-            print("!!!!! status tournament", tournament.status)
             self.view.continue_tournament(tournament.name_tournament, check_tournament)
             self.show_winner(tournament)
         elif len(tournament.list_rounds) < tournament.number_rounds:
             check_tournament = True
-            print("!!!!! status tournament", tournament.status)
             ask_user = self.view.continue_tournament(tournament.name_tournament, check_tournament)
             if ask_user:
                 if not tournament.list_players:
@@ -217,9 +208,7 @@ class Controller:
             no_player = []
             found_name = []
             good_player = []
-            print("Verif de check avant ", check)
             player_name = self.view.show_player(check)
-            print("Verif de check apres", check)
 
             for player in players_json:
                 player_index = players_json[player]
@@ -229,17 +218,10 @@ class Controller:
                     no_player.append(player)
 
             if len(found_name) > 1:
-                print("BUUUUG", player_name)
-                print("found name", found_name)
                 check_player = self.view.choose_players(found_name)
-                print("check player", check_player)
                 for player_details in players_json.values():
-                    print("player_details", player_details)
                     if check_player == player_details:
-                        print(check_player, "-", player_details)
-                        # Attention, parfois il renvoie un joueur inconnu ?!!!!
                         good_player.append([player_details])
-                        print(good_player)
                     else:
                         no_player.append(player_details)
             elif len(found_name) == 1:
@@ -247,8 +229,6 @@ class Controller:
 
             if len(no_player) == len(players_json):
                 check = True
-                print("??", no_player)
-                print(players_json)
             else:
                 check = False
 
@@ -256,10 +236,6 @@ class Controller:
                 if len(good_player) == 1:
                     players_selected.append(good_player[0][0])
                     break
-            else:
-                print("bug ?", found_name)
-                print(players_selected)
-                print(good_player)
 
         return players_selected, check
 
@@ -267,18 +243,13 @@ class Controller:
         new_player = True
         while True:
             if tournament.list_players:
-                print("paire ou non ?", len(tournament.list_players))
-                print(peers)
                 ask_for_more_players = self.view.add_player_in_tournament(tournament.list_players, peers)
                 if ask_for_more_players:
                     new_player = True
-                    print(ask_for_more_players)
                     player = self.select_player()
-                    print("PLAYER", player)
                     return player, new_player
                 else:
                     new_player = False
-                    print(ask_for_more_players)
                     return new_player
             else:
                 player = self.select_player()
@@ -288,7 +259,6 @@ class Controller:
         current_players = file_json_player()
         players_json = current_players["players"]
         score_tournament = 0
-        peers = False
 
         while True:
             if (len(tournament.list_players) % 2) == 0:
@@ -303,7 +273,6 @@ class Controller:
                     break
             else:
                 player = ask_player[0]
-                new_player = ask_player[1]
                 name = player[0][0]["name"]
                 id_chess = player[0][0]["id_chess"]
 
@@ -320,7 +289,6 @@ class Controller:
                             "score_tournament": score_tournament
                         }
                         add_players_json.append(dict_player)
-                        print("!!!!! BUG BUG BUGgreokpergkoegrko", add_players_json)
 
                         # ajout des joueurs dans le tournoi Json
                         tournaments_json = search_tournaments_json()
@@ -332,12 +300,10 @@ class Controller:
                                     good_path.append(add_players_json[0])
                                     with open(file_path_tournament, "w") as my_file:
                                         json.dump(tournaments_json, my_file, indent=4)
-                print("bug quelque part ?", peers, ask_player, player, new_player)
-        print("verification de fin du add player in tournament", peers, ask_player, tournament.list_players)
         return tournament
 
     def initiate_tournament(self, tournament):
-        play = self.view.play_game(tournament)
+        play = self.view.play_game()
         if play:
             tournament.status = True
             self.new_round(tournament)
@@ -381,19 +347,11 @@ class Controller:
 
     def new_round(self, tournament):
         round_number = tournament.number_rounds
-        new_round = []
-        date_debut = datetime.now()
-        format_date_debut = date_debut.strftime("%d/%m/%Y - %H:%M:%S")
-        print("verif de round", len(tournament.list_rounds))
         round_actual = len(tournament.list_rounds)
-        print(round_actual)
         if round_actual <= round_number:
-            print("___", round_actual)
             for round_to_play in range(round_actual, round_number):
                 init_round = Round("Round " + str(len(tournament.list_rounds) + 1))
                 tournament.list_rounds.append(init_round)
-                print("INIT ROUUUUUUND", init_round.name_round)
-                print("round acutel", round_actual)
 
                 if init_round.name_round == "Round 1":
                     random.shuffle(tournament.list_players)
@@ -402,82 +360,93 @@ class Controller:
                 else:
                     players = sorted(tournament.list_players, key=lambda x: x[1], reverse=True)
 
-                # verification de l'emplacement dans le tournoi json
-                tournaments_json = search_tournaments_json()
-                for tournament_key in tournaments_json:
-                    tournament_info = tournaments_json[tournament_key]
-                    for key, value in tournament_info.items():
-                        if value["name_tournament"] == tournament.name_tournament:
-                            good_path_round = value["list_rounds"]
-                            new_round = {
-                                "name_round": init_round.name_round,
-                                "list_matches": [],
-                                "start_time": format_date_debut,
-                                "end_time": None
-                            }
-                            good_path_round.append(new_round)
-                with open(file_path_tournament, "w") as my_file:
-                    json.dump(tournaments_json, my_file, indent=4)
-
-                for player in range(0, len(players), 2):
-                    player1 = players[player][0]
-                    player2 = players[player + 1][0]
-                    scores = self.view.scores_match(player1, player2)
-                    score1 = float(scores[0])
-                    score2 = float(scores[1])
-                    match = Match(player1, score1, player2, score2)
-
-                    result_match = [
-                        [player1.id_chess, score1],
-                        [player2.id_chess, score2]
-                    ]
-
-                    init_round.list_matches.append(match)
-
-                    # ajout du match dans la liste des rounds du tournoi Json
-                    new_round["list_matches"].append({"result_match": result_match})
-                    date_end = datetime.now()
-                    format_date_end = date_end.strftime("%d/%m/%Y - %H:%M:%S")
-                    new_round["end_time"] = format_date_end
-                    with open(file_path_tournament, "w") as my_file:
-                        json.dump(tournaments_json, my_file, indent=4)
-
-                self.result_round(init_round.list_matches, tournament)
+                self.initiate_round(players, init_round, tournament)
 
                 if len(tournament.list_rounds) < round_number:
                     # Demande à l'utilisateur si il veut rejouer un round
-                    response_view = self.view.next_round(round_actual)
-                    if response_view:
-                        print("Reponse vraie", round_actual)
-                    elif not response_view:
-                        print("Reponse Fausse", round_actual)
+                    response_view = self.view.next_round()
+                    if not response_view:
                         self.show_winner(tournament)
                         if not tournament.description:
                             self.update_description(tournament)
                             break
+                        else:
+                            break
                 elif len(tournament.list_rounds) == round_number:
-                    print("tournoi fini")
+                    # Si les rounds sont fini terminés, on met à jour la date de fin dans le json
                     tournament.status = False
                     self.show_winner(tournament)
-                    tournaments_json = search_tournaments_json()
-                    end_time_tournament = datetime.now()
-                    format_end_time = end_time_tournament.strftime("%d/%m/%Y - %H:%M:%S")
-                    tournament.end = end_time_tournament
-                    for tournament_key in tournaments_json:
-                        tournament_info = tournaments_json[tournament_key]
-                        for key, value in tournament_info.items():
-                            if value["name_tournament"] == tournament.name_tournament:
-                                if not value["end_date"]:
-                                    value["end_date"] = format_end_time
-                                    with open(file_path_tournament, "w") as my_file:
-                                        json.dump(tournaments_json, my_file, indent=4)
+                    self.update_end_time_tournament(tournament)
 
         return None
 
-    def result_round(self, matches_round, tournament):
+    def initiate_round(self,players, init_round, tournament):
+        new_round = []
+        date_debut = datetime.now()
+        format_date_debut = date_debut.strftime("%d/%m/%Y - %H:%M:%S")
+        # On initie un nouveau tournoi
+        tournaments_json = search_tournaments_json()
+        for tournament_key in tournaments_json:
+            tournament_info = tournaments_json[tournament_key]
+            for key, value in tournament_info.items():
+                if value["name_tournament"] == tournament.name_tournament:
+                    good_path_round = value["list_rounds"]
+                    new_round = {
+                        "name_round": init_round.name_round,
+                        "list_matches": [],
+                        "start_time": format_date_debut,
+                        "end_time": None
+                    }
+                    good_path_round.append(new_round)
+        with open(file_path_tournament, "w") as my_file:
+            json.dump(tournaments_json, my_file, indent=4)
+
+        for player in range(0, len(players), 2):
+            player1 = players[player][0]
+            player2 = players[player + 1][0]
+            scores = self.view.scores_match(player1, player2)
+            score1 = float(scores[0])
+            score2 = float(scores[1])
+            match = Match(player1, score1, player2, score2)
+
+            result_match = [
+                [player1.id_chess, score1],
+                [player2.id_chess, score2]
+            ]
+
+            init_round.list_matches.append(match)
+
+            # Ajout du match dans la liste des rounds du tournoi Json
+            new_round["list_matches"].append({"result_match": result_match})
+            date_end = datetime.now()
+            format_date_end = date_end.strftime("%d/%m/%Y - %H:%M:%S")
+            new_round["end_time"] = format_date_end
+            with open(file_path_tournament, "w") as my_file:
+                json.dump(tournaments_json, my_file, indent=4)
+
+        self.result_round(init_round.list_matches, tournament)
+        return None
+
+    @staticmethod
+    def update_end_time_tournament(tournament):
+        tournaments_json = search_tournaments_json()
+        end_time_tournament = datetime.now()
+        format_end_time = end_time_tournament.strftime("%d/%m/%Y - %H:%M:%S")
+        tournament.end = end_time_tournament
+        for tournament_key in tournaments_json:
+            tournament_info = tournaments_json[tournament_key]
+            for key, value in tournament_info.items():
+                if value["name_tournament"] == tournament.name_tournament:
+                    if not value["end_date"]:
+                        value["end_date"] = format_end_time
+                        with open(file_path_tournament, "w") as my_file:
+                            json.dump(tournaments_json, my_file, indent=4)
+        return None
+
+    @staticmethod
+    def result_round(matches_round, tournament):
         # Mise à jour du score des joueurs
         for match in matches_round:
-            print("Resultat de match", match)
             for player in tournament.list_players:
                 if player[0] == match.player1:
                     player[1] += match.score1
@@ -506,5 +475,4 @@ class Controller:
 
     def run(self):
         self.menu()
-        print("Run")
         return None

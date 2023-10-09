@@ -5,11 +5,12 @@ class Round:
 
     def __init__(self, name_round):
         self.name_round = name_round
-        self.round_start = "round_start" # déclaration automatique lors du début
-        self.round_end = "round_end" # déclaration automatique lors de la fin
-        self.list_matches = [] # La liste des matchs de ce round
+        self.round_start = "round_start"
+        self.round_end = "round_end"
+        self.list_matches = []
         self.start_time = "start_time"
         self.end_time = "end_time"
+
     def __str__(self):
         return f" Nom du round : {self.name_round} . " \
                f"Date de début : {self.round_start} . " \

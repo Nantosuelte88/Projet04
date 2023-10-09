@@ -53,11 +53,8 @@ class View:
             while True:
                 id_chess = input("Identifiant national d'échec, au format AB12345 :")
                 if len(id_chess) == 7:
-                    print("Bien 7")  # test
                     if id_chess[0:2].isalpha():
-                        print("Bien alpha :", id_chess[0:2])  # test
                         if id_chess[2:7].isnumeric():
-                            print("Bien numeric :", id_chess[2:7])  # test
                             break
                         else:
                             print("Veuillez entrer un format d'identifiant d'échec valide AB12345")
@@ -65,8 +62,17 @@ class View:
                         print("Veuillez entrer un format d'identifiant d'échec valide AB12345")
                 else:
                     print("Veuillez entrer un format d'identifiant d'échec valide AB12345")
-    #        add_players.append((name.capitalize(), last_name.capitalize(), date_birth, id_chess.upper()))
             return name.capitalize(), last_name.capitalize(), date_birth.capitalize(), id_chess.upper()
+
+    def players_for_tournament(self):
+        while True:
+            choice = input("Souhaitez-vous ajouter des joueurs au tournoi ? O/N: ")
+            if choice.upper() == "O":
+                return True
+            elif choice.upper() == "N":
+                return False
+            else:
+                print("Merci d'indiquer une donnée valide, O ou N \n")
 
     def add_player_in_tournament(self, players, peers):
         if players:
@@ -102,14 +108,12 @@ class View:
                 print("Veuillez entrer un nom valide sans chiffres ni caractères spéciaux.")
 
     def choose_players(self, players):
-        print("DANS CHOOSE PLAYER", players)
         i = 1
         print("\nAttention", len(players), "joueurs portent ce nom \n")
         for player in players:
             print(i, "-", player["name"], player["first_name"], player["date_birth"], player["id_chess"])
             i += 1
         while True:
-            print("i =", (i-1))
             index_player = input("Veuillez indiquer le chiffre du joueur voulu : ")
             if index_player.isnumeric() and int(index_player) <= (i-1):
                 return players[int(index_player) - 1]
@@ -138,17 +142,22 @@ class View:
                   "\nNombre de rounds :", tournament_details["number_rounds"],
                   "\nListe des rounds :")
             for round_info in tournament_details["list_rounds"]:
-                print("Nom du round :", round_info["name_round"],
+                print("\nNom du round :", round_info["name_round"],
                       "\nListe des matchs :")
                 for match in round_info["list_matches"]:
-                    print(" - Résultat du match :", match["result_match"])
-                print("\nDate de début :", round_info["start_time"],
-                      "\nDate de fin :", round_info["end_time"], "\n")
+                    print(" - Résultat du match :",
+                          match["result_match"][0][0],
+                          match["result_match"][0][1],
+                          "VS",
+                          match["result_match"][1][0],
+                          match["result_match"][1][1])
+                print("Date de début :", round_info["start_time"],
+                      "\nDate de fin :", round_info["end_time"])
             print("\nLes joueurs et leurs scores :")
             for player_info in tournament_details["list_players"]:
-                print("\nId du joueur :", player_info["id_chess"],
-                      "\nScore du joueur :", player_info["score_tournament"])
-            print("\n\nDescription :", tournament_details["description"])
+                print("- Id du joueur :", player_info["id_chess"],
+                      "son score :", player_info["score_tournament"])
+            print("\nDescription :", tournament_details["description"])
 
     def modification_player(self, info_player):
         print(f"Joueur :"
@@ -188,13 +197,10 @@ class View:
 
             elif choice.isnumeric() and int(choice) == 4:
                 while True:
-                    new_id_chess = input("Nouvel dentifiant national d'échec, au format AB12345: ")
+                    new_id_chess = input("Nouvel identifiant national d'échec, au format AB12345: ")
                     if len(new_id_chess) == 7:
-                        print("Bien 7")  # test
                         if new_id_chess[0:2].isalpha():
-                            print("Bien alpha :", new_id_chess[0:2])  # test
                             if new_id_chess[2:7].isnumeric():
-                                print("Bien numeric :", new_id_chess[2:7])  # test
                                 break
                             else:
                                 print("Veuillez entrer un format d'identifiant d'échec valide AB12345")
@@ -256,7 +262,6 @@ class View:
         while True:
             ask_name_tournament = input("à quel tournoi souhaitez-vous jouer ? ")
             if all(char.isalpha() or char.isspace() for char in ask_name_tournament):
-                print("Verif tournoi", ask_name_tournament)
                 break
             else:
                 print("Merci d'entrer un nom de tournoi valide")
@@ -264,14 +269,30 @@ class View:
         return ask_name_tournament.capitalize()
 
     def show_tournament(self, tournament):
-        print(f"\n\nTournoi selectionné:\n"
+        print("\n\n\nTournoi :"
               "\nNom :", tournament["name_tournament"],
-              "\nLieu :", tournament["locality"],
+              "\nlieu :", tournament["locality"],
               "\nDate de debut :", tournament["start_date"],
               "\nDate de fin :", tournament["end_date"],
-              "\nListe des rounds :", tournament["list_rounds"],
-              "\nListe des joueurs :", tournament["list_players"],
-              "\nDescription :", tournament["description"], "\n\n")
+              "\nNombre de rounds :", tournament["number_rounds"],
+              "\nListe des rounds :")
+        for round_info in tournament["list_rounds"]:
+            print("\nNom du round :", round_info["name_round"],
+                  "\nListe des matchs :")
+            for match in round_info["list_matches"]:
+                print(" - Résultat du match :",
+                      match["result_match"][0][0],
+                      match["result_match"][0][1],
+                      "VS",
+                      match["result_match"][1][0],
+                      match["result_match"][1][1])
+            print("Date de début :", round_info["start_time"],
+                  "\nDate de fin :", round_info["end_time"])
+        print("\nLes joueurs et leurs scores :")
+        for player_info in tournament["list_players"]:
+            print("\nId du joueur :", player_info["id_chess"],
+                  "\nScore du joueur :", player_info["score_tournament"])
+        print("\n\nDescription :", tournament["description"])
 
     def continue_tournament(self, tournament, check_status):
         if check_status:
@@ -295,7 +316,6 @@ class View:
         while True:
             score1 = input("Score du premier joueur : ")
             if score1 == "0" or score1 == "1" or score1 == "0.5":
-                print("bon score", score1)
                 scores.append(score1)
                 break
             else:
@@ -305,15 +325,13 @@ class View:
         while True:
             score2 = input("Score du second joueur : ")
             if score2 == "0" or score2 == "1" or score2 == "0.5":
-                print("bon score", score2)
                 scores.append(score2)
                 break
             else:
                 print("Merci d'entrer une donnée correcte, 0, 1 ou 0.5.")
         return scores
 
-    def next_round(self, round):
-        print("View next_round", round)
+    def next_round(self):
         while True:
             get_round = input("Voulez-vous rejouer un round ? O/N ")
             if get_round.capitalize() == "O":
@@ -323,12 +341,10 @@ class View:
             else:
                 print("Merci de saisir une donnée valide")
 
-    def play_game(self, tournament):
-        print("View - play_game", tournament)
+    def play_game(self):
         while True:
             play = input("Souhaitez-vous commencer le tournoi ? O/N ")
             if play.capitalize() == "O":
-                print("OUI", tournament)
                 return True
             elif play.capitalize() == "N":
                 return False
@@ -341,5 +357,5 @@ class View:
         else:
             print("\n\n -- Classement final -- \n")
         for player in players:
-            print("Joueur :", player[0], "score de :", player[1], "\n")
+            print(player[0], "score de :", player[1], "\n")
         return None

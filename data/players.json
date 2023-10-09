@@ -47,6 +47,78 @@
             "first_name": "Cho",
             "date_birth": "24/04/1979",
             "id_chess": "CC12345"
+        },
+        "9": {
+            "name": "Lennon",
+            "first_name": "John",
+            "date_birth": "09/10/1940",
+            "id_chess": "LJ54321"
+        },
+        "10": {
+            "name": "Mcfly",
+            "first_name": "Marty",
+            "date_birth": "09/06/1968",
+            "id_chess": "MM45632"
+        },
+        "11": {
+            "name": "Brown",
+            "first_name": "Emmett",
+            "date_birth": "13/01/1914",
+            "id_chess": "BE56324"
+        },
+        "12": {
+            "name": "Parker",
+            "first_name": "Peter",
+            "date_birth": "15/08/1962",
+            "id_chess": "PP98652"
+        },
+        "13": {
+            "name": "Morales",
+            "first_name": "Miles",
+            "date_birth": "12/11/2000",
+            "id_chess": "MM95321"
+        },
+        "14": {
+            "name": "Wayne",
+            "first_name": "Bruce",
+            "date_birth": "30/03/1969",
+            "id_chess": "WB58632"
+        },
+        "15": {
+            "name": "Croft",
+            "first_name": "Lara",
+            "date_birth": "03/11/1970",
+            "id_chess": "LL58642"
+        },
+        "16": {
+            "name": "Stark",
+            "first_name": "Tony",
+            "date_birth": "29/05/1970",
+            "id_chess": "ST76953"
+        },
+        "17": {
+            "name": "Connor",
+            "first_name": "Sarah",
+            "date_birth": "05/04/1960",
+            "id_chess": "CS58642"
+        },
+        "18": {
+            "name": "Banner",
+            "first_name": "Bruce",
+            "date_birth": "05/06/1945",
+            "id_chess": "BB45862"
+        },
+        "19": {
+            "name": "Wayne",
+            "first_name": "John",
+            "date_birth": "26/05/1907",
+            "id_chess": "WJ12548"
+        },
+        "20": {
+            "name": "Foley",
+            "first_name": "Alex",
+            "date_birth": "05/10/1964",
+            "id_chess": "FA68459"
         }
     }
 }
