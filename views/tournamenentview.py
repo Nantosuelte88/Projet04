@@ -2,6 +2,7 @@ from datetime import datetime
 
 
 class View:
+
     def menu(self):
 
         while True:
@@ -12,7 +13,7 @@ class View:
                            "3 - Rechercher un tournoi\n"
                            "4 - Modifier un joueur\n"
                            "5 - Voir les joueurs\n"
-                           "6 - Voir les tournois\n"                           
+                           "6 - Voir les tournois\n"
                            "7 - Quitter\n"
                            "---------------------- \n\n"
                            "Votre choix : ")
@@ -120,23 +121,21 @@ class View:
             else:
                 print("Merci d'indiquer une donnée valide\n")
 
-    @staticmethod
-    def show_players(players):
+    def show_players(self, players):
         print("\n\nLes Joueurs :\n")
 
         for player, players_details in enumerate(players, start=1):
-            print(f"Joueur", player,
+            print("Joueur", player,
                   "\nNom :", players_details["name"],
                   "\nPrenom :", players_details["first_name"],
                   "\nDate de naissance :", players_details["date_birth"],
                   "\nID d'échec :", players_details["id_chess"], "\n")
         return None
 
-    @staticmethod
-    def show_tournaments(tournaments):
+    def show_tournaments(self, tournaments):
         print("\n\nLes tournois enregistrés :\n")
         for tournament_id, tournament_details in tournaments["tournament"].items():
-            print(f"\n\n\nTournoi", tournament_id,
+            print("\n\n\nTournoi", tournament_id,
                   "\nNom :", tournament_details["name_tournament"],
                   "\nlieu :", tournament_details["locality"],
                   "\nDate de debut :", tournament_details["start_date"],
@@ -162,9 +161,8 @@ class View:
             print("\nDescription :", tournament_details["description"])
         return None
 
-    @staticmethod
-    def modification_player(info_player):
-        print(f"Joueur :"
+    def modification_player(self, info_player):
+        print("Joueur :"
               "\n1 - Nom :", info_player["name"],
               "\n2 - Prenom :", info_player["first_name"],
               "\n3 - Date de naissance :", info_player["date_birth"],
@@ -217,8 +215,7 @@ class View:
             else:
                 print("Merci d'indiquer une donnée valide\n")
 
-    @staticmethod
-    def prompt_for_tournament():
+    def prompt_for_tournament(self):
         while True:
 
             while True:
@@ -242,8 +239,7 @@ class View:
             if choice == "1":
                 return name_tournament.capitalize(), locality.capitalize()
 
-    @staticmethod
-    def description():
+    def description(self):
         while True:
             ask_for_description = input("Souhaitez vous ajouter une description ? O/N : ")
             if ask_for_description.upper() == "O":
@@ -262,8 +258,7 @@ class View:
             else:
                 print("Merci de saisir une donnée valide, O ou N")
 
-    @staticmethod
-    def choose_tournament(check):
+    def choose_tournament(self, check):
         if check:
             print("\nTournoi inconnu !")
         while True:
@@ -275,8 +270,7 @@ class View:
 
         return ask_name_tournament.capitalize()
 
-    @staticmethod
-    def show_tournament(tournament):
+    def show_tournament(self, tournament):
         print("\nTournoi :"
               "\nNom :", tournament.name_tournament,
               "\nlieu :", tournament.locality,
@@ -303,8 +297,7 @@ class View:
                   ":", player_info[1])
         print("\nDescription :", tournament.description, "\n")
 
-    @staticmethod
-    def continue_tournament(tournament, check_status):
+    def continue_tournament(self, tournament, check_status):
         if check_status:
             print("Souhaitez-vous continuer le tournoi", tournament, "?")
             while True:
@@ -318,8 +311,7 @@ class View:
         else:
             print("Ce tournoi est fini")
 
-    @staticmethod
-    def scores_match(player1, player2):
+    def scores_match(self, player1, player2):
         scores = []
         print("\nMATCH\n", player1.name, player1.first_name, "VS", player2.name, player2.first_name, "\n")
         print(player1.name, player1.first_name)
@@ -342,8 +334,7 @@ class View:
                 print("Merci d'entrer une donnée correcte, 0, 1 ou 0.5.")
         return scores
 
-    @staticmethod
-    def next_round():
+    def next_round(self):
         while True:
             get_round = input("Voulez-vous rejouer un round ? O/N ")
             if get_round.capitalize() == "O":
@@ -353,8 +344,7 @@ class View:
             else:
                 print("Merci de saisir une donnée valide")
 
-    @staticmethod
-    def play_game():
+    def play_game(self):
         while True:
             play = input("Souhaitez-vous commencer le tournoi ? O/N ")
             if play.capitalize() == "O":
@@ -364,8 +354,7 @@ class View:
             else:
                 print("Merci de saisir une donnée valide")
 
-    @staticmethod
-    def show_final_players(players, status):
+    def show_final_players(self, players, status):
         if status:
             print("\n\n -- Classement actuel -- \n")
         else:

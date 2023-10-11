@@ -11,7 +11,4 @@ class Match:
 
     def __str__(self):
         return f"\n{self.player1} = {self.score1}\n" \
-               f"{self.player2} = {self.score2}\n" \
-
-
-
+               f"{self.player2} = {self.score2}\n"

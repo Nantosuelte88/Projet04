@@ -16,30 +16,6 @@ file_path_tournament = "data/tournament.json"
 file_path_players = "data/players.json"
 
 
-def file_json_player():
-    if os.path.exists(file_path_players):
-        if os.path.getsize(file_path_tournament) > 0:
-            with open(file_path_players, "r") as my_file:
-                current_players = json.load(my_file)
-        else:
-            current_players = {"players": {}}
-    else:
-        current_players = {"players": {}}
-    return current_players
-
-
-def search_tournaments_json():
-    if os.path.exists(file_path_tournament):
-        if os.path.getsize(file_path_tournament) > 0:
-            with open(file_path_tournament, "r") as my_file:
-                tournament_data = json.load(my_file)
-        else:
-            tournament_data = {"tournament": {}}
-    else:
-        tournament_data = {"tournament": {}}
-    return tournament_data
-
-
 class Controller:
     """ Le Contrôleur """
     def __init__(self, view):
@@ -77,17 +53,39 @@ class Controller:
             elif response == "7":
                 break
 
+    def file_json_player(self):
+        if os.path.exists(file_path_players):
+            if os.path.getsize(file_path_tournament) > 0:
+                with open(file_path_players, "r") as my_file:
+                    current_players = json.load(my_file)
+            else:
+                current_players = {"players": {}}
+        else:
+            current_players = {"players": {}}
+        return current_players
+
+    def search_tournaments_json(self):
+        if os.path.exists(file_path_tournament):
+            if os.path.getsize(file_path_tournament) > 0:
+                with open(file_path_tournament, "r") as my_file:
+                    tournament_data = json.load(my_file)
+            else:
+                tournament_data = {"tournament": {}}
+        else:
+            tournament_data = {"tournament": {}}
+        return tournament_data
+
     def show_players(self):
-        players = file_json_player()
+        players = self.file_json_player()
         sorted_players = sorted(players["players"].values(), key=lambda x: x["name"])
         self.view.show_players(sorted_players)
 
     def show_tournaments(self):
-        tournaments = search_tournaments_json()
+        tournaments = self.search_tournaments_json()
         self.view.show_tournaments(tournaments)
 
     def get_players(self):
-        current_players = file_json_player()
+        current_players = self.file_json_player()
         player_info = self.view.prompt_for_player()
 
         dict_player = {
@@ -105,11 +103,11 @@ class Controller:
         return player_info
 
     def new_tournament(self):
-        tournament_data = search_tournaments_json()
+        tournament_data = self.search_tournaments_json()
         tournament_info_view = self.view.prompt_for_tournament()
         description = self.view.description()
         date_debut = datetime.now()
-        format_date = date_debut.strftime("%d/%m/%Y-%H:%M:%S")
+        format_date = date_debut.strftime("%d/%m/%Y - %H:%M:%S")
         tournament = Tournament(tournament_info_view[0],
                                 tournament_info_view[1],
                                 format_date,
@@ -139,7 +137,7 @@ class Controller:
     def select_tournament(self):
         check = False
         found_tournament = []
-        tournaments_json = search_tournaments_json()
+        tournaments_json = self.search_tournaments_json()
         while True:
             name_tournament = self.view.choose_tournament(check)
             for tournament_key in tournaments_json:
@@ -161,7 +159,7 @@ class Controller:
                                 found_tournament[0]["number_rounds"]
                                 )
 
-        current_players = file_json_player()
+        current_players = self.file_json_player()
         players_json = current_players["players"]
         players_info = found_tournament[0]["list_players"]
         for player_id in players_info:
@@ -197,7 +195,7 @@ class Controller:
         return tournament
 
     def select_player(self):
-        current_players = file_json_player()
+        current_players = self.file_json_player()
         players_json = current_players["players"]
         check = False
 
@@ -254,7 +252,7 @@ class Controller:
                 return player, new_player
 
     def add_player_in_tournament(self, tournament):
-        current_players = file_json_player()
+        current_players = self.file_json_player()
         players_json = current_players["players"]
         score_tournament = 0
 
@@ -289,7 +287,7 @@ class Controller:
                         add_players_json.append(dict_player)
 
                         # ajout des joueurs dans le tournoi Json
-                        tournaments_json = search_tournaments_json()
+                        tournaments_json = self.search_tournaments_json()
                         for tournament_key in tournaments_json:
                             tournament_info = tournaments_json[tournament_key]
                             for key, value in tournament_info.items():
@@ -310,7 +308,7 @@ class Controller:
 
     def modification_player(self):
         good_player = self.select_player()
-        players_json = file_json_player()
+        players_json = self.file_json_player()
 
         for player in players_json:
             if good_player[0][0] == players_json[player]:
@@ -332,7 +330,7 @@ class Controller:
         if description_view:
             tournament.description = description_view
 
-            tournaments_json = search_tournaments_json()
+            tournaments_json = self.search_tournaments_json()
             for tournament_key in tournaments_json:
                 tournament_info = tournaments_json[tournament_key]
                 for key, value in tournament_info.items():
@@ -374,16 +372,17 @@ class Controller:
                     # Si les rounds sont fini terminés, on met à jour la date de fin dans le json
                     tournament.status = False
                     self.show_winner(tournament)
+                    print("VERIF ICI", init_round.name_round, round_number, len(tournament.list_rounds))
                     self.update_end_time_tournament(tournament)
 
         return None
 
-    def initiate_round(self,players, init_round, tournament):
+    def initiate_round(self, players, init_round, tournament):
         new_round = []
         date_debut = datetime.now()
         format_date_debut = date_debut.strftime("%d/%m/%Y - %H:%M:%S")
         # On initie un nouveau tournoi
-        tournaments_json = search_tournaments_json()
+        tournaments_json = self.search_tournaments_json()
         for tournament_key in tournaments_json:
             tournament_info = tournaments_json[tournament_key]
             for key, value in tournament_info.items():
@@ -425,9 +424,8 @@ class Controller:
         self.result_round(init_round.list_matches, tournament)
         return None
 
-    @staticmethod
-    def update_end_time_tournament(tournament):
-        tournaments_json = search_tournaments_json()
+    def update_end_time_tournament(self, tournament):
+        tournaments_json = self.search_tournaments_json()
         end_time_tournament = datetime.now()
         format_end_time = end_time_tournament.strftime("%d/%m/%Y - %H:%M:%S")
         tournament.end = end_time_tournament
@@ -441,8 +439,7 @@ class Controller:
                             json.dump(tournaments_json, my_file, indent=4)
         return None
 
-    @staticmethod
-    def result_round(matches_round, tournament):
+    def result_round(self, matches_round, tournament):
         # Mise à jour du score des joueurs
         for match in matches_round:
             for player in tournament.list_players:
@@ -451,7 +448,7 @@ class Controller:
                 elif player[0] == match.player2:
                     player[1] += match.score2
 
-        tournaments_json = search_tournaments_json()
+        tournaments_json = self.search_tournaments_json()
         for tournament_key in tournaments_json:
             tournament_info = tournaments_json[tournament_key]
             for key, value in tournament_info.items():
