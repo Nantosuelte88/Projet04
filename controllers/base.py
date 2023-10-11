@@ -356,6 +356,7 @@ class Controller:
                 else:
                     players = sorted(tournament.list_players, key=lambda x: x[1], reverse=True)
 
+                print("liste des joueurs envoyée:", players)
                 self.initiate_round(players, init_round, tournament)
 
                 if len(tournament.list_rounds) < round_number:
@@ -401,6 +402,35 @@ class Controller:
         for player in range(0, len(players), 2):
             player1 = players[player][0]
             player2 = players[player + 1][0]
+            print(players[player][0].id_chess, "-", players[player][1])
+            for i in range(len(tournament.list_rounds) - 1):
+                round = tournament.list_rounds[i]
+                print("ROUUUUND :", round)
+                for match in round["list_matches"]:
+                    print("MAAATCH :", match)
+                    print(match["result_match"][0][0], "-", match["result_match"][1][0])
+                    if player1.id_chess == match["result_match"][0][0]:
+                        print("IF")
+                        print("joueuuuur reconnuuuu")
+                        print("joueur 1", player1.id_chess)
+                        print("joueur2", match["result_match"][1][0])
+                        if match["result_match"][1][0] == player2.id_chess:
+                            print("match deha fait")
+                        else:
+                            print("NOPE")
+                        print("fin if")
+                    elif player1.id_chess == match["result_match"][1][0]:
+                        print("ELIF")
+                        print("joueuuuur reconnuuuu")
+                        print("joueur 1", player1.id_chess)
+                        print("joueur 2", match["result_match"][0][0])
+                        if match["result_match"][0][0] == player2.id_chess:
+                            print("match deha fait, 02222")
+                        else:
+                            print("NOPE")
+                        print("fin if")
+                        print("fin elif")
+            print("ICI joueurs", player1, "\nvs\n", player2)
             scores = self.view.scores_match(player1, player2)
             score1 = float(scores[0])
             score2 = float(scores[1])
