@@ -307,20 +307,31 @@ class Controller:
             return None
 
     def modification_player(self):
+        print("entre dans modif")
         good_player = self.select_player()
+        print("verif player", good_player)
         players_json = self.file_json_player()
 
         for player in players_json:
-            if good_player[0][0] == players_json[player]:
-                new_info = self.view.modification_player(players_json[player])
-                if new_info[0] == "1":
-                    players_json[player]["name"] = new_info[1]
-                elif new_info[0] == "2":
-                    players_json[player]["first_name"] = new_info[1]
-                elif new_info[0] == "3":
-                    players_json[player]["date_birth"] = new_info[1]
-                elif new_info[0] == "4":
-                    players_json[player]["id_check"] = new_info[1]
+            print("dans boucle players_json", player)
+            print(good_player[0][0])
+            print(players_json[player])
+            for key, value in players_json[player].items():
+                print(key)
+                if good_player[0][0] == players_json[value]:
+                    print("Good player ?", good_player, key)
+                    print(players_json[player])
+                    new_info = self.view.modification_player(players_json[player])
+                    if new_info[0] == "1":
+                        players_json[player]["name"] = new_info[1]
+                    elif new_info[0] == "2":
+                        players_json[player]["first_name"] = new_info[1]
+                    elif new_info[0] == "3":
+                        players_json[player]["date_birth"] = new_info[1]
+                    elif new_info[0] == "4":
+                        players_json[player]["id_check"] = new_info[1]
+                else:
+                    print("PAS DE JOUER TROUvé", key)
         with open(file_path_players, "w") as my_file:
             json.dump({"players": players_json}, my_file, indent=4)
         return None
@@ -402,35 +413,7 @@ class Controller:
         for player in range(0, len(players), 2):
             player1 = players[player][0]
             player2 = players[player + 1][0]
-            print(players[player][0].id_chess, "-", players[player][1])
-            for i in range(len(tournament.list_rounds) - 1):
-                round = tournament.list_rounds[i]
-                print("ROUUUUND :", round)
-                for match in round["list_matches"]:
-                    print("MAAATCH :", match)
-                    print(match["result_match"][0][0], "-", match["result_match"][1][0])
-                    if player1.id_chess == match["result_match"][0][0]:
-                        print("IF")
-                        print("joueuuuur reconnuuuu")
-                        print("joueur 1", player1.id_chess)
-                        print("joueur2", match["result_match"][1][0])
-                        if match["result_match"][1][0] == player2.id_chess:
-                            print("match deha fait")
-                        else:
-                            print("NOPE")
-                        print("fin if")
-                    elif player1.id_chess == match["result_match"][1][0]:
-                        print("ELIF")
-                        print("joueuuuur reconnuuuu")
-                        print("joueur 1", player1.id_chess)
-                        print("joueur 2", match["result_match"][0][0])
-                        if match["result_match"][0][0] == player2.id_chess:
-                            print("match deha fait, 02222")
-                        else:
-                            print("NOPE")
-                        print("fin if")
-                        print("fin elif")
-            print("ICI joueurs", player1, "\nvs\n", player2)
+
             scores = self.view.scores_match(player1, player2)
             score1 = float(scores[0])
             score2 = float(scores[1])
