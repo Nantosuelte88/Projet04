@@ -174,23 +174,14 @@ class Controller:
                     tournament.list_players.append([player, score_tournament])
 
         tournament.list_rounds = found_tournament[0]["list_rounds"]
-        self.view.show_tournament(tournament)
+        choice = self.view.show_tournament(tournament)
         self.tournaments.append(tournament)
 
-        if len(tournament.list_rounds) == tournament.number_rounds:
-            check_tournament = False
-            self.view.continue_tournament(tournament.name_tournament, check_tournament)
-            self.show_winner(tournament)
-        elif len(tournament.list_rounds) < tournament.number_rounds:
-            check_tournament = True
-            ask_user = self.view.continue_tournament(tournament.name_tournament, check_tournament)
-            if ask_user:
-                if not tournament.list_players:
-                    players = self.add_player_in_tournament(tournament)
-                    if players:
-                        self.new_round(tournament)
-                else:
-                    self.new_round(tournament)
+        if int(choice) == 1:
+            sorted_players = sorted(tournament.list_players, key=lambda x: x[0].name)
+            self.view.show_players_in_tournament(sorted_players)
+        elif int(choice) == 2:
+            self.view.show_info_in_tournament(tournament.list_rounds)
 
         return tournament
 

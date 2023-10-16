@@ -1,4 +1,5 @@
 from datetime import datetime
+from tabulate import tabulate
 
 
 class View:
@@ -10,7 +11,7 @@ class View:
             choice = input("Que souhaitez-vous faire ?\n"
                            "1 - Créer un nouveau joueur \n"
                            "2 - Créer un nouveau tournoi\n"
-                           "3 - Rechercher un tournoi\n"
+                           "3 - Voir un tournoi\n"
                            "4 - Modifier un joueur\n"
                            "5 - Voir les joueurs\n"
                            "6 - Voir les tournois\n"
@@ -26,6 +27,9 @@ class View:
             else:
                 print("\nMerci d'entrer une donnée valide")
         return choice
+
+    def menu_tournament(self):
+        pass
 
     def prompt_for_player(self):
         while True:
@@ -124,41 +128,32 @@ class View:
     def show_players(self, players):
         print("\n\nLes Joueurs :\n")
 
+        player_data = []
+        header = ["Nom", "Prénom", "Date de naissance", "ID d'échec"]
         for player, players_details in enumerate(players, start=1):
-            print("Joueur", player,
-                  "\nNom :", players_details["name"],
-                  "\nPrenom :", players_details["first_name"],
-                  "\nDate de naissance :", players_details["date_birth"],
-                  "\nID d'échec :", players_details["id_chess"], "\n")
+            player_info = [players_details["name"],
+                           players_details["first_name"],
+                           players_details["date_birth"],
+                           players_details["id_chess"]]
+            player_data.append(player_info)
+
+        table = tabulate(player_data, headers=header, tablefmt="fancy_grid")
+        print(table)
         return None
 
     def show_tournaments(self, tournaments):
+        tournament_data = []
+        header = ["Nom du tournoi", "Lieu", "Date de début", "Date de fin"]
         print("\n\nLes tournois enregistrés :\n")
         for tournament_id, tournament_details in tournaments["tournament"].items():
-            print("\n\n\nTournoi", tournament_id,
-                  "\nNom :", tournament_details["name_tournament"],
-                  "\nlieu :", tournament_details["locality"],
-                  "\nDate de debut :", tournament_details["start_date"],
-                  "\nDate de fin :", tournament_details["end_date"],
-                  "\nNombre de rounds :", tournament_details["number_rounds"],
-                  "\nListe des rounds :")
-            for round_info in tournament_details["list_rounds"]:
-                print("\nNom du round :", round_info["name_round"],
-                      "\nListe des matchs :")
-                for match in round_info["list_matches"]:
-                    print(" - Résultat du match :",
-                          match["result_match"][0][0],
-                          match["result_match"][0][1],
-                          "VS",
-                          match["result_match"][1][0],
-                          match["result_match"][1][1])
-                print("Date de début :", round_info["start_time"],
-                      "\nDate de fin :", round_info["end_time"])
-            print("\nLes joueurs et leurs scores :")
-            for player_info in tournament_details["list_players"]:
-                print("- Id du joueur :", player_info["id_chess"],
-                      "son score :", player_info["score_tournament"])
-            print("\nDescription :", tournament_details["description"])
+            tournament_info = [tournament_details["name_tournament"],
+                               tournament_details["locality"],
+                               tournament_details["start_date"],
+                               tournament_details["end_date"]
+                               ]
+            tournament_data.append(tournament_info)
+        table = tabulate(tournament_data, headers=header, tablefmt="fancy_grid")
+        print(table)
         return None
 
     def modification_player(self, info_player):
@@ -271,31 +266,64 @@ class View:
         return ask_name_tournament.capitalize()
 
     def show_tournament(self, tournament):
-        print("\nTournoi :"
-              "\nNom :", tournament.name_tournament,
-              "\nlieu :", tournament.locality,
-              "\nDate de debut :", tournament.start_date,
-              "\nDate de fin :", tournament.end_date,
-              "\nNombre de rounds :", tournament.number_rounds,
-              "\nListe des rounds :")
-        for round_info in tournament.list_rounds:
-            print("\nNom du round :", round_info["name_round"],
-                  "\nListe des matchs :")
-            for match in round_info["list_matches"]:
-                print(" - Résultat du match :",
-                      match["result_match"][0][0],
-                      match["result_match"][0][1],
-                      "VS",
-                      match["result_match"][1][0],
-                      match["result_match"][1][1])
-            print("Date de début :", round_info["start_time"],
-                  "\nDate de fin :", round_info["end_time"])
-        print("\nLes joueurs et leurs scores :")
-        for player_info in tournament.list_players:
-            print(" -", player_info[0].name,
-                  player_info[0].first_name,
-                  ":", player_info[1])
-        print("\nDescription :", tournament.description, "\n")
+        if tournament.end_date:
+            end_date = tournament.end_date
+        else:
+            end_date = "tournoi en cours"
+        tournament_info = [{
+            "Nom du tournoi": tournament.name_tournament,
+            "Lieu": tournament.locality,
+            "Date de début": tournament.start_date,
+            "Date de fin": end_date
+        }]
+        table = tabulate(tournament_info, headers="keys", tablefmt="fancy_grid")
+        print(table)
+        while True:
+            choice = input("\nQue voulez-vous faire ?\n"
+                           "1 - Voir la liste des joueurs du tournoi ?\n"
+                           "2 - Voir tous les rounds et matchs du tournoi ?\n\n"
+                           "Votre choix : ")
+            if choice.isnumeric() and int(choice) <= 2:
+                return choice
+            else:
+                print("\nMerci d'entrer une donnée valide")
+
+    def show_players_in_tournament(self, players):
+        print("\n\nLes", len(players), "joueurs du tournoi :\n")
+
+        player_data = []
+        header = ["Nom", "Prénom", "Date de naissance", "ID d'échec", "Score "]
+        for player in players:
+            player_info = [player[0].name,
+                           player[0].first_name,
+                           player[0].date_birth,
+                           player[0].id_chess,
+                           player[1]]
+            player_data.append(player_info)
+
+        table = tabulate(player_data, headers=header, tablefmt="fancy_grid")
+        print(table)
+        return None
+
+    def show_info_in_tournament(self, rounds):
+        tournament_data = []
+
+        for round in rounds:
+            header_round = [round['name_round']]
+            round_info = []
+
+            for match in round['list_matches']:
+                match_info = {
+                    header_round[0]: ", ".join([f"{player[0]}: {player[1]}" for player in match['result_match']])
+                }
+                round_info.append(match_info)
+
+            tournament_data.append((header_round, round_info))
+
+        # Utilisez .tabulate() pour formatter chaque tour comme un sous-tableau
+        for header, round_info in tournament_data:
+            table = tabulate(round_info, headers="keys", tablefmt="fancy_grid")
+            print(table)
 
     def continue_tournament(self, tournament, check_status):
         if check_status:
