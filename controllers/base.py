@@ -183,6 +183,18 @@ class Controller:
         elif int(choice) == 2:
             self.view.show_info_in_tournament(tournament.list_rounds)
 
+        if len(tournament.list_rounds) == tournament.number_rounds:
+            self.show_winner(tournament)
+        elif len(tournament.list_rounds) < tournament.number_rounds:
+            ask_user = self.view.continue_tournament(tournament.name_tournament)
+            if ask_user:
+                if not tournament.list_players:
+                    players = self.add_player_in_tournament(tournament)
+                    if players:
+                        self.new_round(tournament)
+                else:
+                    self.new_round(tournament)
+
         return tournament
 
     def select_player(self):

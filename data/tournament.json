@@ -1653,6 +1653,37 @@
                     ],
                     "start_time": "12/10/2023 - 13:36:20",
                     "end_time": "12/10/2023 - 13:36:40"
+                },
+                {
+                    "name_round": "Round 2",
+                    "list_matches": [
+                        {
+                            "result_match": [
+                                [
+                                    "WR12345",
+                                    1.0
+                                ],
+                                [
+                                    "BB45862",
+                                    0.0
+                                ]
+                            ]
+                        },
+                        {
+                            "result_match": [
+                                [
+                                    "GH12345",
+                                    0.0
+                                ],
+                                [
+                                    "HP12345",
+                                    1.0
+                                ]
+                            ]
+                        }
+                    ],
+                    "start_time": "16/10/2023 - 21:36:37",
+                    "end_time": "16/10/2023 - 21:36:43"
                 }
             ],
             "list_players": [
@@ -1662,11 +1693,11 @@
                 },
                 {
                     "id_chess": "HP12345",
-                    "score_tournament": 0.0
+                    "score_tournament": 1.0
                 },
                 {
                     "id_chess": "WR12345",
-                    "score_tournament": 1.0
+                    "score_tournament": 2.0
                 },
                 {
                     "id_chess": "BB45862",

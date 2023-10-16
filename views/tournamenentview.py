@@ -314,7 +314,7 @@ class View:
 
             for match in round['list_matches']:
                 match_info = {
-                    header_round[0]: ", ".join([f"{player[0]}: {player[1]}" for player in match['result_match']])
+                    header_round[0]: " VS ".join([f"{player[0]}: {player[1]}" for player in match['result_match']])
                 }
                 round_info.append(match_info)
 
@@ -325,19 +325,16 @@ class View:
             table = tabulate(round_info, headers="keys", tablefmt="fancy_grid")
             print(table)
 
-    def continue_tournament(self, tournament, check_status):
-        if check_status:
-            print("Souhaitez-vous continuer le tournoi", tournament, "?")
-            while True:
-                choice = input("O/N : ")
-                if choice.upper() == "O":
-                    return True
-                elif choice.upper() == "N":
-                    return False
-                else:
-                    print("Merci de saisir une donnée valide, O ou N")
-        else:
-            print("Ce tournoi est fini")
+    def continue_tournament(self, tournament):
+        print("Souhaitez-vous continuer le tournoi", tournament, "?")
+        while True:
+            choice = input("O/N : ")
+            if choice.upper() == "O":
+                return True
+            elif choice.upper() == "N":
+                return False
+            else:
+                print("Merci de saisir une donnée valide, O ou N")
 
     def scores_match(self, player1, player2):
         scores = []
@@ -383,10 +380,24 @@ class View:
                 print("Merci de saisir une donnée valide")
 
     def show_final_players(self, players, status):
+        player_data = []
+        number = 1
         if status:
-            print("\n\n -- Classement actuel -- \n")
+            header = ["Classement actuel", "", "", "", "Score"]
         else:
-            print("\n\n -- Classement final -- \n")
+            header = ["Classement final", "", "", "", "Score"]
         for player in players:
-            print(player[0], "score de :", player[1], "\n")
+
+            player_info = [
+                number,
+                player[0].name,
+                player[0].first_name,
+                player[0].date_birth,
+                player[0].id_chess,
+                player[1]
+            ]
+            player_data.append(player_info)
+            number += 1
+        table = tabulate(player_data, headers=header, tablefmt="fancy_grid")
+        print(table)
         return None
