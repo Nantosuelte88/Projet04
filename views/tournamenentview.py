@@ -162,7 +162,7 @@ class View:
         return None
 
     def modification_player(self, info_player):
-        print("Joueur :"
+        print("\n\nJoueur :"
               "\n1 - Nom :", info_player["name"],
               "\n2 - Prenom :", info_player["first_name"],
               "\n3 - Date de naissance :", info_player["date_birth"],

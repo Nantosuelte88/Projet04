@@ -307,33 +307,23 @@ class Controller:
             return None
 
     def modification_player(self):
-        print("entre dans modif")
         good_player = self.select_player()
-        print("verif player", good_player)
         players_json = self.file_json_player()
 
         for player in players_json:
-            print("dans boucle players_json", player)
-            print(good_player[0][0])
-            print(players_json[player])
             for key, value in players_json[player].items():
-                print(key)
-                if good_player[0][0] == players_json[value]:
-                    print("Good player ?", good_player, key)
-                    print(players_json[player])
-                    new_info = self.view.modification_player(players_json[player])
+                if good_player[0][0] == value:
+                    new_info = self.view.modification_player(value)
                     if new_info[0] == "1":
-                        players_json[player]["name"] = new_info[1]
+                        value["name"] = new_info[1]
                     elif new_info[0] == "2":
-                        players_json[player]["first_name"] = new_info[1]
+                        value["first_name"] = new_info[1]
                     elif new_info[0] == "3":
-                        players_json[player]["date_birth"] = new_info[1]
+                        value["date_birth"] = new_info[1]
                     elif new_info[0] == "4":
-                        players_json[player]["id_check"] = new_info[1]
-                else:
-                    print("PAS DE JOUER TROUvé", key)
+                        value["id_check"] = new_info[1]
         with open(file_path_players, "w") as my_file:
-            json.dump({"players": players_json}, my_file, indent=4)
+            json.dump(players_json, my_file, indent=4)
         return None
 
     def update_description(self, tournament):
