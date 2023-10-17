@@ -174,6 +174,7 @@ class Controller:
                     tournament.list_players.append([player, score_tournament])
 
         tournament.list_rounds = found_tournament[0]["list_rounds"]
+        print("ICI", found_tournament[0]["list_rounds"])
         if found_tournament[0]["end_date"]:
             tournament.end_date = found_tournament[0]["end_date"]
         self.tournaments.append(tournament)
@@ -192,7 +193,7 @@ class Controller:
                 self.view.show_players_in_tournament(sorted_players)
                 bis = True
             elif int(choice) == 3:
-                self.view.show_info_in_tournament(tournament.list_rounds)
+                self.view.show_info_in_tournament(tournament)
                 bis = True
             elif int(choice) == 4:
                 self.show_winner(tournament)

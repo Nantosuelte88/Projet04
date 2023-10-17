@@ -312,16 +312,18 @@ class View:
         print(table)
         return None
 
-    def show_info_in_tournament(self, rounds):
+    def show_info_in_tournament(self, tournament):
         tournament_data = []
-
-        for round in rounds:
+        print("tournament.list_rounds", tournament.list_rounds)
+        print(tournament.li)
+        for round in tournament.list_rounds:
+            print("round", round)
             header_round = [round['name_round']]
             round_info = []
 
             for match in round['list_matches']:
                 match_info = {
-                    header_round[0]: " VS ".join([f"{player[0]}: {player[1]}" for player in match['result_match']])
+                    header_round[0]: " VS ".join([f"{player}: {player[1]}" for player in match['result_match']])
                 }
                 round_info.append(match_info)
 
