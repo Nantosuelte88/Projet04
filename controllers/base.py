@@ -174,26 +174,38 @@ class Controller:
                     tournament.list_players.append([player, score_tournament])
 
         tournament.list_rounds = found_tournament[0]["list_rounds"]
-        choice = self.view.show_tournament(tournament)
+        if found_tournament[0]["end_date"]:
+            tournament.end_date = found_tournament[0]["end_date"]
         self.tournaments.append(tournament)
-
-        if int(choice) == 1:
-            sorted_players = sorted(tournament.list_players, key=lambda x: x[0].name)
-            self.view.show_players_in_tournament(sorted_players)
-        elif int(choice) == 2:
-            self.view.show_info_in_tournament(tournament.list_rounds)
-
         if len(tournament.list_rounds) == tournament.number_rounds:
-            self.show_winner(tournament)
+            tournament.status = False
         elif len(tournament.list_rounds) < tournament.number_rounds:
-            ask_user = self.view.continue_tournament(tournament.name_tournament)
-            if ask_user:
+            tournament.status = True
+
+        bis = False
+        while True:
+            choice = self.view.show_tournament(tournament, bis)
+            if int(choice) == 1:
+                break
+            elif int(choice) == 2:
+                sorted_players = sorted(tournament.list_players, key=lambda x: x[0].name)
+                self.view.show_players_in_tournament(sorted_players)
+                bis = True
+            elif int(choice) == 3:
+                self.view.show_info_in_tournament(tournament.list_rounds)
+                bis = True
+            elif int(choice) == 4:
+                self.show_winner(tournament)
+                bis = True
+            elif int(choice) == 5:
                 if not tournament.list_players:
                     players = self.add_player_in_tournament(tournament)
                     if players:
                         self.new_round(tournament)
+                        break
                 else:
                     self.new_round(tournament)
+                    break
 
         return tournament
 
@@ -360,7 +372,6 @@ class Controller:
                 else:
                     players = sorted(tournament.list_players, key=lambda x: x[1], reverse=True)
 
-                print("liste des joueurs envoyée:", players)
                 self.initiate_round(players, init_round, tournament)
 
                 if len(tournament.list_rounds) < round_number:
@@ -377,7 +388,6 @@ class Controller:
                     # Si les rounds sont fini terminés, on met à jour la date de fin dans le json
                     tournament.status = False
                     self.show_winner(tournament)
-                    print("VERIF ICI", init_round.name_round, round_number, len(tournament.list_rounds))
                     self.update_end_time_tournament(tournament)
 
         return None

@@ -265,25 +265,32 @@ class View:
 
         return ask_name_tournament.capitalize()
 
-    def show_tournament(self, tournament):
+    def show_tournament(self, tournament, bis):
         if tournament.end_date:
             end_date = tournament.end_date
         else:
             end_date = "tournoi en cours"
-        tournament_info = [{
-            "Nom du tournoi": tournament.name_tournament,
-            "Lieu": tournament.locality,
-            "Date de début": tournament.start_date,
-            "Date de fin": end_date
-        }]
-        table = tabulate(tournament_info, headers="keys", tablefmt="fancy_grid")
-        print(table)
+        if not bis:
+            tournament_info = [{
+                "Nom du tournoi": tournament.name_tournament,
+                "Lieu": tournament.locality,
+                "Date de début": tournament.start_date,
+                "Date de fin": end_date
+            }]
+            table = tabulate(tournament_info, headers="keys", tablefmt="fancy_grid")
+            print(table)
         while True:
-            choice = input("\nQue voulez-vous faire ?\n"
-                           "1 - Voir la liste des joueurs du tournoi ?\n"
-                           "2 - Voir tous les rounds et matchs du tournoi ?\n\n"
-                           "Votre choix : ")
-            if choice.isnumeric() and int(choice) <= 2:
+            print("\nQue voulez-vous faire ?")
+            print("1 - Revenir au menu")
+            print("2 - Voir la liste des joueurs du tournoi")
+            print("3 - Voir tous les rounds et matchs du tournoi")
+            print("4 - Voir le classement")
+            if tournament.status:
+                print("5 - Continuer le tournoi")
+            choice = input("Votre choix : ")
+            if choice.isnumeric() and int(choice) <= 4:
+                return choice
+            elif choice.isnumeric() and int(choice) == 5 and tournament.status:
                 return choice
             else:
                 print("\nMerci d'entrer une donnée valide")
