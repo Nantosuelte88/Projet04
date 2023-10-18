@@ -314,25 +314,33 @@ class View:
 
     def show_info_in_tournament(self, tournament):
         tournament_data = []
-        print("tournament.list_rounds", tournament.list_rounds)
-        print(tournament.li)
+
         for round in tournament.list_rounds:
-            print("round", round)
-            header_round = [round['name_round']]
+            header_round = round.name_round
             round_info = []
-
-            for match in round['list_matches']:
-                match_info = {
-                    header_round[0]: " VS ".join([f"{player}: {player[1]}" for player in match['result_match']])
-                }
+            for match in round.list_matches:
+                match_info = [
+                    match.player1.name,
+                    match.player1.first_name,
+                    match.player1.id_chess,
+                    match.score1,
+                    " VS ",
+                    match.player2.name,
+                    match.player2.first_name,
+                    match.player2.id_chess,
+                    match.score2]
                 round_info.append(match_info)
-
             tournament_data.append((header_round, round_info))
-
-        # Utilisez .tabulate() pour formatter chaque tour comme un sous-tableau
-        for header, round_info in tournament_data:
-            table = tabulate(round_info, headers="keys", tablefmt="fancy_grid")
+        for round_data in tournament_data:
+            header_round, match_info = round_data
+            table = tabulate(match_info,
+                             headers=["Nom", "Prénom", "ID Chess", "Score", "",
+                                      "Nom", "Prénom", "ID Chess", "Score"],
+                             tablefmt="fancy_grid")
+            print("\n", header_round)
             print(table)
+        return None
+
 
     def continue_tournament(self, tournament):
         print("Souhaitez-vous continuer le tournoi", tournament, "?")

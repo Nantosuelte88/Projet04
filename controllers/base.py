@@ -173,8 +173,31 @@ class Controller:
                                     players_info["id_chess"])
                     tournament.list_players.append([player, score_tournament])
 
-        tournament.list_rounds = found_tournament[0]["list_rounds"]
-        print("ICI", found_tournament[0]["list_rounds"])
+        # Instanciation des rounds et des matchs
+        for round_info in found_tournament[0]["list_rounds"]:
+            new_round = Round(round_info["name_round"])
+            new_round.start_time = round_info["start_time"]
+            new_round.end_time = round_info["end_time"]
+            for match_info in round_info["list_matches"]:
+                player1_id = match_info["result_match"][0][0]
+                score1 = match_info["result_match"][0][1]
+                player2_id = match_info["result_match"][1][0]
+                score2 = match_info["result_match"][1][1]
+
+                player1 = None
+                player2 = None
+
+                for player in tournament.list_players:
+                    if player[0].id_chess == player1_id:
+                        player1 = player[0]
+                    if player[0].id_chess == player2_id:
+                        player2 = player[0]
+
+                new_match = Match(player1, score1, player2, score2)
+                new_round.list_matches.append(new_match)
+
+            tournament.list_rounds.append(new_round)
+
         if found_tournament[0]["end_date"]:
             tournament.end_date = found_tournament[0]["end_date"]
         self.tournaments.append(tournament)
