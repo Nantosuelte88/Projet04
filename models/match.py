@@ -1,5 +1,5 @@
 class Match:
-    """ un match contient un tuple ayant deux listes contenant chacune - un joueur et - un score"""
+    """ Représente un match entre deux joueurs et leurs scores sous la forme d'un tuple """
 
     def __init__(self, player1, score1, player2, score2):
         self.player1 = player1

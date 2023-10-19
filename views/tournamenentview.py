@@ -3,8 +3,10 @@ from tabulate import tabulate
 
 
 class View:
+    """Gère les interactions utilisateur et affiche les informations."""
 
     def menu(self):
+        """Affiche le menu principal et récupère le choix de l'utilisateur."""
 
         while True:
             print("\n-------- MENU --------")
@@ -28,10 +30,9 @@ class View:
                 print("\nMerci d'entrer une donnée valide")
         return choice
 
-    def menu_tournament(self):
-        pass
-
     def prompt_for_player(self):
+        """Permet à l'utilisateur de créer un nouveau joueur en demandant des informations."""
+
         while True:
             while True:
                 name = input("Nom du joueur: ")
@@ -70,6 +71,8 @@ class View:
             return name.capitalize(), last_name.capitalize(), date_birth.capitalize(), id_chess.upper()
 
     def players_for_tournament(self):
+        """Demande à l'utilisateur si il veut ajouter des joueurs dans le tournoi"""
+
         while True:
             choice = input("Souhaitez-vous ajouter des joueurs au tournoi ? O/N: ")
             if choice.upper() == "O":
@@ -80,6 +83,8 @@ class View:
                 print("Merci d'indiquer une donnée valide, O ou N \n")
 
     def add_player_in_tournament(self, players, peers):
+        """Permet d'ajouter des joueurs dans un tournoi."""
+
         if players:
             i = 1
             print("\n\nLes joueurs selectionnés\n")
@@ -103,6 +108,8 @@ class View:
                 print("Merci d'indiquer une donnée valide, O ou N \n")
 
     def show_player(self, check):
+        """Verifie si un joueur existe"""
+
         if check:
             print("\nJoueur inconnu !")
         while True:
@@ -113,6 +120,8 @@ class View:
                 print("Veuillez entrer un nom valide sans chiffres ni caractères spéciaux.")
 
     def choose_players(self, players):
+        """Permet à l'utilisateur de choisir entre plusieurs joueurs lorsqu'ils portent le meme nom."""
+
         i = 1
         print("\nAttention", len(players), "joueurs portent ce nom \n")
         for player in players:
@@ -126,6 +135,8 @@ class View:
                 print("Merci d'indiquer une donnée valide\n")
 
     def show_players(self, players):
+        """Affiche la liste des joueurs."""
+
         print("\n\nLes Joueurs :\n")
 
         player_data = []
@@ -142,6 +153,8 @@ class View:
         return None
 
     def show_tournaments(self, tournaments):
+        """Affiche la liste des tournois"""
+
         tournament_data = []
         header = ["Nom du tournoi", "Lieu", "Date de début", "Date de fin"]
         print("\n\nLes tournois enregistrés :\n")
@@ -157,6 +170,8 @@ class View:
         return None
 
     def modification_player(self, info_player):
+        """Permet à l'utilisateur de modifier un joueur en demandant des informations."""
+
         print("\n\nJoueur :"
               "\n1 - Nom :", info_player["name"],
               "\n2 - Prenom :", info_player["first_name"],
@@ -211,6 +226,8 @@ class View:
                 print("Merci d'indiquer une donnée valide\n")
 
     def prompt_for_tournament(self):
+        """Permet à l'utilisateur de créer un nouveau tournoi en demandant des informations."""
+
         while True:
 
             while True:
@@ -235,6 +252,7 @@ class View:
                 return name_tournament.capitalize(), locality.capitalize()
 
     def description(self):
+        """Demande à l'utilisateur si il veut créer une description"""
         while True:
             ask_for_description = input("Souhaitez vous ajouter une description ? O/N : ")
             if ask_for_description.upper() == "O":
@@ -255,6 +273,7 @@ class View:
                 print("Merci de saisir une donnée valide, O ou N")
 
     def choose_tournament(self, check):
+        """Verifie l'existance d'un tournoi"""
         if check:
             print("\nTournoi inconnu !")
         while True:
@@ -267,6 +286,8 @@ class View:
         return ask_name_tournament.capitalize()
 
     def show_tournament(self, tournament, bis):
+        """Affiche les informations d"un tournoi donné"""
+
         if tournament.end_date:
             end_date = tournament.end_date
         else:
@@ -297,6 +318,8 @@ class View:
                 print("\nMerci d'entrer une donnée valide")
 
     def show_players_in_tournament(self, players):
+        """Afficher les joueurs dans un tournoi"""
+
         print("\n\nLes", len(players), "joueurs du tournoi :\n")
 
         player_data = []
@@ -314,6 +337,8 @@ class View:
         return None
 
     def show_info_in_tournament(self, tournament):
+        """Affiche les rounds et les matchs d'un tournoi"""
+
         for round in tournament.list_rounds:
             print(round.name_round)
             print("Date de début:", round.start_time)
@@ -342,6 +367,8 @@ class View:
             print('\n')
 
     def continue_tournament(self, tournament):
+        """Demande à l'utilisateur si il souhaite continuer le tournoi ou non"""
+
         print("Souhaitez-vous continuer le tournoi", tournament, "?")
         while True:
             choice = input("O/N : ")
@@ -353,6 +380,7 @@ class View:
                 print("Merci de saisir une donnée valide, O ou N")
 
     def scores_match(self, player1, player2):
+        """Affiche le match en cours et demande les scores"""
         scores = []
         print("\nMATCH\n", player1.name, player1.first_name, "VS", player2.name, player2.first_name, "\n")
         print(player1.name, player1.first_name)
@@ -376,6 +404,8 @@ class View:
         return scores
 
     def next_round(self):
+        """Demande à l'utilisateur si il veut rejouer un round"""
+
         while True:
             get_round = input("Voulez-vous rejouer un round ? O/N ")
             if get_round.capitalize() == "O":
@@ -386,6 +416,8 @@ class View:
                 print("Merci de saisir une donnée valide")
 
     def play_game(self):
+        """Demande à l'utilisateur si il veut commencer le jeu"""
+
         while True:
             play = input("Souhaitez-vous commencer le tournoi ? O/N ")
             if play.capitalize() == "O":
@@ -396,6 +428,8 @@ class View:
                 print("Merci de saisir une donnée valide")
 
     def show_final_players(self, players, status):
+        """Affiche le classement actuel ou final des joueurs dans un tournoi"""
+
         player_data = []
         number = 1
         if status:

@@ -1,5 +1,5 @@
 class Player:
-    """ Le joueur a un nom, un prénom, une date de naissance et son identifiant d'échecs """
+    """ Le joueur a un nom, un prénom, une date de naissance et son identifiant d'échec """
 
     def __init__(self, name, first_name, date_birth, id_chess):
         self.name = name

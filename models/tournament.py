@@ -1,9 +1,12 @@
 
 
 class Tournament:
-    """ Le tournoi contient  nom, un lieu, une date de début et de fin, un nombre de tours défini,
-    un numéro du tour actuel, une liste des rounds, une liste des joueurs ainsi qu'une description
-    pour les remarques générales du directeur du tournoi"""
+    """ Le tournoi contient prend comme arguments un nom, un lieu, une date de début,
+    une description et un nombre de round
+    On ajoute ensuite une date de fin, un statut
+
+    - une liste de rounds qui contient les rounds de la classe Round
+    - une liste de joueurs provenant de la classe Player"""
 
     def __init__(self, name_tournament, locality, start_date, description,
                  number_rounds):

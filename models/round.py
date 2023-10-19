@@ -1,7 +1,10 @@
 
 
 class Round:
-    """ un round contient une liste des matchs, un nom, une date et une heure de début, une date et une heure de fin """
+    """ Un round contient une liste des matchs a olibgatoirement un nom
+    puis une date et une heure de début, une date et une heure de fin
+
+    On y ajoute les matchs de la classe Match"""
 
     def __init__(self, name_round):
         self.name_round = name_round

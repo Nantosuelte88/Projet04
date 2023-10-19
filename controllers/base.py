@@ -17,8 +17,9 @@ file_path_players = "data/players.json"
 
 
 class Controller:
-    """ Le Contrôleur """
+    """Gère les interactions entre les joueurs, les tournois et la vue."""
     def __init__(self, view):
+        """Initialise un contrôleur avec une vue donnée."""
 
         self.view = view
 
@@ -26,6 +27,8 @@ class Controller:
         self.tournaments: List[Tournament] = []
 
     def menu(self):
+        """Affiche le menu principal et gère les options de l'utilisateur."""
+
         while True:
             response = self.view.menu()
             if response == "1":
@@ -42,10 +45,8 @@ class Controller:
 
             elif response == "3":
                 self.select_tournament()
-
             elif response == "4":
                 self.modification_player()
-
             elif response == "5":
                 self.show_players()
             elif response == "6":
@@ -54,6 +55,7 @@ class Controller:
                 break
 
     def file_json_player(self):
+        """Cherche les joueurs dans le fichier JSON."""
         if os.path.exists(file_path_players):
             if os.path.getsize(file_path_tournament) > 0:
                 with open(file_path_players, "r") as my_file:
@@ -65,6 +67,7 @@ class Controller:
         return current_players
 
     def search_tournaments_json(self):
+        """Cherche les tournois dans le fichier JSON."""
         if os.path.exists(file_path_tournament):
             if os.path.getsize(file_path_tournament) > 0:
                 with open(file_path_tournament, "r") as my_file:
@@ -76,15 +79,19 @@ class Controller:
         return tournament_data
 
     def show_players(self):
+        """Classe les joueurs par leur nom."""
         players = self.file_json_player()
         sorted_players = sorted(players["players"].values(), key=lambda x: x["name"])
         self.view.show_players(sorted_players)
 
     def show_tournaments(self):
+        """Envoi les tournois en vue pour les afficher."""
         tournaments = self.search_tournaments_json()
         self.view.show_tournaments(tournaments)
 
     def get_players(self):
+        """Obtient la liste des joueurs et les ajoute."""
+
         current_players = self.file_json_player()
         player_info = self.view.prompt_for_player()
 
@@ -103,6 +110,7 @@ class Controller:
         return player_info
 
     def new_tournament(self):
+        """Crée un nouveau tournoi et enregustre les infos dans le fichier JSON."""
         tournament_data = self.search_tournaments_json()
         tournament_info_view = self.view.prompt_for_tournament()
         description = self.view.description()
@@ -135,6 +143,7 @@ class Controller:
         return tournament
 
     def select_tournament(self):
+        """Permet de sélectionner un tournoi en cours et d'afficher des détails."""
         check = False
         found_tournament = []
         tournaments_json = self.search_tournaments_json()
@@ -181,7 +190,8 @@ class Controller:
         return tournament
 
     def create_tournament(self, found_tournament):
-        # Instanciation du tournoi
+        """Instancie le tournoi selectionné"""
+
         tournament = Tournament(found_tournament[0]["name_tournament"],
                                 found_tournament[0]["locality"],
                                 found_tournament[0]["start_date"],
@@ -239,6 +249,8 @@ class Controller:
         return tournament
 
     def select_player(self):
+        """Permet de sélectionner des joueurs."""
+
         current_players = self.file_json_player()
         players_json = current_players["players"]
         check = False
@@ -280,6 +292,8 @@ class Controller:
         return players_selected, check
 
     def ask_for_players(self, tournament, peers):
+        """Demande un joueur à l'utilisateur."""
+
         new_player = True
         while True:
             if tournament.list_players:
@@ -296,6 +310,8 @@ class Controller:
                 return player, new_player
 
     def add_player_in_tournament(self, tournament):
+        """Ajoute des joueurs dans un tournoi"""
+
         current_players = self.file_json_player()
         players_json = current_players["players"]
         score_tournament = 0
@@ -343,6 +359,8 @@ class Controller:
         return tournament
 
     def initiate_tournament(self, tournament):
+        """Initie un nouveau tournoi"""
+
         play = self.view.play_game()
         if play:
             tournament.status = True
@@ -351,6 +369,8 @@ class Controller:
             return None
 
     def modification_player(self):
+        """Modifie un joueur"""
+
         good_player = self.select_player()
         players_json = self.file_json_player()
 
@@ -371,6 +391,8 @@ class Controller:
         return None
 
     def update_description(self, tournament):
+        """Permet de mettre la description d'un tournoi à jour dans un fichier JSON"""
+
         description_view = self.view.description()
         if description_view:
             tournament.description = description_view
@@ -387,6 +409,8 @@ class Controller:
             return None
 
     def new_round(self, tournament):
+        """Creation d'un nouveau round"""
+
         round_number = tournament.number_rounds
         round_actual = len(tournament.list_rounds)
         if round_actual <= round_number:
@@ -414,17 +438,18 @@ class Controller:
                         else:
                             break
                 elif len(tournament.list_rounds) == round_number:
-                    # Si les rounds sont fini terminés, on met à jour la date de fin dans le json
+                    # Si les rounds sont terminés, on met à jour la date de fin dans le json
                     tournament.status = False
                     self.show_winner(tournament)
                     self.update_end_time_tournament(tournament)
                     if not tournament.description:
                         self.update_description(tournament)
 
-
         return None
 
     def initiate_round(self, players, init_round, tournament):
+        """Initie un round dans le fichier JSON, joue le match et l'enregistre dans le JSON"""
+
         new_round = []
         date_debut = datetime.now()
         format_date_debut = date_debut.strftime("%d/%m/%Y - %H:%M:%S")
@@ -473,6 +498,8 @@ class Controller:
         return None
 
     def update_end_time_tournament(self, tournament):
+        """Met la date de fin de tournoi à jour d'un match"""
+
         tournaments_json = self.search_tournaments_json()
         end_time_tournament = datetime.now()
         format_end_time = end_time_tournament.strftime("%d/%m/%Y - %H:%M:%S")
@@ -488,7 +515,8 @@ class Controller:
         return None
 
     def result_round(self, matches_round, tournament):
-        # Mise à jour du score des joueurs
+        """Mise à jour du score des joueurs"""
+
         for match in matches_round:
             for player in tournament.list_players:
                 if player[0] == match.player1:
@@ -512,10 +540,14 @@ class Controller:
         return None
 
     def show_winner(self, tournament):
+        """Envoie les joueurs classé par score à la vue"""
+
         sorted_final = sorted(tournament.list_players, key=lambda x: x[1], reverse=True)
         self.view.show_final_players(sorted_final, tournament.status)
         return None
 
     def run(self):
+        """Exécute le contrôleur et affiche le menu principal."""
+
         self.menu()
         return None
