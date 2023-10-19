@@ -151,6 +151,36 @@ class Controller:
             else:
                 check = True
 
+        tournament = self.create_tournament(found_tournament)
+
+        bis = False
+        while True:
+            choice = self.view.show_tournament(tournament, bis)
+            if int(choice) == 1:
+                break
+            elif int(choice) == 2:
+                sorted_players = sorted(tournament.list_players, key=lambda x: x[0].name)
+                self.view.show_players_in_tournament(sorted_players)
+                bis = True
+            elif int(choice) == 3:
+                self.view.show_info_in_tournament(tournament)
+                bis = True
+            elif int(choice) == 4:
+                self.show_winner(tournament)
+                bis = True
+            elif int(choice) == 5:
+                if not tournament.list_players:
+                    players = self.add_player_in_tournament(tournament)
+                    if players:
+                        self.new_round(tournament)
+                        break
+                else:
+                    self.new_round(tournament)
+                    break
+
+        return tournament
+
+    def create_tournament(self, found_tournament):
         # Instanciation du tournoi
         tournament = Tournament(found_tournament[0]["name_tournament"],
                                 found_tournament[0]["locality"],
@@ -205,31 +235,6 @@ class Controller:
             tournament.status = False
         elif len(tournament.list_rounds) < tournament.number_rounds:
             tournament.status = True
-
-        bis = False
-        while True:
-            choice = self.view.show_tournament(tournament, bis)
-            if int(choice) == 1:
-                break
-            elif int(choice) == 2:
-                sorted_players = sorted(tournament.list_players, key=lambda x: x[0].name)
-                self.view.show_players_in_tournament(sorted_players)
-                bis = True
-            elif int(choice) == 3:
-                self.view.show_info_in_tournament(tournament)
-                bis = True
-            elif int(choice) == 4:
-                self.show_winner(tournament)
-                bis = True
-            elif int(choice) == 5:
-                if not tournament.list_players:
-                    players = self.add_player_in_tournament(tournament)
-                    if players:
-                        self.new_round(tournament)
-                        break
-                else:
-                    self.new_round(tournament)
-                    break
 
         return tournament
 
@@ -413,6 +418,9 @@ class Controller:
                     tournament.status = False
                     self.show_winner(tournament)
                     self.update_end_time_tournament(tournament)
+                    if not tournament.description:
+                        self.update_description(tournament)
+
 
         return None
 

@@ -239,7 +239,8 @@ class View:
             ask_for_description = input("Souhaitez vous ajouter une description ? O/N : ")
             if ask_for_description.upper() == "O":
                 description = input("Votre description : ")
-                if all(char.isalpha() or char.isspace() or char.isnumeric() for char in description):
+                if all(char.isalpha() or char.isspace() or char.isnumeric()
+                       or char == "," or char == "." for char in description):
                     print(description.capitalize())
                     choice = input("\n1 - Valider ces informations\n"
                                    "2 - Modifier ces informations\n"
@@ -313,11 +314,13 @@ class View:
         return None
 
     def show_info_in_tournament(self, tournament):
-        tournament_data = []
-
         for round in tournament.list_rounds:
-            header_round = round.name_round
+            print(round.name_round)
+            print("Date de début:", round.start_time)
+            print("Date de fin:", round.end_time)
+
             round_info = []
+
             for match in round.list_matches:
                 match_info = [
                     match.player1.name,
@@ -328,19 +331,15 @@ class View:
                     match.player2.name,
                     match.player2.first_name,
                     match.player2.id_chess,
-                    match.score2]
+                    match.score2
+                ]
                 round_info.append(match_info)
-            tournament_data.append((header_round, round_info))
-        for round_data in tournament_data:
-            header_round, match_info = round_data
-            table = tabulate(match_info,
-                             headers=["Nom", "Prénom", "ID Chess", "Score", "",
-                                      "Nom", "Prénom", "ID Chess", "Score"],
-                             tablefmt="fancy_grid")
-            print("\n", header_round)
-            print(table)
-        return None
 
+            table = tabulate(round_info,
+                             headers=["Nom", "Prénom", "ID Chess", "Score", "", "Nom", "Prénom", "ID Chess", "Score"],
+                             tablefmt="fancy_grid")
+            print(table)
+            print('\n')
 
     def continue_tournament(self, tournament):
         print("Souhaitez-vous continuer le tournoi", tournament, "?")
